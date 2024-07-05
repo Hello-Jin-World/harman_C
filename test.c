@@ -2,6 +2,22 @@
 #include <stdio.h>
 #include <string.h> // string 계산 함수가 들어있음
 
+#if 1
+/*
+1. 포인터가 뭐에요?
+	주소를 저장 하는 메모리 공간(변수)이다.
+	일반 데이터를 저장하는 공간은 "변수" 라고한다.
+
+2. 포인터를 왜 쓰지요?
+	(1) 서로다른 함수에 정의된 변수를 access(읽고/쓰기)하기 위함이다.
+	이렇게 함으로써 전역변수의 사용을 최소화 하여 메모리의 낭비를 제거하여 메모리의 효율성을 높이고자 함이다.
+
+
+*/
+
+#endif
+
+
 /*************		// 블럭단위 주석 (프로그램 이름, 버전, 작성자, 작성일, 기능 등등 작성)
 * 
 * 
@@ -288,7 +304,7 @@ int main(void)
 }
 #endif
 
-#if 1
+#if 0
 /*
 *              ASCII CODE TABLE
 *              ================
@@ -302,13 +318,167 @@ int main(void)
 	// %-30s 30칸을 왼쪽부터 출력하고 나머지는 공백
 	printf("%30s\n\n", "================");
 	for (int i = 0; i < 4; i++) {
-		printf("%10s%10s%10s%10s\n", "DEC", "HEX", "OCT", "CHAR");
-		printf("%10s%10s%10s%10s\n\n", "===", "===", "===", "====");
+		printf("%10s%10s%10s%10s%10s\n", "DEC", "HEX", "OCT", "BIN", "CHAR");
+		printf("%10s%10s%10s%10s%10s\n\n", "===", "===", "===", "===", "====");
 	}
 	for (int i = 0; i < 128; i++) // i <= 127 보다는 i < 128 이 속도가 더 빠르다
 	{
-		printf("%10d%10.2x%10o%10c\n", i, i, i, i);
+		
+		printf("%10d%10.2x%10o  ", i, i, i);
+		bin_print(i);
+		printf("%10c\n", i);
 	}
+	return 0;
+}
+int bin_print(unsigned char x)
+{
+	for (int i = 7; i >= 0; i--)
+	{
+		printf("%d", x >> i & 1);
+	}
+}
+#endif
+
+#if 0
+int main(void)
+{
+	char text[32][10] = { "NUL", "SOH", "STX", "ETX", "EOT", "ENQ", "ACK", "BEL", "BS", "HT", "LF", "VT", "FF", "CR", "SO", "SI", "DLE", "DC1", "DC2", "DC3", "DC4", "NAK", "SYN", "ETB", "CAN", "EM", "SUB", "ESC", "FS", "GS", "RS", "US" };
+
+	printf("%115s\n", "ASCII CODE TABLE"); // 30칸을 오른쪽부터 출력하고 나머지는 공백
+	// %-30s 30칸을 왼쪽부터 출력하고 나머지는 공백
+	printf("%115s\n\n", "================");
+	for (int i = 0; i < 4; i++) {
+		printf("%10s%10s%10s%10s%10s", "DEC", "HEX", "OCT", "BIN", "CHAR");
+	}
+	printf("\n");
+	for (int i = 0; i < 4; i++) {
+		printf("%10s%10s%10s%10s%10s", "===", "===", "===", "===", "====");
+	}
+	printf("\n");
+	for (int i = 0; i < 32; i++) // i <= 127 보다는 i < 128 이 속도가 더 빠르다
+	{
+		printf("%10d%10.2x%10o  ", i, i, i);
+		bin_print(i);
+		printf("%10s", text[i]);
+
+		printf("%10d%10.2x%10o  ", i+32, i+32, i+32);
+		bin_print(i + 32);
+		printf("%10c", i + 32);
+
+		printf("%10d%10.2x%10o  ", i+64, i+64, i+64);
+		bin_print(i+64);
+		printf("%10c", i + 64);
+
+		printf("%10d%10.2x%10o  ", i+96, i+96, i+96);
+		bin_print(i+96);
+		printf("%10c", i + 96);
+
+		printf("\n");
+	}
+
+	return 0;
+}
+int bin_print(unsigned char x)
+{
+	for (int i = 7; i >= 0; i--)
+	{
+		printf("%d", x >> i & 1);
+	}
+}
+#endif
+
+#if 0
+void bin_div(unsigned char x);
+
+int main(void)
+{
+	char text[32][10] = { "NUL", "SOH", "STX", "ETX", "EOT", "ENQ", "ACK", "BEL", "BS", "HT", "LF", "VT", "FF", "CR", "SO", "SI", "DLE", "DC1", "DC2", "DC3", "DC4", "NAK", "SYN", "ETB", "CAN", "EM", "SUB", "ESC", "FS", "GS", "RS", "US" };
+
+	printf("%115s\n", "ASCII CODE TABLE");
+	printf("%115s\n\n", "================");
+	for (int i = 0; i < 4; i++) {
+		printf("%10s%10s%10s%10s%10s", "DEC", "HEX", "OCT", "BIN", "CHAR");
+	}
+	printf("\n");
+	for (int i = 0; i < 4; i++) {
+		printf("%10s%10s%10s%10s%10s", "===", "===", "===", "===", "====");
+	}
+	printf("\n");
+	for (int i = 0; i < 32; i++) // i <= 127 보다는 i < 128 이 속도가 더 빠르다
+	{
+		printf("%10d%10.2x%10o  ", i, i, i);
+		//bin_print(i);
+		bin_div(i);
+		printf("%10s", text[i]);
+
+		printf("%10d%10.2x%10o  ", i + 32, i + 32, i + 32);
+		//bin_print(i + 32);
+		bin_div(i + 32);
+		printf("%10c", i + 32);
+
+		printf("%10d%10.2x%10o  ", i + 64, i + 64, i + 64);
+		//bin_print(i + 64);
+		bin_div(i + 64);
+		printf("%10c", i + 64);
+
+		printf("%10d%10.2x%10o  ", i + 96, i + 96, i + 96);
+		//bin_print(i + 96);
+		bin_div(i + 96);
+		printf("%10c", i + 96);
+
+		printf("\n");
+	}
+
+	return 0;
+}
+//shift 연산자
+#if 0
+int bin_print(unsigned char x)
+{
+	for (int i = 7; i >= 0; i--)
+	{
+		printf("%d", x >> i & 1);
+	}
+}
+#endif
+//div 연산자
+#if 1
+void bin_div(unsigned char x)
+{
+	int b; //몫, 나머지
+	char buff[10];
+	for (int i = 0; i < 8; i++) {
+		b = x % 2;
+		x = x / 2;
+		buff[i] = b;
+		if (x == 1) {
+			buff[i+1] = x;
+		}
+	}
+	for (int j = 7; j >= 0; j--) {
+		printf("%d", (int)buff[j]);
+	}
+}
+#endif
+#endif
+
+//16진수를 2진수로 출력
+#if 0
+int main(void) {
+	unsigned char uc = 0x73; // 0111 0011
+	unsigned short us = 0x7337; //0111 0011 0011 0111
+
+	for (int i = 7; i >= 0; i--) //자료형의 크기에 맞게 i 조절
+	{
+		printf("%d", uc >> i & 1);
+	}
+	printf("\n");
+
+	for (int i = 15; i >= 0; i--)
+	{
+		printf("%d", us >> i & 1);
+	}
+	printf("\n");
 	return 0;
 }
 #endif
