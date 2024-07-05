@@ -1,8 +1,9 @@
-#if 0
+#if 1
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <string.h> // string 계산 함수가 들어있음
 #endif
+
 #if 0
 /*
 *              ASCII CODE TABLE
@@ -104,10 +105,14 @@ int main(void) {
 //6-2장 실전
 #if 0
 int main(void) {
-	int num;
+	int num, count = 0;
 	printf("2 이상의 정수를 입력하세요 : ");
 	scanf("%d", &num);
-
+	
+	for (int i = 2; i <= num; i++)
+	{
+		if (num % i == 0) printf("%d", num);
+	}
 	return 0;
 }
 #endif
