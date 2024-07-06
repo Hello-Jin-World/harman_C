@@ -1,10 +1,11 @@
-#if 1
+#if 0
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
-#include <string.h> // string 계산 함수가 들어있음
+#include <string.h>
 #endif
 
-#if 1
+//abc shift 포인터
+#if 0
 void shift_alpha();
 int main(void)
 {
@@ -15,17 +16,18 @@ int main(void)
 	return 0;
 }
 
-void shift_alpha(char* alpha)
+void shift_alpha(char* beta)
 {
-	int j;
-	for (j = 0; j < 25; j++)
+	char temp;
+	for (int i = 0; i < 27; i++)
 	{
-		for (int i = 0; i < 27; i++)
+		printf("%s\n", beta);
+		temp = beta[0];
+		for (int j = 0; j < 25; j++)
 		{
-			printf("%c", *(alpha + i + j));
+			beta[j] = beta[j + 1];
 		}
-		printf("%c", *(alpha + j));
-		printf("\n");
+		beta[25] = temp;
 	}
 }
 #endif
