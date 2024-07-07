@@ -180,17 +180,17 @@ void cal(char* p)
 #endif
 
 //sort 프로그램
-#if 0
+#if 1
 #define MAXSIZE 100
 
-void bubble_sort();
+//void bubble_sort();
 
 int main(void)
 {
-	int i;
+	int i, num = 0;
 	int n = MAXSIZE;
 	int list[MAXSIZE];
-	char arry[];
+	char arry[MAXSIZE];
 
 	while (1)
 	{
@@ -201,10 +201,18 @@ int main(void)
 		{
 			break;
 		}
-		
+		for (int j = 0; j < strlen(arry); j++)
+		{
+			num = num * 10 + (arry[i] - '0');
+			if (arry[i] == ' ')
+			{
+				list[i] = num;
+				num = 0;
+			}
+		}
 
-		bubble_sort(list, n);
-
+		//bubble_sort(list, n);
+		i = 0;
 		for (i = 0; i < n; i++)
 		{
 			printf("%d\n", list[i]);
@@ -213,7 +221,7 @@ int main(void)
 	return 0;
 }
 
-void bubble_sort(int *ary, int *mod)
+/*void bubble_sort(int* ary, int* mod)
 {
 	int temp;
 	int size = sizeof(ary) / sizeof(ary[0]);
@@ -239,7 +247,7 @@ void bubble_sort(int *ary, int *mod)
 		return;
 	}
 }
-
+*/
 #endif
 
 #if 0
@@ -609,7 +617,7 @@ int main(void)
 //9-2장 3번
 //	20 10
 //9-2장 실전
-#if 1
+#if 0
 void swap(double* pa, double* pb);
 void line_up(double* maxp, double* midp, double* minp);
 
