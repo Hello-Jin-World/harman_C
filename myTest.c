@@ -187,7 +187,7 @@ void cal(char* p)
 
 int main(void)
 {
-	int i, num = 0;
+	int i = 0, num = 0;
 	int n = MAXSIZE;
 	int list[MAXSIZE];
 	char arry[MAXSIZE];
@@ -203,20 +203,27 @@ int main(void)
 		}
 		for (int j = 0; j < strlen(arry); j++)
 		{
-			num = num * 10 + (arry[i] - '0');
-			if (arry[i] == ' ')
+			if (arry[j] >= '0' && arry[j] <= '9')
+			{
+				num = num * 10 + (arry[j] - '0');
+			}
+			else if (arry[j] == ' ')
 			{
 				list[i] = num;
 				num = 0;
+				i++;
 			}
+			// 마지막 숫자 이후에 '\0' 이 들어갔을 때 list에 마지막 숫자를 넣고 반복문이 끝나야함.
 		}
+		list[i + 1] = num;
+		num = 0;
 
 		//bubble_sort(list, n);
-		i = 0;
 		for (i = 0; i < n; i++)
 		{
 			printf("%d\n", list[i]);
 		}
+		i = 0;
 	}
 	return 0;
 }
