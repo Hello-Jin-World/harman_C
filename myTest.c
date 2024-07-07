@@ -183,7 +183,7 @@ void cal(char* p)
 #if 1
 #define MAXSIZE 100
 
-//void bubble_sort();
+void bubble_sort();
 
 int main(void)
 {
@@ -206,19 +206,18 @@ int main(void)
 			if (arry[j] >= '0' && arry[j] <= '9')
 			{
 				num = num * 10 + (arry[j] - '0');
+
+				list[i] = num;
 			}
 			else if (arry[j] == ' ')
 			{
-				list[i] = num;
 				num = 0;
 				i++;
 			}
-			// 마지막 숫자 이후에 '\0' 이 들어갔을 때 list에 마지막 숫자를 넣고 반복문이 끝나야함.
 		}
-		list[i + 1] = num;
-		num = 0;
 
-		//bubble_sort(list, n);
+		bubble_sort(list, n);
+
 		for (i = 0; i < n; i++)
 		{
 			printf("%d\n", list[i]);
@@ -228,8 +227,11 @@ int main(void)
 	return 0;
 }
 
-/*void bubble_sort(int* ary, int* mod)
+void bubble_sort(int* ary, int* n)
 {
+	int mod = 0;
+	printf("sort 종류( 1: ascending, 2: descending) : ");
+	scanf("%d", mod);
 	int temp;
 	int size = sizeof(ary) / sizeof(ary[0]);
 	
@@ -251,10 +253,21 @@ int main(void)
 	}
 	else if (mod == 2)
 	{
-		return;
+		for (int i = 0; i < size - 1; i++)
+		{
+			for (int j = 1; j < size; j++)
+			{
+				if (*(ary + i) > *(ary + j))
+				{
+					temp = *(ary + i);
+					*(ary + i) = *(ary + j);
+					*(ary + j) = temp;
+				}
+			}
+		}
 	}
 }
-*/
+
 #endif
 
 #if 0
