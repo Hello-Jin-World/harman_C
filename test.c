@@ -90,7 +90,7 @@ void make_account(t_account *pt, int *acc_num)
 	int id;
 	char name[NAME_LEN];
 	int balance;
-	t_account* p = pt; //뒤에서 주소의 시작점이 틀어질 수 있어서 대피시킴.
+	t_account* p = pt + *acc_num; //뒤에서 주소의 시작점이 틀어질 수 있어서 대피시킴.
 
 	printf("[계좌개설]\n");
 	printf("계좌ID: ");
@@ -119,7 +119,7 @@ void deposit_money(t_account* pt, int *acc_num)
 	printf("입금액: ");
 	scanf("%d", &money);
 
-	for (i = 0; i < *acc_num; i++)
+	for (i = 0; i < *acc_num; i++, p++)
 	{
 		if (p->acc_id == id)
 		{
@@ -143,7 +143,7 @@ void with_draw_money(t_account* pt, int *acc_num)
 	printf("출금액: ");
 	scanf("%d", &money);
 
-	for (i = 0; i < *acc_num; i++)
+	for (i = 0; i < *acc_num; i++, p++)
 	{
 		if (p->acc_id == id)
 		{
@@ -166,7 +166,7 @@ void show_all_acc_info(t_account* pt, int *acc_num)
 	t_account* p = pt;
 	int i;
 
-	for (i = 0; i < *acc_num; i++)
+	for (i = 0; i < *acc_num; i++, p++)
 	{
 		printf("계좌ID: %d\n", p->acc_id);
 		printf("이  름: %s\n", p->cus_name);
