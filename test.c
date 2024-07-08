@@ -4,8 +4,222 @@
 #include <string.h>
 #include <stdlib.h> // malloc 함수 여기있음.
 #endif
-
+// 동적 메모리 할당
+/*
+1. 구조체 배열 정적 메모리를 동적 메모리로 할당하기
+2. switch~case 문을 함수 포인터 배열로 동작하도록 하기
+*/
 #if 1
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h> //구조체
+#include <string.h>
+#include <stdlib.h>
+#define NAME_LEN   20
+
+void show_menu(void);
+void make_account(t_account* pt, int* pn); // 계좌 개설
+void deposit_money(t_account* pt, int* pn); // 입금
+void with_draw_money(t_account* pt, int* pn); // 출금
+void show_all_acc_info(t_account* pt, int* pn); // 잔액조회
+
+//#define : 매크로 (MACRO)
+#define MAKE     1
+#define DEPOSIT  2
+#define WITHDRAW 3
+#define INQUIRE  4
+#define EXIT     9
+
+
+typedef struct // t_account 로 redefine 한다			28byte
+{
+	int acc_id;      // 계좌번호
+	int balance;    // 잔    액
+	char cus_name[NAME_LEN];   // 고객이름
+} t_account;
+
+int main()  // int main(argc, char *argv[])
+{
+	int choice;
+	int acc_num = 0;        // 저장된 Account 수
+#if 1
+	t_account *acc_arr;	// acc_arr이라는 변수는 t_account 타입의 구조체 타입의
+	//포인터(주소를 저장하는 공간(변수))이다.
+	void (*fp[]) (t_account *, int *) =
+	{
+		NULL, // 0번 배열은 버림.
+		make_account,
+		deposit_money,
+		with_draw_money,
+		show_all_acc_info
+	};
+
+	
+	acc_arr = (t_account *)malloc(sizeof(t_account) * 10); // 구조체 사이즈만큼 넘겨줌        acc_arr[10];이랑 같음.			malloc은 char타입이라 형변환 필요.
+	// malloc의 리턴되는 default는 char *이나 이를 구조체 포인터로 변환. (t_account *) 붙임.
+	// acc_arr에는 시작 번지가 리턴된다.
+	if (acc_arr == NULL)
+	{
+		printf("메모리 할당 실패!\n");
+		return -1; // 0은 정상 종료, -1은 심각한 error
+	}
+
+
+#else // original
+	t_account acc_arr[10];   // Account 저장을 위한 배열, 100개가 연속으로 잡힌다.
+#endif
+
+	while (1)
+	{
+		show_menu();
+		printf("선택:(1 : make, 2: deposit, 3: withdraw, 4 : inquire, 9 : exit");
+		scanf("%d", &choice);  // '1' --> 1 --> choice
+		printf("\n");
+		if (choice == 9)
+		{
+			free(acc_arr);
+			break;
+		}
+		if (choice >= 1 && choice <= 4)
+		{
+			fp[choice](acc_arr, &acc_num);
+		}
+
+#if 1 // 함수 포인터 배열로 동작되도록
+
+#else	//original
+		switch (choice)
+		{
+		case MAKE:  // 	case 1:
+			make_account();
+			break;
+		case DEPOSIT:
+			deposit_money();
+			break;
+		case WITHDRAW:
+			with_draw_money();
+			break;
+		case INQUIRE:
+			show_all_acc_info();
+			break;
+		case EXIT:
+			free(acc_arr);	// 동적 메모리를 해제한다.
+			return 0;
+		default:
+			printf("Illegal selection..\n");
+		}
+#endif
+	}
+	return 0;
+}
+
+void show_menu(void)
+{
+	char* menu[] =  // 원래는 char menu[6][32] = 이런식으로 메모리를 계속 잡고 있어야했음.
+	{
+	 "-----Menu------\n",
+	 "1. 계좌개설\n",
+	 "2. 입    금\n",
+	 "3. 출    금\n",
+	 "4. 계좌정보 전체 출력\n",
+	 "9. 종    료\n"
+	};
+	int i;
+
+	for (i = 0; i < 6; i++)
+		printf("%s", *(menu + i)); // printf("%s", menu[i]);
+}
+
+void make_account(t_account * pt, int* acc_num)
+{
+	int id;
+	char name[NAME_LEN];
+	int balance;
+	t_account* p = pt + *acc_num; //뒤에서 주소의 시작점이 틀어질 수 있어서 대피시킴.
+
+	printf("[계좌개설]\n");
+	printf("계좌ID: ");
+	scanf("%d", &id);
+	printf("이  름: ");
+	scanf("%s", name);
+	printf("입금액: ");
+	scanf("%d", &balance);
+	printf("\n");
+
+	p->acc_id = id;
+	p->balance = balance;
+	strcpy(p->cus_name, name);
+	*acc_num += 1;	// pn += 1 이렇게 주소가 증가됨.
+}
+
+void deposit_money(t_account * pt, int* acc_num)
+{
+	int money;
+	int id, i;
+	t_account* p = pt;
+
+	printf("[입    금]\n");
+	printf("계좌ID: ");
+	scanf("%d", &id);
+	printf("입금액: ");
+	scanf("%d", &money);
+
+	for (i = 0; i < *acc_num; i++, p++)
+	{
+		if (p->acc_id == id)
+		{
+			p->balance += money;
+			printf("입금완료\n\n");
+			return;
+		}
+	}
+	printf("유효하지 않은 ID 입니다.\n\n");
+}
+
+void with_draw_money(t_account * pt, int* acc_num)
+{
+	t_account* p = pt;
+	int money;
+	int id, i;
+
+	printf("[출    금]\n");
+	printf("계좌ID: ");
+	scanf("%d", &id);
+	printf("출금액: ");
+	scanf("%d", &money);
+
+	for (i = 0; i < *acc_num; i++, p++)
+	{
+		if (p->acc_id == id)
+		{
+			if (p->balance < money)
+			{
+				printf("잔액부족\n\n");
+				return;
+			}
+
+			p->balance -= money;  // acc_arr[i].balance = acc_arr[i].balance - money;
+			printf("출금완료\n\n");
+			return;
+		}
+	}
+	printf("유효하지 않은 ID 입니다.\n\n");
+}
+
+void show_all_acc_info(t_account * pt, int* acc_num)
+{
+	t_account* p = pt;
+	int i;
+
+	for (i = 0; i < *acc_num; i++, p++)
+	{
+		printf("계좌ID: %d\n", p->acc_id);
+		printf("이  름: %s\n", p->cus_name);
+		printf("잔  액: %d\n\n", p->balance);
+	}
+}
+#endif 
+// 정적 메모리 할당
+#if 0
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h> //구조체
 #include <string.h>
@@ -33,7 +247,7 @@ void show_all_acc_info(t_account* pt, int *acc_num); // 잔액조회
 
 int main()  // int main(argc, char *argv[])
 {
-	t_account acc_arr[100];   // Account 저장을 위한 배열, 100개가 연속으로 잡힌다.
+	t_account [100];   // Account 저장을 위한 배열, 100개가 연속으로 잡힌다.
 
 	int acc_num = 0;        // 저장된 Account 수
 	int choice;
