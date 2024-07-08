@@ -16,6 +16,8 @@
 #include <stdlib.h>
 #define NAME_LEN   20
 
+void make_account(void);
+
 void show_menu(void);
 void make_account(t_account* pt, int* pn); // 계좌 개설
 void deposit_money(t_account* pt, int* pn); // 입금
@@ -129,12 +131,12 @@ void show_menu(void)
 		printf("%s", *(menu + i)); // printf("%s", menu[i]);
 }
 
-void make_account(t_account * pt, int* acc_num)
+void make_account(t_account * pt, int* pn)
 {
 	int id;
 	char name[NAME_LEN];
 	int balance;
-	t_account* p = pt + *acc_num; //뒤에서 주소의 시작점이 틀어질 수 있어서 대피시킴.
+	t_account* p = pt + *pn; //뒤에서 주소의 시작점이 틀어질 수 있어서 대피시킴.
 
 	printf("[계좌개설]\n");
 	printf("계좌ID: ");
@@ -148,10 +150,10 @@ void make_account(t_account * pt, int* acc_num)
 	p->acc_id = id;
 	p->balance = balance;
 	strcpy(p->cus_name, name);
-	*acc_num += 1;	// pn += 1 이렇게 주소가 증가됨.
+	*pn += 1;	// pn += 1 이렇게 주소가 증가됨.
 }
 
-void deposit_money(t_account * pt, int* acc_num)
+void deposit_money(t_account * pt, int* pn)
 {
 	int money;
 	int id, i;
@@ -163,7 +165,7 @@ void deposit_money(t_account * pt, int* acc_num)
 	printf("입금액: ");
 	scanf("%d", &money);
 
-	for (i = 0; i < *acc_num; i++, p++)
+	for (i = 0; i < *pn; i++, p++)
 	{
 		if (p->acc_id == id)
 		{
@@ -175,7 +177,7 @@ void deposit_money(t_account * pt, int* acc_num)
 	printf("유효하지 않은 ID 입니다.\n\n");
 }
 
-void with_draw_money(t_account * pt, int* acc_num)
+void with_draw_money(t_account * pt, int* pn)
 {
 	t_account* p = pt;
 	int money;
@@ -187,7 +189,7 @@ void with_draw_money(t_account * pt, int* acc_num)
 	printf("출금액: ");
 	scanf("%d", &money);
 
-	for (i = 0; i < *acc_num; i++, p++)
+	for (i = 0; i < *pn; i++, p++)
 	{
 		if (p->acc_id == id)
 		{
@@ -205,12 +207,12 @@ void with_draw_money(t_account * pt, int* acc_num)
 	printf("유효하지 않은 ID 입니다.\n\n");
 }
 
-void show_all_acc_info(t_account * pt, int* acc_num)
+void show_all_acc_info(t_account * pt, int* pn)
 {
 	t_account* p = pt;
 	int i;
 
-	for (i = 0; i < *acc_num; i++, p++)
+	for (i = 0; i < *pn; i++, p++)
 	{
 		printf("계좌ID: %d\n", p->acc_id);
 		printf("이  름: %s\n", p->cus_name);
