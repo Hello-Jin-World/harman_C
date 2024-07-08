@@ -5,6 +5,249 @@
 #include <stdlib.h> // malloc 함수 여기있음.
 #endif
 
+#if 1
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h> //구조체
+#include <string.h>
+#define NAME_LEN   20
+
+#define MAKE     1
+#define DEPOSIT  2
+#define WITHDRAW 3
+#define INQUIRE  4
+#define EXIT     9
+
+
+typedef struct // t_account 로 redefine 한다
+{
+	int acc_id;      // 계좌번호
+	int balance;    // 잔    액
+	char cus_name[NAME_LEN];   // 고객이름
+} t_account;
+
+void show_menu(void);
+void make_account(t_account *pt, int *acc_num); // 계좌 개설
+void deposit_money(t_account* pt, int *acc_num); // 입금
+void with_draw_money(t_account* pt, int *acc_num); // 출금
+void show_all_acc_info(t_account* pt, int *acc_num); // 잔액조회
+
+int main()  // int main(argc, char *argv[])
+{
+	t_account acc_arr[100];   // Account 저장을 위한 배열, 100개가 연속으로 잡힌다.
+
+	int acc_num = 0;        // 저장된 Account 수
+	int choice;
+
+	while (1)
+	{
+		show_menu();
+		printf("선택: ");
+		scanf("%d", &choice);  // '1' --> 1 --> choice
+		printf("\n");
+
+		switch (choice)
+		{
+		case MAKE:  // 	case 1:
+			make_account(acc_arr, &acc_num);
+			break;
+		case DEPOSIT:
+			deposit_money(acc_arr, &acc_num);
+			break;
+		case WITHDRAW:
+			with_draw_money(acc_arr, &acc_num);
+			break;
+		case INQUIRE:
+			show_all_acc_info(acc_arr, &acc_num);
+			break;
+		case EXIT:
+			return 0;
+		default:
+			printf("Illegal selection..\n");
+		}
+	}
+	return 0;
+}
+
+void show_menu(void)
+{
+	char* menu[] =  // 원래는 char menu[6][32] = 이런식으로 메모리를 계속 잡고 있어야했음.
+	{
+	 "-----Menu------\n",
+	 "1. 계좌개설\n",
+	 "2. 입    금\n",
+	 "3. 출    금\n",
+	 "4. 계좌정보 전체 출력\n",
+	 "9. 종    료\n"
+	};
+	int i;
+
+	for (i = 0; i < 6; i++)
+		printf("%s", *(menu + i)); // printf("%s", menu[i]);
+}
+
+void make_account(t_account *pt, int *acc_num)
+{
+	int id;
+	char name[NAME_LEN];
+	int balance;
+	t_account* p = pt; //뒤에서 주소의 시작점이 틀어질 수 있어서 대피시킴.
+
+	printf("[계좌개설]\n");
+	printf("계좌ID: ");
+	scanf("%d", &id);
+	printf("이  름: ");
+	scanf("%s", name);
+	printf("입금액: ");
+	scanf("%d", &balance);
+	printf("\n");
+
+	p->acc_id = id;
+	p->balance = balance;
+	strcpy(p->cus_name, name);
+	*acc_num += 1;	// pn += 1 이렇게 주소가 증가됨.
+}
+
+void deposit_money(t_account* pt, int *acc_num)
+{
+	int money;
+	int id, i;
+	t_account* p = pt;
+
+	printf("[입    금]\n");
+	printf("계좌ID: ");
+	scanf("%d", &id);
+	printf("입금액: ");
+	scanf("%d", &money);
+
+	for (i = 0; i < *acc_num; i++)
+	{
+		if (p->acc_id == id)
+		{
+			p->balance += money;
+			printf("입금완료\n\n");
+			return;
+		}
+	}
+	printf("유효하지 않은 ID 입니다.\n\n");
+}
+
+void with_draw_money(t_account* pt, int *acc_num)
+{
+	t_account* p = pt;
+	int money;
+	int id, i;
+
+	printf("[출    금]\n");
+	printf("계좌ID: ");
+	scanf("%d", &id);
+	printf("출금액: ");
+	scanf("%d", &money);
+
+	for (i = 0; i < *acc_num; i++)
+	{
+		if (p->acc_id == id)
+		{
+			if (p->balance < money)
+			{
+				printf("잔액부족\n\n");
+				return;
+			}
+
+			p->balance -= money;  // acc_arr[i].balance = acc_arr[i].balance - money;
+			printf("출금완료\n\n");
+			return;
+		}
+	}
+	printf("유효하지 않은 ID 입니다.\n\n");
+}
+
+void show_all_acc_info(t_account* pt, int *acc_num)
+{
+	t_account* p = pt;
+	int i;
+
+	for (i = 0; i < *acc_num; i++)
+	{
+		printf("계좌ID: %d\n", p->acc_id);
+		printf("이  름: %s\n", p->cus_name);
+		printf("잔  액: %d\n\n", p->balance);
+	}
+}
+#endif 
+
+/*
+1. 구조체를 정적 메모리 할당 후 사용자로부터 데이터를 입력 받아 print하는 프로그램을 작성한다. (구조체 포인터를 활용)
+	(1) 이름 나이 주소를 입력 받아서 구조체 배열에 저장하고
+	(2) 사용자로 부터 end 입력을 받으면 입력을 종료하고
+	(3) 현재까지 구조체 배열에 저장된 데이터를 프린트한다.
+*/
+#if 0
+#define NUMBER 10
+
+typedef struct person
+{
+	char name[20];
+	int age;
+	char address[40];
+} t_person;
+
+print_person(t_person* p, int n);
+copy_person(t_person* p, char* pn, int* page, char* paddr, int* pcount);
+
+int main(void)
+{
+	t_person p1[NUMBER]; //사람을 저장하기 위한 배열
+	char name[20];
+	int age=0;
+	char address[40];
+	int count = 0;
+
+	while (1)
+	{
+		printf("name age address (exit : end 0 end)  : ");
+		scanf("%s", name);
+		scanf("%d", age);
+		scanf("%s", address);
+		// 구조체에 name, age, address를 넣어야함.
+		if (strncmp(name, "end", 3) == 0)
+		{
+			print_person(p1, count);
+			break;
+			//이름  나이  주소
+			//==== ===== =====
+		}
+		else
+		{
+			copy_person(p1 + count, name, &age, address, &count);
+		}
+	}
+	return 0;
+}
+
+copy_person(t_person *p, char *pn, int *page, char *paddr, int *pcount)
+{
+	strcpy((*p).name, pn); // strcpy는 주소를 넘겨줘서 *를 안 붙임
+	p->age = *page;
+	strcpy(p->address, paddr);
+	*pcount += 1;
+}
+
+print_person(t_person *p, int n)
+{
+	t_person* pt = p;
+
+	printf("이름   나이   주소\n");
+	printf("===================\n");
+
+	for (int i = 0; i < n; i++)
+	{
+		printf("%-6s %d      %s\n", pt->name, pt->age, pt->address);
+		pt++;
+	}
+
+}
+#endif
+
 /*문자열 1개로 합치기
 첫번째 문자열 : abcdefg
 두번째 문자열 : ABCDEFGH
