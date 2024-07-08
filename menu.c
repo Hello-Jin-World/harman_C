@@ -20,7 +20,7 @@ void show_all_acc_info(void);     // 잔액조회
 #define EXIT     9
 
 
-typedef struct
+typedef struct // t_account 로 redefine 한다
 {
 	int acc_id;      // 계좌번호
 	int balance;    // 잔    액
@@ -34,9 +34,11 @@ struct
 	char cus_name[NAME_LEN];   // 고객이름
 } account;
 
+struct account acc_arr[100]; // 이렇게 하면 100개를 하나하나 다 입력해야함.
+
 */
 
-t_account acc_arr[100];   // Account 저장을 위한 배열
+t_account acc_arr[100];   // Account 저장을 위한 배열, 100개가 연속으로 잡힌다.
 
 int acc_num = 0;        // 저장된 Account 수
 
@@ -76,7 +78,7 @@ int main()  // int main(argc, char *argv[])
 
 void show_menu(void)
 {
-	char* menu[] =
+	char* menu[] =  // 원래는 char menu[6][32] = 이런식으로 메모리를 계속 잡고 있어야했음.
 	{
 	 "-----Menu------\n",
 	 "1. 계좌개설\n",
@@ -88,7 +90,7 @@ void show_menu(void)
 	int i;
 
 	for (i = 0; i < 6; i++)
-		printf("%s", *(menu + i));
+		printf("%s", *(menu + i)); // printf("%s", menu[i]);
 }
 
 void make_account(void)

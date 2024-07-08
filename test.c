@@ -70,6 +70,8 @@ merge_func(char* p1, char* p2, char* po)
 결과: num1 + num2 =
 */
 #if 0
+#define SUM(a, b) ( (a) + (b))
+
 void add(int a, int b);
 void sub(int a, int b);
 void mul(int a, int b);
@@ -99,7 +101,8 @@ int main(void)
 		switch (sel)
 		{
 		case 0:
-			add(num1, num2);
+			printf("결과 : %d + %d = %d\n", a, b, SUM(a, b));
+			//add(num1, num2);
 			break;
 		case 1:
 			sub(num1, num2);
