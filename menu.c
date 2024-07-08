@@ -1,43 +1,44 @@
 #if 1
-#include <stdio.h> //êµ¬ì¡°ì²´
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h> //±¸Á¶Ã¼
 #include <string.h>
 #define NAME_LEN   20
 
-void show_menu(void);       // ë©”ë‰´ì¶œë ¥
-void make_account(void);       // ê³„ì¢Œê°œì„¤ì„ ìœ„í•œ í•¨ìˆ˜
-void deposit_money(void);       // ì…    ê¸ˆ
-void with_draw_money(void);      // ì¶œ    ê¸ˆ
-void show_all_acc_info(void);     // ì”ì•¡ì¡°íšŒ
+void show_menu(void);       // ¸Ş´ºÃâ·Â
+void make_account(void);       // °èÁÂ°³¼³À» À§ÇÑ ÇÔ¼ö
+void deposit_money(void);       // ÀÔ    ±İ
+void with_draw_money(void);      // Ãâ    ±İ
+void show_all_acc_info(void);     // ÀÜ¾×Á¶È¸
 
-enum { MAKE = 1, DEPOSIT, WITHDRAW, INQUIRE, EXIT = 9 };
+//enum { MAKE = 1, DEPOSIT, WITHDRAW, INQUIRE, EXIT = 9 };  // ÀÚµ¿À¸·Î DEPOSIT = 2, WITHDRAW = 3 Ã³·³ ¼ıÀÚ ÇÒ´çÀÌ ÀÚµ¿À¸·Î µÈ´Ù.
 
-//#define : ë§¤í¬ë¡œ (MACRO)
-//#define MAKE     1
-//#define DEPOSIT  2
-//#define WITHDRAW 3
-//#define INQUIRE  4
-//#define EXIT     9
+//#define : ¸ÅÅ©·Î (MACRO)
+#define MAKE     1
+#define DEPOSIT  2
+#define WITHDRAW 3
+#define INQUIRE  4
+#define EXIT     9
 
 
 typedef struct
 {
-	int acc_id;      // ê³„ì¢Œë²ˆí˜¸
-	int balance;    // ì”    ì•¡
-	char cus_name[NAME_LEN];   // ê³ ê°ì´ë¦„
-} t_account;   
+	int acc_id;      // °èÁÂ¹øÈ£
+	int balance;    // ÀÜ    ¾×
+	char cus_name[NAME_LEN];   // °í°´ÀÌ¸§
+} t_account;
 /*
 struct
 {
-	int acc_id;      // ê³„ì¢Œë²ˆí˜¸
-	int balance;    // ì”    ì•¡
-	char cus_name[NAME_LEN];   // ê³ ê°ì´ë¦„
+	int acc_id;      // °èÁÂ¹øÈ£
+	int balance;    // ÀÜ    ¾×
+	char cus_name[NAME_LEN];   // °í°´ÀÌ¸§
 } account;
 
 */
 
-t_account acc_arr[100];   // Account ì €ì¥ì„ ìœ„í•œ ë°°ì—´
+t_account acc_arr[100];   // Account ÀúÀåÀ» À§ÇÑ ¹è¿­
 
-int acc_num = 0;        // ì €ì¥ëœ Account ìˆ˜
+int acc_num = 0;        // ÀúÀåµÈ Account ¼ö
 
 int main()  // int main(argc, char *argv[])
 {
@@ -46,7 +47,7 @@ int main()  // int main(argc, char *argv[])
 	while (1)
 	{
 		show_menu();
-		printf("ì„ íƒ: ");
+		printf("¼±ÅÃ: ");
 		scanf("%d", &choice);  // '1' --> 1 --> choice
 		printf("\n");
 
@@ -75,14 +76,14 @@ int main()  // int main(argc, char *argv[])
 
 void show_menu(void)
 {
-	char *menu[] =
+	char* menu[] =
 	{
 	 "-----Menu------\n",
-	 "1. ê³„ì¢Œê°œì„¤\n",
-	 "2. ì…    ê¸ˆ\n",
-	 "3. ì¶œ    ê¸ˆ\n",
-	 "4. ê³„ì¢Œì •ë³´ ì „ì²´ ì¶œë ¥\n",
-	 "9. ì¢…    ë£Œ\n"
+	 "1. °èÁÂ°³¼³\n",
+	 "2. ÀÔ    ±İ\n",
+	 "3. Ãâ    ±İ\n",
+	 "4. °èÁÂÁ¤º¸ ÀüÃ¼ Ãâ·Â\n",
+	 "9. Á¾    ·á\n"
 	};
 	int i;
 
@@ -96,12 +97,12 @@ void make_account(void)
 	char name[NAME_LEN];
 	int balance;
 
-	printf("[ê³„ì¢Œê°œì„¤]\n");
-	printf("ê³„ì¢ŒID: ");
+	printf("[°èÁÂ°³¼³]\n");
+	printf("°èÁÂID: ");
 	scanf("%d", &id);
-	printf("ì´  ë¦„: ");
+	printf("ÀÌ  ¸§: ");
 	scanf("%s", name);
-	printf("ì…ê¸ˆì•¡: ");
+	printf("ÀÔ±İ¾×: ");
 	scanf("%d", &balance);
 	printf("\n");
 
@@ -116,10 +117,10 @@ void deposit_money(void)
 	int money;
 	int id, i;
 
-	printf("[ì…    ê¸ˆ]\n");
-	printf("ê³„ì¢ŒID: ");
+	printf("[ÀÔ    ±İ]\n");
+	printf("°èÁÂID: ");
 	scanf("%d", &id);
-	printf("ì…ê¸ˆì•¡: ");
+	printf("ÀÔ±İ¾×: ");
 	scanf("%d", &money);
 
 	for (i = 0; i < acc_num; i++)
@@ -127,11 +128,11 @@ void deposit_money(void)
 		if (acc_arr[i].acc_id == id)
 		{
 			acc_arr[i].balance += money;
-			printf("ì…ê¸ˆì™„ë£Œ\n\n");
+			printf("ÀÔ±İ¿Ï·á\n\n");
 			return;
 		}
 	}
-	printf("ìœ íš¨í•˜ì§€ ì•Šì€ ID ì…ë‹ˆë‹¤.\n\n");
+	printf("À¯È¿ÇÏÁö ¾ÊÀº ID ÀÔ´Ï´Ù.\n\n");
 }
 
 void with_draw_money(void)
@@ -139,10 +140,10 @@ void with_draw_money(void)
 	int money;
 	int id, i;
 
-	printf("[ì¶œ    ê¸ˆ]\n");
-	printf("ê³„ì¢ŒID: ");
+	printf("[Ãâ    ±İ]\n");
+	printf("°èÁÂID: ");
 	scanf("%d", &id);
-	printf("ì¶œê¸ˆì•¡: ");
+	printf("Ãâ±İ¾×: ");
 	scanf("%d", &money);
 
 	for (i = 0; i < acc_num; i++)
@@ -151,16 +152,16 @@ void with_draw_money(void)
 		{
 			if (acc_arr[i].balance < money)
 			{
-				printf("ì”ì•¡ë¶€ì¡±\n\n");
+				printf("ÀÜ¾×ºÎÁ·\n\n");
 				return;
 			}
 
 			acc_arr[i].balance -= money;  // acc_arr[i].balance = acc_arr[i].balance - money;
-			printf("ì¶œê¸ˆì™„ë£Œ\n\n");
+			printf("Ãâ±İ¿Ï·á\n\n");
 			return;
 		}
 	}
-	printf("ìœ íš¨í•˜ì§€ ì•Šì€ ID ì…ë‹ˆë‹¤.\n\n");
+	printf("À¯È¿ÇÏÁö ¾ÊÀº ID ÀÔ´Ï´Ù.\n\n");
 }
 
 void show_all_acc_info(void)
@@ -169,9 +170,9 @@ void show_all_acc_info(void)
 
 	for (i = 0; i < acc_num; i++)
 	{
-		printf("ê³„ì¢ŒID: %d\n", acc_arr[i].acc_id);
-		printf("ì´  ë¦„: %s\n", acc_arr[i].cus_name);
-		printf("ì”  ì•¡: %d\n\n", acc_arr[i].balance);
+		printf("°èÁÂID: %d\n", acc_arr[i].acc_id);
+		printf("ÀÌ  ¸§: %s\n", acc_arr[i].cus_name);
+		printf("ÀÜ  ¾×: %d\n\n", acc_arr[i].balance);
 	}
 }
 #endif 

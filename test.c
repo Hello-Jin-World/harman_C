@@ -1,4 +1,4 @@
-#if 1
+#if 0
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <string.h>
@@ -149,7 +149,7 @@ void div(int a, int b)
 
 // 함수 포인터 
 // 상태천이(state transition)할 때 switch ~ case 문 보다 함수 포인터 사용을 권장.
-#if 1
+#if 0
 void add(int , int );
 void sub(int , int );
 void mul(int , int );
