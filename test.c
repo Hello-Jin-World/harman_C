@@ -16,8 +16,6 @@
 #include <stdlib.h>
 #define NAME_LEN   20
 
-void make_account(void);
-
 void show_menu(void);
 void make_account(t_account* pt, int* pn); // 계좌 개설
 void deposit_money(t_account* pt, int* pn); // 입금
