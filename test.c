@@ -115,7 +115,7 @@ int main(void)
 	}
 	return 0;
 }
-// call by
+// call by reference
 int space_check(char *pi)
 {
 	for (int i = 0; i < 100; i++)
