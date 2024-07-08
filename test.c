@@ -62,13 +62,13 @@ merge_func(char* p1, char* p2, char* po)
 }
 #endif
 
-//함수 포인터
+
 /*
 선택(0: +, 1: -, 2: *, 3: /, 9: exit) : 
 두 수를 입력 (num1, num2)
 결과: num1 + num2 =
 */
-#if 1
+#if 0
 void add(int a, int b);
 void sub(int a, int b);
 void mul(int a, int b);
@@ -130,6 +130,86 @@ void add(int a, int b)
 	printf("결과 : %d + %d = %d\n", a, b, a + b);
 }
 
+void sub(int a, int b)
+{
+	printf("결과 : %d - %d = %d\n", a, b, a - b);
+}
+
+void mul(int a, int b)
+{
+	printf("결과 : %d * %d = %d\n", a, b, a * b);
+}
+
+void div(int a, int b)
+{
+	printf("결과 : %d / %d = %d\n", a, b, a / b);
+}
+#endif
+
+// 함수 포인터 
+// 상태천이(state transition)할 때 switch ~ case 문 보다 함수 포인터 사용을 권장.
+#if 1
+void add(int , int );
+void sub(int , int );
+void mul(int , int );
+void div(int , int );
+
+//함수 포인터 변수
+void (*fp[]) (int, int) = // 함수 주소를 저장하고 있는 배열
+{
+	add,	// add 함수의 시작 번지가 fp[0]번 방에 들어간다.
+	sub,
+	mul,
+	div
+};
+
+int space_check(char* pi);
+
+int main(void)
+{
+#if 1 // 동적 메모리 할당
+	char* input;
+#else
+	char input[100]; // 정적 메모리 할당
+#endif
+	int num1, num2;
+	int sp = 0, sel = 0;
+
+	input = (char *)malloc(100); // 100byte를 할당 받아서 char 형으로 변환하여 시작 번지를 input이라는 포인터(주소를 저장하는 변수)에 넣어라.
+
+	while (1)
+	{
+		printf("선택(0: +, 1: -, 2: *, 3: /, 9: exit) : ");
+		fgets(input, 100, stdin);
+		sel = atoi(input); // 1\n\0  atoi 함수 특징: \n or \0를 만나면 자동으로 멈춤, 1+1일때 +를 만나면 자동으로 멈춤
+		if (sel == 9) break;
+
+		printf("두 수를 입력(num1 num2) : ");
+		fgets(input, 100, stdin); // 111 11
+		sp = space_check(input);
+
+		num1 = atoi(input);
+		num2 = atoi(input + sp + 1);
+			
+		fp[sel] (num1, num2);
+	}
+	return 0;
+}
+
+// call by reference
+int space_check(char* pi)
+{
+	for (int i = 0; i < 100; i++)
+	{
+		if (*(pi + i) == ' ')
+			return i;
+	}
+}
+// call by value
+void add(int a, int b)
+{
+	printf("결과 : %d + %d = %d\n", a, b, a + b);
+}
 void sub(int a, int b)
 {
 	printf("결과 : %d - %d = %d\n", a, b, a - b);
