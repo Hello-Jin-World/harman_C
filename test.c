@@ -2,6 +2,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h> // malloc 함수 여기있음.
 #endif
 
 /*문자열 1개로 합치기
@@ -152,7 +153,7 @@ void div(int a, int b)
 void add(int , int );
 void sub(int , int );
 void mul(int , int );
-void div(int , int );
+void div1(int , int );
 
 //함수 포인터 변수
 void (*fp[]) (int, int) = // 함수 주소를 저장하고 있는 배열
@@ -160,7 +161,7 @@ void (*fp[]) (int, int) = // 함수 주소를 저장하고 있는 배열
 	add,	// add 함수의 시작 번지가 fp[0]번 방에 들어간다.
 	sub,
 	mul,
-	div
+	div1
 };
 
 int space_check(char* pi);
@@ -193,6 +194,8 @@ int main(void)
 			
 		fp[sel] (num1, num2);
 	}
+	free(input); // 동적 메모리 할당 받은 메모리를 반납
+
 	return 0;
 }
 
@@ -220,7 +223,7 @@ void mul(int a, int b)
 	printf("결과 : %d * %d = %d\n", a, b, a * b);
 }
 
-void div(int a, int b)
+void div1(int a, int b)
 {
 	printf("결과 : %d / %d = %d\n", a, b, a / b);
 }
