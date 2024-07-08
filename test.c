@@ -2,6 +2,691 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h> // malloc 함수 여기있음.
+#endif
+// 동적 메모리 할당
+/*
+1. 구조체 배열 정적 메모리를 동적 메모리로 할당하기
+2. switch~case 문을 함수 포인터 배열로 동작하도록 하기
+*/
+#if 0
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h> //구조체
+#include <string.h>
+#include <stdlib.h>
+#define NAME_LEN   20
+
+void show_menu(void);
+void make_account(t_account* pt, int* pn); // 계좌 개설
+void deposit_money(t_account* pt, int* pn); // 입금
+void with_draw_money(t_account* pt, int* pn); // 출금
+void show_all_acc_info(t_account* pt, int* pn); // 잔액조회
+
+//#define : 매크로 (MACRO)
+#define MAKE     1
+#define DEPOSIT  2
+#define WITHDRAW 3
+#define INQUIRE  4
+#define EXIT     9
+
+
+typedef struct // t_account 로 redefine 한다			28byte
+{
+	int acc_id;      // 계좌번호
+	int balance;    // 잔    액
+	char cus_name[NAME_LEN];   // 고객이름
+} t_account;
+
+int main()  // int main(argc, char *argv[])
+{
+	int choice;
+	int acc_num = 0;        // 저장된 Account 수
+#if 1
+	t_account* acc_arr;	// acc_arr이라는 변수는 t_account 타입의 구조체 타입의
+	//포인터(주소를 저장하는 공간(변수))이다.
+	void (*fp[]) (t_account*, int*) =
+	{
+		NULL, // 0번 배열은 버림.
+		make_account,
+		deposit_money,
+		with_draw_money,
+		show_all_acc_info
+	};
+
+
+	acc_arr = (t_account*)malloc(sizeof(t_account) * 10); // 구조체 사이즈만큼 넘겨줌        acc_arr[10];이랑 같음.			malloc은 char타입이라 형변환 필요.
+	// malloc의 리턴되는 default는 char *이나 이를 구조체 포인터로 변환. (t_account *) 붙임.
+	// acc_arr에는 시작 번지가 리턴된다.
+	if (acc_arr == NULL)
+	{
+		printf("메모리 할당 실패!\n");
+		return -1; // 0은 정상 종료, -1은 심각한 error
+	}
+
+
+#else // original
+	t_account acc_arr[10];   // Account 저장을 위한 배열, 100개가 연속으로 잡힌다.
+#endif
+
+	while (1)
+	{
+		show_menu();
+		printf("선택:(1 : make, 2: deposit, 3: withdraw, 4 : inquire, 9 : exit");
+		scanf("%d", &choice);  // '1' --> 1 --> choice
+		printf("\n");
+		if (choice == 9)
+		{
+			free(acc_arr);
+			break;
+		}
+		if (choice >= 1 && choice <= 4)
+		{
+			fp[choice](acc_arr, &acc_num);
+		}
+
+#if 1 // 함수 포인터 배열로 동작되도록
+
+#else	//original
+		switch (choice)
+		{
+		case MAKE:  // 	case 1:
+			make_account();
+			break;
+		case DEPOSIT:
+			deposit_money();
+			break;
+		case WITHDRAW:
+			with_draw_money();
+			break;
+		case INQUIRE:
+			show_all_acc_info();
+			break;
+		case EXIT:
+			free(acc_arr);	// 동적 메모리를 해제한다.
+			return 0;
+		default:
+			printf("Illegal selection..\n");
+		}
+#endif
+	}
+	return 0;
+}
+
+void show_menu(void)
+{
+	char* menu[] =  // 원래는 char menu[6][32] = 이런식으로 메모리를 계속 잡고 있어야했음.
+	{
+	 "-----Menu------\n",
+	 "1. 계좌개설\n",
+	 "2. 입    금\n",
+	 "3. 출    금\n",
+	 "4. 계좌정보 전체 출력\n",
+	 "9. 종    료\n"
+	};
+	int i;
+
+	for (i = 0; i < 6; i++)
+		printf("%s", *(menu + i)); // printf("%s", menu[i]);
+}
+
+void make_account(t_account* pt, int* pn)
+{
+	int id;
+	char name[NAME_LEN];
+	int balance;
+	t_account* p = pt + *pn; //뒤에서 주소의 시작점이 틀어질 수 있어서 대피시킴.
+
+	printf("[계좌개설]\n");
+	printf("계좌ID: ");
+	scanf("%d", &id);
+	printf("이  름: ");
+	scanf("%s", name);
+	printf("입금액: ");
+	scanf("%d", &balance);
+	printf("\n");
+
+	p->acc_id = id;
+	p->balance = balance;
+	strcpy(p->cus_name, name);
+	*pn += 1;	// pn += 1 이렇게 주소가 증가됨.
+}
+
+void deposit_money(t_account* pt, int* pn)
+{
+	int money;
+	int id, i;
+	t_account* p = pt;
+
+	printf("[입    금]\n");
+	printf("계좌ID: ");
+	scanf("%d", &id);
+	printf("입금액: ");
+	scanf("%d", &money);
+
+	for (i = 0; i < *pn; i++, p++)
+	{
+		if (p->acc_id == id)
+		{
+			p->balance += money;
+			printf("입금완료\n\n");
+			return;
+		}
+	}
+	printf("유효하지 않은 ID 입니다.\n\n");
+}
+
+void with_draw_money(t_account* pt, int* pn)
+{
+	t_account* p = pt;
+	int money;
+	int id, i;
+
+	printf("[출    금]\n");
+	printf("계좌ID: ");
+	scanf("%d", &id);
+	printf("출금액: ");
+	scanf("%d", &money);
+
+	for (i = 0; i < *pn; i++, p++)
+	{
+		if (p->acc_id == id)
+		{
+			if (p->balance < money)
+			{
+				printf("잔액부족\n\n");
+				return;
+			}
+
+			p->balance -= money;  // acc_arr[i].balance = acc_arr[i].balance - money;
+			printf("출금완료\n\n");
+			return;
+		}
+	}
+	printf("유효하지 않은 ID 입니다.\n\n");
+}
+
+void show_all_acc_info(t_account* pt, int* pn)
+{
+	t_account* p = pt;
+	int i;
+
+	for (i = 0; i < *pn; i++, p++)
+	{
+		printf("계좌ID: %d\n", p->acc_id);
+		printf("이  름: %s\n", p->cus_name);
+		printf("잔  액: %d\n\n", p->balance);
+	}
+}
+#endif 
+// 정적 메모리 할당
+#if 0
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h> //구조체
+#include <string.h>
+#define NAME_LEN   20
+
+#define MAKE     1
+#define DEPOSIT  2
+#define WITHDRAW 3
+#define INQUIRE  4
+#define EXIT     9
+
+
+typedef struct // t_account 로 redefine 한다
+{
+	int acc_id;      // 계좌번호
+	int balance;    // 잔    액
+	char cus_name[NAME_LEN];   // 고객이름
+} t_account;
+
+void show_menu(void);
+void make_account(t_account* pt, int* acc_num); // 계좌 개설
+void deposit_money(t_account* pt, int* acc_num); // 입금
+void with_draw_money(t_account* pt, int* acc_num); // 출금
+void show_all_acc_info(t_account* pt, int* acc_num); // 잔액조회
+
+int main()  // int main(argc, char *argv[])
+{
+	t_account acc_arr[100];   // Account 저장을 위한 배열, 100개가 연속으로 잡힌다.
+
+	int acc_num = 0;        // 저장된 Account 수
+	int choice;
+
+	while (1)
+	{
+		show_menu();
+		printf("선택: ");
+		scanf("%d", &choice);  // '1' --> 1 --> choice
+		printf("\n");
+
+		switch (choice)
+		{
+		case MAKE:  // 	case 1:
+			make_account(acc_arr, &acc_num);
+			break;
+		case DEPOSIT:
+			deposit_money(acc_arr, &acc_num);
+			break;
+		case WITHDRAW:
+			with_draw_money(acc_arr, &acc_num);
+			break;
+		case INQUIRE:
+			show_all_acc_info(acc_arr, &acc_num);
+			break;
+		case EXIT:
+			return 0;
+		default:
+			printf("Illegal selection..\n");
+		}
+	}
+	return 0;
+}
+
+void show_menu(void)
+{
+	char* menu[] =  // 원래는 char menu[6][32] = 이런식으로 메모리를 계속 잡고 있어야했음.
+	{
+	 "-----Menu------\n",
+	 "1. 계좌개설\n",
+	 "2. 입    금\n",
+	 "3. 출    금\n",
+	 "4. 계좌정보 전체 출력\n",
+	 "9. 종    료\n"
+	};
+	int i;
+
+	for (i = 0; i < 6; i++)
+		printf("%s", *(menu + i)); // printf("%s", menu[i]);
+}
+
+void make_account(t_account* pt, int* acc_num)
+{
+	int id;
+	char name[NAME_LEN];
+	int balance;
+	t_account* p = pt + *acc_num; //뒤에서 주소의 시작점이 틀어질 수 있어서 대피시킴.
+
+	printf("[계좌개설]\n");
+	printf("계좌ID: ");
+	scanf("%d", &id);
+	printf("이  름: ");
+	scanf("%s", name);
+	printf("입금액: ");
+	scanf("%d", &balance);
+	printf("\n");
+
+	p->acc_id = id;
+	p->balance = balance;
+	strcpy(p->cus_name, name);
+	*acc_num += 1;	// pn += 1 이렇게 주소가 증가됨.
+}
+
+void deposit_money(t_account* pt, int* acc_num)
+{
+	int money;
+	int id, i;
+	t_account* p = pt;
+
+	printf("[입    금]\n");
+	printf("계좌ID: ");
+	scanf("%d", &id);
+	printf("입금액: ");
+	scanf("%d", &money);
+
+	for (i = 0; i < *acc_num; i++, p++)
+	{
+		if (p->acc_id == id)
+		{
+			p->balance += money;
+			printf("입금완료\n\n");
+			return;
+		}
+	}
+	printf("유효하지 않은 ID 입니다.\n\n");
+}
+
+void with_draw_money(t_account* pt, int* acc_num)
+{
+	t_account* p = pt;
+	int money;
+	int id, i;
+
+	printf("[출    금]\n");
+	printf("계좌ID: ");
+	scanf("%d", &id);
+	printf("출금액: ");
+	scanf("%d", &money);
+
+	for (i = 0; i < *acc_num; i++, p++)
+	{
+		if (p->acc_id == id)
+		{
+			if (p->balance < money)
+			{
+				printf("잔액부족\n\n");
+				return;
+			}
+
+			p->balance -= money;  // acc_arr[i].balance = acc_arr[i].balance - money;
+			printf("출금완료\n\n");
+			return;
+		}
+	}
+	printf("유효하지 않은 ID 입니다.\n\n");
+}
+
+void show_all_acc_info(t_account* pt, int* acc_num)
+{
+	t_account* p = pt;
+	int i;
+
+	for (i = 0; i < *acc_num; i++, p++)
+	{
+		printf("계좌ID: %d\n", p->acc_id);
+		printf("이  름: %s\n", p->cus_name);
+		printf("잔  액: %d\n\n", p->balance);
+	}
+}
+#endif 
+
+/*
+1. 구조체를 정적 메모리 할당 후 사용자로부터 데이터를 입력 받아 print하는 프로그램을 작성한다. (구조체 포인터를 활용)
+	(1) 이름 나이 주소를 입력 받아서 구조체 배열에 저장하고
+	(2) 사용자로 부터 end 입력을 받으면 입력을 종료하고
+	(3) 현재까지 구조체 배열에 저장된 데이터를 프린트한다.
+*/
+#if 0
+#define NUMBER 10
+
+typedef struct person
+{
+	char name[20];
+	int age;
+	char address[40];
+} t_person;
+
+print_person(t_person* p, int n);
+copy_person(t_person* p, char* pn, int* page, char* paddr, int* pcount);
+
+int main(void)
+{
+	t_person p1[NUMBER]; //사람을 저장하기 위한 배열
+	char name[20];
+	int age = 0;
+	char address[40];
+	int count = 0;
+
+	while (1)
+	{
+		printf("name age address (exit : end 0 end)  : ");
+		scanf("%s", name);
+		scanf("%d", age);
+		scanf("%s", address);
+		// 구조체에 name, age, address를 넣어야함.
+		if (strncmp(name, "end", 3) == 0)
+		{
+			print_person(p1, count);
+			break;
+			//이름  나이  주소
+			//==== ===== =====
+		}
+		else
+		{
+			copy_person(p1 + count, name, &age, address, &count);
+		}
+	}
+	return 0;
+}
+
+copy_person(t_person* p, char* pn, int* page, char* paddr, int* pcount)
+{
+	strcpy((*p).name, pn); // strcpy는 주소를 넘겨줘서 *를 안 붙임
+	p->age = *page;
+	strcpy(p->address, paddr);
+	*pcount += 1;
+}
+
+print_person(t_person* p, int n)
+{
+	t_person* pt = p;
+
+	printf("이름   나이   주소\n");
+	printf("===================\n");
+
+	for (int i = 0; i < n; i++)
+	{
+		printf("%-6s %d      %s\n", pt->name, pt->age, pt->address);
+		pt++;
+	}
+
+}
+#endif
+
+/*문자열 1개로 합치기
+첫번째 문자열 : abcdefg
+두번째 문자열 : ABCDEFGH
+합친 결과 : abcdefgABCDEFG
+*/
+#if 0
+merge_func(char* p1, char* p2, char* po);
+
+int main(void)
+{
+	char input1[80];
+	char input2[80];
+	char output[200];
+
+	printf("첫번째 문자열 : ");
+	fgets(input1, 80, stdin); // 끝에 "\n\0"이 붙는다.
+
+	printf("두번째 문자열 : ");
+	fgets(input2, 80, stdin);
+
+	merge_func(input1, input2, output);
+	printf("합친 결과 : %s\n", output);
+
+	return 0;
+}
+//call by value : 변수를 넘겨주는 방식
+//call by reference : 주소를 넘겨주는 방식
+merge_func(char* p1, char* p2, char* po)
+{
+	char* potmp = po;
+	char* p2tmp = p2;
+
+	strcpy(potmp, p1); //NULL을 만날 대 까지 복사.
+	potmp[strlen(po) - 1] = '\0'; //\n 제거
+
+	while (*potmp != '\0') // potmp를 null이 들어 있는 번지로 이동한다.
+		potmp++;
+
+	while (*p2tmp != '\0')
+	{
+		*potmp++ = *p2tmp++; // 복사가 됨과 동시에 증가가됨	
+	}
+	*potmp = '\0';
+
+	/*printf("%d %d %d", strlen(p1), strlen(p2), strlen(po));
+	for (int j = 0; j < strlen(p1)-1; j++)
+	{
+		*(po + j) = *(p1 + j);
+	}
+	printf("%d", strlen(po));
+	for (int i = strlen(po)-1; i < strlen(po) + strlen(p2) - 2; i++)
+	{
+		*(po + i) = *(p2 + i);
+	}
+	*po = '\0';*/
+}
+#endif
+
+
+/*
+선택(0: +, 1: -, 2: *, 3: /, 9: exit) :
+두 수를 입력 (num1, num2)
+결과: num1 + num2 =
+*/
+#if 0
+#define SUM(a, b) ( (a) + (b))
+
+void add(int a, int b);
+void sub(int a, int b);
+void mul(int a, int b);
+void div(int a, int b);
+int space_check(char* pi);
+
+int main(void)
+{
+	char input[100];
+	int num1, num2;
+	int sp = 0, sel = 0;
+
+	while (1)
+	{
+		printf("선택(0: +, 1: -, 2: *, 3: /, 9: exit) : ");
+		fgets(input, 100, stdin);
+		sel = atoi(input); // 1\n\0  atoi 함수 특징: \n or \0를 만나면 자동으로 멈춤, 1+1일때 +를 만나면 자동으로 멈춤
+		if (sel == 9) break;
+
+		printf("두 수를 입력(num1 num2) : ");
+		fgets(input, 100, stdin); // 111 11
+		sp = space_check(input);
+
+		num1 = atoi(input);
+		num2 = atoi(input + sp + 1);
+
+		switch (sel)
+		{
+		case 0:
+			printf("결과 : %d + %d = %d\n", a, b, SUM(a, b));
+			//add(num1, num2);
+			break;
+		case 1:
+			sub(num1, num2);
+			break;
+		case 2:
+			mul(num1, num2);
+			break;
+		case 3:
+			div(num1, num2);
+			break;
+		default:
+			break;
+		}
+	}
+	return 0;
+}
+// call by reference
+int space_check(char* pi)
+{
+	for (int i = 0; i < 100; i++)
+	{
+		if (*(pi + i) == ' ')
+			return i;
+	}
+}
+// call by value
+void add(int a, int b)
+{
+	printf("결과 : %d + %d = %d\n", a, b, a + b);
+}
+
+void sub(int a, int b)
+{
+	printf("결과 : %d - %d = %d\n", a, b, a - b);
+}
+
+void mul(int a, int b)
+{
+	printf("결과 : %d * %d = %d\n", a, b, a * b);
+}
+
+void div(int a, int b)
+{
+	printf("결과 : %d / %d = %d\n", a, b, a / b);
+}
+#endif
+
+// 함수 포인터 
+// 상태천이(state transition)할 때 switch ~ case 문 보다 함수 포인터 사용을 권장.
+#if 0
+void add(int, int);
+void sub(int, int);
+void mul(int, int);
+void div1(int, int);
+
+//함수 포인터 변수
+void (*fp[]) (int, int) = // 함수 주소를 저장하고 있는 배열
+{
+	add,	// add 함수의 시작 번지가 fp[0]번 방에 들어간다.
+	sub,
+	mul,
+	div1
+};
+
+int space_check(char* pi);
+
+int main(void)
+{
+#if 1 // 동적 메모리 할당
+	char* input;
+#else
+	char input[100]; // 정적 메모리 할당
+#endif
+	int num1, num2;
+	int sp = 0, sel = 0;
+
+	input = (char*)malloc(100); // 100byte를 할당 받아서 char 형으로 변환하여 시작 번지를 input이라는 포인터(주소를 저장하는 변수)에 넣어라.
+
+	while (1)
+	{
+		printf("선택(0: +, 1: -, 2: *, 3: /, 9: exit) : ");
+		fgets(input, 100, stdin);
+		sel = atoi(input); // 1\n\0  atoi 함수 특징: \n or \0를 만나면 자동으로 멈춤, 1+1일때 +를 만나면 자동으로 멈춤
+		if (sel == 9) break;
+
+		printf("두 수를 입력(num1 num2) : ");
+		fgets(input, 100, stdin); // 111 11
+		sp = space_check(input);
+
+		num1 = atoi(input);
+		num2 = atoi(input + sp + 1);
+
+		fp[sel](num1, num2);
+	}
+	free(input); // 동적 메모리 할당 받은 메모리를 반납
+
+	return 0;
+}
+
+// call by reference
+int space_check(char* pi)
+{
+	for (int i = 0; i < 100; i++)
+	{
+		if (*(pi + i) == ' ')
+			return i;
+	}
+}
+// call by value
+void add(int a, int b)
+{
+	printf("결과 : %d + %d = %d\n", a, b, a + b);
+}
+void sub(int a, int b)
+{
+	printf("결과 : %d - %d = %d\n", a, b, a - b);
+}
+
+void mul(int a, int b)
+{
+	printf("결과 : %d * %d = %d\n", a, b, a * b);
+}
+
+void div1(int a, int b)
+{
+	printf("결과 : %d / %d = %d\n", a, b, a / b);
+}
 #endif
 
 //abc shift 포인터
@@ -52,8 +737,8 @@ void upper2lower();
 int main(void)
 {
 	char input[100];	// stack에 메모리가 잡힌다.
-						// 지역변수로 프로그램 모듈이 돌고있는 동안에만 활성화 된다.
-						// 함수 실행이 끝나면 메모리가 삭제 된다.
+	// 지역변수로 프로그램 모듈이 돌고있는 동안에만 활성화 된다.
+	// 함수 실행이 끝나면 메모리가 삭제 된다.
 	while (1)
 	{
 		printf("임의의 문자열을 입력(exit): ");
@@ -70,7 +755,7 @@ int main(void)
 // 변수 이름 앞에 "*"가 들어가면 주소를 저장하는 변수이다.
 // char *p: p라는 변수는 char type의 주소를 저장하는 변수
 //			주소를 넘겨 준다고 해서 call by reference라고 한다.
-void upper2lower(char *p)
+void upper2lower(char* p)
 {
 	printf("p의 주소 : %p\n", p);
 
@@ -78,7 +763,7 @@ void upper2lower(char *p)
 	{
 		if (*(p + i) >= 'A' && *(p + i) <= 'Z') // p+i : 시작번지 + i
 			*(p + i) += 0x20;	// 선언시의 모양과 실행의 모양이 같지만
-								// *p : p의 내용을 번지로 해서 찾아 가는 것이다.
+		// *p : p의 내용을 번지로 해서 찾아 가는 것이다.
 	}
 }
 
@@ -118,9 +803,9 @@ int main(void)
 	return 0;
 }
 
-void cal(int *pa, int *pb, int *ptotal, double *pavg)
+void cal(int* pa, int* pb, int* ptotal, double* pavg)
 {
-	*ptotal =  *pa + *pb;
+	*ptotal = *pa + *pb;
 	*pavg = *ptotal / 2.0;
 }
 #endif
@@ -148,16 +833,16 @@ int main(void)
 
 
 /*************		// 블럭단위 주석 (프로그램 이름, 버전, 작성자, 작성일, 기능 등등 작성)
-* 
-* 
-* 
-**************/  
+*
+*
+*
+**************/
 
 #if 0 // 0이면 실행 안 됨,  1이면 실행
-int main(void){ // void는 가독성때문. 없어도 됨.
+int main(void) { // void는 가독성때문. 없어도 됨.
 	// 변수 (variable) : 자료(data)를 저장하는 메모리 공간
 	char c; // 1byte(8bit) 저장공간, 문자 아님
-			// 저장 범위 : -127 ~ 127
+	// 저장 범위 : -127 ~ 127
 
 	unsigned char uc = 0xff; // 0x00 ~ 0xff, 0 ~ 255
 	// unsigned char uc = 0b11111111;
@@ -181,7 +866,7 @@ int main(void){ // void는 가독성때문. 없어도 됨.
 	//2진수는 프로그램을 따로 찍어야함,
 
 	uc++; // uc = uc + 1;
-		  // overflow 발생
+	// overflow 발생
 
 	printf("uc dec : %d\n", uc); // 0
 	printf("uc hex : %0x\n", uc); // 0
@@ -191,14 +876,14 @@ int main(void){ // void는 가독성때문. 없어도 됨.
 	// MCU를 처음 접했을 때 유용한 함수이다.
 	char arry[10];
 	int iarry[2];
-	printf("char의 size : % d\n",sizeof(char)); // 변수 type
+	printf("char의 size : % d\n", sizeof(char)); // 변수 type
 	printf("c char의 size : % d\n", sizeof(c)); // 변수 이름
 	printf("arry의 size : % d\n", sizeof(arry)); // 10byte
 	printf("iarry의 size : % d\n", sizeof(iarry)); // 8byte
 
 	printf("short : %d\n", sizeof(short));
 	printf("s short : %d\n", sizeof(s));
-	
+
 	printf("int : %d\n", sizeof(int));
 	printf("long : %d\n", sizeof(long));
 	printf("float : %d\n", sizeof(float));
@@ -216,7 +901,7 @@ int main(void){ // void는 가독성때문. 없어도 됨.
 
 	printf("A : %c, size : %d\n", 'A', sizeof((char)'A')); // 1byte로 잡으러면 (char)추가
 	printf("A : %s, size : %d\n", "A", sizeof("A")); // A\0 끝에 null(\0)이 들어간다.
-							 // compiler가 끝에 null을 넣어준다.
+	// compiler가 끝에 null을 넣어준다.
 
 	char a[10] = "abcdefg"; // 실제론abcdefg\0
 	printf("a : %s\n", a); // %s는 null을 만날 때까지 출력 하는 것
@@ -267,7 +952,7 @@ int main(void) {
 	char buff[10]; //지역 변수
 	int num1, num2, result;
 
-	while(1){
+	while (1) {
 		printf("사칙연산(1+1=) (종료 : q)");
 		fgets(buff, 10, stdin);
 		//stdin부터 문자를 입력 받아 buff에 저장한다.
@@ -360,7 +1045,7 @@ int main(void)
 	char alpha[10];
 
 	while (1)
-	{	
+	{
 		printf("임의의 문자열을 입력 (종료:quit) : ");
 		fgets(alpha, 100, stdin);
 		if (strncmp(alpha, "quit", 4) == NULL) // strcmp(buff, "quit") == 0
@@ -369,7 +1054,7 @@ int main(void)
 		}
 		int len = strlen(alpha);
 
-		for (int i = 0; i < len-1; i++)
+		for (int i = 0; i < len - 1; i++)
 		{
 			// if (alpha[i] >= 'A' && alpha[i] <='Z')
 			if (alpha[i] < 0x5B) // 범위 : A~Z
@@ -382,7 +1067,7 @@ int main(void)
 				alpha[i] = alpha[i] - 0x20;
 			}
 		}
-		printf("%s\n",alpha);
+		printf("%s\n", alpha);
 	}
 	return 0;
 }
@@ -399,7 +1084,7 @@ int main(void)
 int main(void)
 {
 	printf("%30s\n", "ASCII CODE TABLE"); // 30칸을 오른쪽부터 출력하고 나머지는 공백
-										// %-30s 30칸을 왼쪽부터 출력하고 나머지는 공백
+	// %-30s 30칸을 왼쪽부터 출력하고 나머지는 공백
 	printf("%30s\n\n", "================");
 	printf("%10s%10s%10s%10s\n", "DEC", "HEX", "OCT", "CHAR");
 	printf("%10s%10s%10s%10s\n\n", "===", "===", "===", "====");
@@ -452,7 +1137,7 @@ int main(void)
 	}
 	for (int i = 0; i < 128; i++) // i <= 127 보다는 i < 128 이 속도가 더 빠르다
 	{
-		
+
 		printf("%10d%10.2x%10o  ", i, i, i);
 		bin_print(i);
 		printf("%10c\n", i);
@@ -490,16 +1175,16 @@ int main(void)
 		bin_print(i);
 		printf("%10s", text[i]);
 
-		printf("%10d%10.2x%10o  ", i+32, i+32, i+32);
+		printf("%10d%10.2x%10o  ", i + 32, i + 32, i + 32);
 		bin_print(i + 32);
 		printf("%10c", i + 32);
 
-		printf("%10d%10.2x%10o  ", i+64, i+64, i+64);
-		bin_print(i+64);
+		printf("%10d%10.2x%10o  ", i + 64, i + 64, i + 64);
+		bin_print(i + 64);
 		printf("%10c", i + 64);
 
-		printf("%10d%10.2x%10o  ", i+96, i+96, i+96);
-		bin_print(i+96);
+		printf("%10d%10.2x%10o  ", i + 96, i + 96, i + 96);
+		bin_print(i + 96);
 		printf("%10c", i + 96);
 
 		printf("\n");
@@ -581,7 +1266,7 @@ void bin_div(unsigned char x)
 		x = x / 2;
 		buff[i] = b;
 		if (x == 1) {
-			buff[i+1] = x;
+			buff[i + 1] = x;
 		}
 	}
 	for (int j = 7; j >= 0; j--) {
