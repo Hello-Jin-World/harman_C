@@ -405,7 +405,7 @@ int main(void) {
 
 #if 0
 int main(void) {
-
+	
 	char buff[10]; //지역 변수
 	int num1, num2, result;
 
