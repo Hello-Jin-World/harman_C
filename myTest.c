@@ -1,4 +1,4 @@
-#if 0
+#if 1
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <string.h>
@@ -1090,6 +1090,116 @@ void print(Student* pary)
 }
 #endif
 
+//17-2 실전 연습
+#if 0
+typedef struct
+{
+	int id;
+	char name[20];
+	int kor, eng, math;
+	int total;
+	double avg;
+	char grade;
+} person;
+
+void input(person* pary);
+void cal(person* pary);
+void sort(person* pary);
+void print(person* pary);
+
+int main(void)
+{
+	person ary[5];
+	input(ary);
+	cal(ary);
+	printf("# 정렬 전 데이터...\n");
+	print(ary);
+	sort(ary);
+	printf("# 정렬 후 데이터...\n");
+	print(ary);
+}
+
+void input(person* pary)
+{
+	for (int i = 0; i < 5; i++)
+	{
+		printf("학번 : ");
+		scanf("%d", &pary->id);
+		printf("이름 : ");
+		scanf("%s", pary->name);
+		printf("국어, 영어, 수학 점수 : ");
+		scanf("%d %d %d", &pary->kor, &pary->eng, &pary->math);
+		pary++;
+	}
+}
+
+void cal(person* pary)
+{
+	
+	for (int i = 0; i < 5; i++)
+	{
+		pary->total = pary->kor + pary->eng + pary->math;
+		pary->avg = pary->total / 3.0;
+
+		if (pary->avg >= 90.0)
+		{
+			pary->grade = 'A';
+		}
+		else if (pary->avg >= 80.0)
+		{
+			pary->grade = 'B';
+		}
+		else if (pary->avg >= 70.0)
+		{
+			pary->grade = 'C';
+		}
+		else
+		{
+			pary->grade = 'F';
+		}
+		pary++;
+	}
+}
+
+void sort(person* pary)
+{
+	int i, j, max;
+	person temp;
+	for (i = 0; i < 4; i++)
+	{
+		max = i;
+		for (j = i + 1; j < 5; j++)
+		{
+			if (pary[max].total < pary[j].total)
+			{
+				max = j;
+			}
+		}
+		if (max != i)
+		{
+			temp = pary[max];
+			pary[max] = pary[i];
+			pary[i] = temp;
+		}
+	}
+}
+
+void print(person* pary)
+{
+	for (int i = 0; i < 5; i++)
+	{
+		printf("%5d%5s%5d%5d%5d%5d  %.1f%5c\n", (pary + i)->id, (pary + i)->name, (pary + i)->kor, (pary + i)->eng, (pary + i)->math, (pary + i)->total, (pary + i)->avg, (pary + i)->grade);
+	}
+}
+#endif
+//18-2 실전
+#if 1
+int main(void)
+{
+	FILE* afp, * bfp;
+	cha
+}
+#endif
 #if 0
 int main(void) {
 	int num1, num2, result;

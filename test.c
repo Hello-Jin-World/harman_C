@@ -1,4 +1,4 @@
-#if 1
+#if 0
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <string.h>
@@ -28,7 +28,7 @@
 //   0x12 0x34 0x56 0x78
 // - Little Endion(인텔계열) type으로 데이터를 저장(읽음)
 //   0x78 0x56 0x23 0x12
-#if 1
+#if 0
 int main(void)
 {
 	union
