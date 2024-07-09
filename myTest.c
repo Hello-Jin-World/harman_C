@@ -1,7 +1,8 @@
-#if 1
+#if 0
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include <math.h>
 #endif
 
@@ -278,7 +279,7 @@ int main(void) {
 //6-1장 2번
 #if 0
 int main(void) {
-	for (int i = 0;i < 5; i++)
+	for (int i = 0; i < 5; i++)
 	{
 		printf("Be happy\n");
 	}
@@ -289,7 +290,7 @@ int main(void) {
 #if 0
 int main(void) {
 	int i;
-	for (i = 0;i < 10; i++)
+	for (i = 0; i < 10; i++)
 	{
 		printf("$");
 	}
@@ -656,18 +657,29 @@ int main(void)
 
 void input_nums(int* lotto_nums)
 {
+	int num;
 	for (int i = 0; i < 6; i++)
 	{
-		printf("번호입력 : ");
-		scanf("%d", lotto_nums + i);
-
-		for (int j = 0; j < i; ++j)
+		while (1)
 		{
-			if (lotto_nums + i == lotto_nums + j - 1)
+			int a = 1;
+			printf("번호입력 : ");
+			scanf("%d", &num);
+			for (int j = 0; j < i; j++)
 			{
-				printf("같은 번호가 있습니다!");
-				return;
+				if (lotto_nums[j] == num)
+				{
+					printf("같은 번호가 있습니다!\n");
+					a = 0;
+					break;
+				}
 			}
+			if (a)
+			{
+				lotto_nums[i] = num;
+				break;
+			}
+
 		}
 	}
 }
@@ -678,6 +690,402 @@ void print_nums(int* lotto_nums)
 	for (int i = 0; i < 6; i++)
 	{
 		printf("%4d", lotto_nums[i]);
+	}
+}
+#endif
+//11-1 2번
+#if 0
+int main(void)
+{
+	char ch;
+
+	printf("문자 입력 : ");
+	scanf("%c", &ch);
+	printf("%c문자의 아스키 코드 값 : %d", ch, ch);
+}
+#endif
+//11-2 실전
+#if 0
+int main(void)
+{
+	int ch;
+	int cnt = 0;
+	int max = 0;
+
+	while ((ch = getchar()) != EOF)
+	{
+		if (ch == '\n')
+		{
+			if (cnt > max)
+			{
+				max = cnt;
+			}
+			cnt = 0;
+		}
+		else
+			cnt++;
+	}
+	printf("가장 긴 단어의 길이 : %d", max);
+	return 0;
+}
+#endif
+//12-2 3번
+#if 0
+int main(void)
+{
+	int i;
+	char str[15];
+	char chn[15];
+	printf("단어 입력 : ");
+	scanf("%s", str);
+	if (strlen(str) <= 5)
+	{
+		strcpy(chn, str);
+	}
+	else if (strlen(str) > 5)
+	{
+		strncpy(chn, str, 5);
+		chn[5] = '\0';
+		strncat(chn, "**********", strlen(str) - 5);
+	}
+	printf("입력한 단어 : %s, 생략한 단어 : %s", str, chn);
+	return 0;
+}
+#endif
+
+//12-2 실전
+#if 0
+int main(void)
+{
+	char one[80];
+	char two[80];
+	char thr[80];
+	char temp[80] = "";
+
+	printf("세 단어 입력 : ");
+	scanf("%s %s %s", one, two, thr);
+
+	if (strcmp(one, two) > 0)
+	{
+		strcpy(temp, one);
+		strcpy(one, two);
+		strcpy(two, temp);
+	}
+	if (strcmp(one, thr) > 0)
+	{
+		strcpy(temp, one);
+		strcpy(one, thr);
+		strcpy(thr, temp);
+	}
+	if (strcmp(two, thr) > 0)
+	{
+		strcpy(temp, two);
+		strcpy(two, thr);
+		strcpy(thr, temp);
+	}
+	printf("%s, %s, %s\n", one, two, thr);
+	return 0;
+}
+#endif
+//13-2 실전
+#if 0
+void input_data(int* pa, int* pb);
+void swap_data(void);
+void print_data(a, b);
+
+int a, b;
+
+int main(void)
+{
+	input_data(&a, &b);
+	swap_data();
+	print_data(a, b);
+
+	return 0;
+}
+
+void input_data(int* pa, int* pb)
+{
+	printf("두 정수 입력 : ");
+	scanf("%d %d", pa, pb);
+}
+
+void swap_data()
+{
+	int temp;
+	temp = a;
+	a = b;
+	b = temp;
+}
+
+void print_data(a, b)
+{
+	printf("두 정수 출력 : %d, %d", a, b);
+}
+
+#endif
+//14-2 실전
+#if 0
+int main(void)
+{
+	int ary1[6] = { 1, 2, 3, 4, 5, 0 };
+	int ary2[6] = { 6, 7, 8, 9, 10, 0 };
+	int ary3[6] = { 11, 12, 13, 14, 15, 0 };
+	int ary4[6] = { 16, 17, 18, 19, 20, 0 };
+	int ary5[6] = { 0, 0, 0, 0, 0, 0 };
+	int* pary[5] = { ary1, ary2, ary3, ary4, ary5 };
+
+	int sum = 0;
+
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 5; j++)
+		{
+			sum += pary[i][j];
+		}
+		pary[i][5] = sum;
+		sum = 0;
+	}
+	for (int i = 0; i < 6; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			sum += pary[j][i];
+		}
+		pary[4][i] = sum;
+		sum = 0;
+	}
+
+	for (int i = 0; i < 5; i++)
+	{
+		for (int j = 0; j < 6; j++)
+		{
+			printf("%4d", pary[i][j]);
+		}
+		printf("\n");
+	}
+	return 0;
+}
+#endif
+//15-2 실전
+#if 0
+void swap();
+
+int main(void)
+{
+	int age1 = 0, age2 = 0;
+	double height1 = 0, height2 = 0;
+	void* vp;
+	printf("첫 번째 사람의 나이와 키 입력 : ");
+	scanf("%d %lf", &age1, &height1);
+	printf("두 번째 사람의 나이와 키 입력 : ");
+	scanf("%d %lf", &age2, &height2);
+
+	swap("int", &age1, &age2);
+	swap("double", &height1, &height2);
+
+	printf("첫 번째 사람의 나이와 키 : %d, %.1f\n", age1, height1);
+	printf("두 번째 사람의 나이와 키 : %d, %.1f", age2, height2);
+}
+
+void swap(char* type, void* a, void* b)
+{
+	if (strcmp(type, "int") == 0)
+	{
+		int temp = *(int*)a;
+		*(int*)a = *(int*)b;
+		*(int*)b = temp;
+	}
+	else if (strcmp(type, "double") == 0)
+	{
+		double temp = *(double*)a;
+		*(double*)a = *(double*)b;
+		*(double*)b = temp;
+	}
+}
+
+#endif
+//17-1 2번
+#if 0
+struct cracker
+{
+	int price;
+	int calories;
+};
+
+int main(void)
+{
+	struct cracker basasak;
+	printf("바사삭의 가격과 열량을 입력하세요 : ");
+	scanf("%d %d", &basasak.price, &basasak.calories);
+	printf("바사삭의 가격 : %d원\n", basasak.price);
+	printf("바사삭의 열량 : %dkcal\n", basasak.calories);
+	return 0;
+}
+#endif
+//16-2 실전
+#if 0
+int main()
+{
+	int num;
+	int* p;
+	int i, j, cnt = 0;
+
+	printf("양수 입력 : ");
+	scanf("%d", &num);
+
+	p = (int*)malloc(sizeof(int) * (num - 1));
+	if (p == NULL)
+	{
+		printf("메모리 할당 실패");
+		exit(1);
+	}
+
+	for (i = 0; i < (num - 1); i++)
+	{
+		p[i] = i + 2;
+	}
+	i = 0;
+	while (1)
+	{
+		while (p[i] == 0 && i < num - 2)
+		{
+			i++;
+		}
+		if (i == num - 2)
+			break;
+		for (j = i + 1; j < num - 1; j++)
+		{
+			if (p[j] % p[i] == 0)
+			{
+				p[j] = 0;
+			}
+		}
+		i++;
+	}
+
+	for (int i = 0; i <= num - 3; i++)
+	{
+		if (p[i] != 0)
+		{
+			printf("%5d", p[i]);
+		}
+		else
+		{
+			printf("%5c", 'X');
+		}
+		if ((i + 1) % 5 == 0)
+		{
+			printf("\n");
+		}
+	}
+	free(p);
+	return 0;
+}
+#endif 
+
+//17-2실전
+#if 0
+typedef struct
+{
+	int stnum;
+	char name[20];
+	int kor, eng, math;
+	int total;
+	double avg;
+	char grade;
+} Student; // Student가 구조체의 이름
+
+void input(Student* pary);
+void cal(Student* pary);
+void sort(Student* pary);
+void print(Student* pary);
+
+int main(void)
+{
+	Student ary[5]; //5명
+
+	input(ary);
+	cal(ary);
+
+	printf("# 정렬 전 데이터...\n");
+	print(ary);
+	sort(ary);
+	printf("# 정렬 후 데이터...\n");
+	print(ary);
+
+	return 0;
+}
+
+void input(Student* pary)
+{
+	for (int i = 0; i < 5; i++)
+	{
+		printf("학번 : ");
+		scanf("%d", &pary->stnum);
+		printf("이름 : ");
+		scanf("%s", pary->name);
+		printf("국어, 영어, 수학 점수 : ");
+		scanf("%d %d %d", &pary->kor, &pary->eng, &pary->math);
+		pary++;
+	}
+}
+
+void cal(Student* pary)
+{
+	for (int i = 0; i < 5; i++)
+	{
+		pary->total = pary->kor + pary->eng + pary->math;
+		pary->avg = pary->total / 3.0;
+		if (pary->avg >= 90.0)
+		{
+			pary->grade = 'A';
+		}
+		else if (pary->avg >= 80.0)
+		{
+			pary->grade = 'B';
+		}
+		else if (pary->avg >= 70.0)
+		{
+			pary->grade = 'C';
+		}
+		else
+		{
+			pary->grade = 'F';
+		}
+		pary++;
+	}
+}
+
+void sort(Student* pary)
+{
+	Student temp; //임시 변수
+	int i, j, max;
+
+	for (i = 0; i < 4; i++)
+	{
+		max = i;
+		for (j = i + 1; j < 5; j++)
+		{
+			if (pary[max].total < pary[j].total)
+			{
+				max = j;
+			}
+		}
+		if (max != i)
+		{
+			temp = pary[max];
+			pary[max] = pary[i];
+			pary[i] = temp;
+		}
+	}
+}
+
+void print(Student* pary)
+{
+	for (int i = 0; i < 5; i++)
+	{
+		printf("%5d%5s%5d%5d%5d%5d  %.1lf%5c\n", (pary + i)->stnum, (pary + i)->name, (pary + i)->kor, (pary + i)->eng, (pary + i)->math, (pary + i)->total, (pary + i)->avg, (pary + i)->grade);
 	}
 }
 #endif

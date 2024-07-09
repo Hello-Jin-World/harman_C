@@ -1,26 +1,100 @@
-#if 0
+#if 1
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h> // malloc 함수 여기있음.
 #endif
+
+//17-8 문제    구조체 배열
+#if 1
+struct address
+{
+	char name[20];
+	int age;
+	char tel[20];
+	char addr[80];
+};
+typedef struct address t_address;
+
+void print_all(t_address *lp);
+void print_one(t_address *lp, char *nm);
+
+void print_list(struct address* lp);
+
+int main(void)
+{
+	char input[80];
+	char name[80];
+	struct address list[5] = {
+		{"홍길동", 23, "111-1111", "울릉도 독도"},
+		{"이순신", 35, "222-2222", "서울 건천동"},
+		{"장보고", 19, "333-3333", "완도 청해진"},
+		{"유관순", 15, "444-4444", "충남 천안"},
+		{"안중근", 45, "555-5555", "황해도 해주"},
+	};
+
+	while (1)
+	{
+		printf("1: 전체 보기, 2: 선택 보기, 9: 나가기   입력 : ");
+		fgets(input, 10, stdin);
+		int sel = atoi(input);
+		if (sel == 9)
+		{
+			break;
+		}
+		else if (sel == 1)
+		{
+			print_all(list);
+		}
+		else if (sel == 2)
+		{
+			printf("이름 : ");
+			scanf("%s", name);
+			getchar();
+			print_one(list, name);
+		}
+	}
+
+	return 0;
+}
+
+void print_all(t_address* lp)
+{
+	int i;
+	for (i = 0; i < 5; i++)
+	{
+		printf("%10s%5d%15s%20s\n", (lp + i)->name, (lp + i)->age, (lp + i)->tel, (lp + i)->addr);
+	}
+}
+
+void print_one(t_address* lp, char* nm)
+{
+	int i = 0;
+	while (1)
+	{
+		if (strncmp((lp + i)->name, nm, 3) == 0)
+		{
+			break;
+		}
+		i++;
+	}
+	printf("%10s%5d%15s%20s\n", (lp + i)->name, (lp + i)->age, (lp + i)->tel, (lp + i)->addr);
+}
+
+#endif
+
+
 // 동적 메모리 할당
 /*
 1. 구조체 배열 정적 메모리를 동적 메모리로 할당하기
 2. switch~case 문을 함수 포인터 배열로 동작하도록 하기
 */
-#if 1
+#if 0
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h> //구조체
 #include <string.h>
 #include <stdlib.h>
 #define NAME_LEN   20
-
-void show_menu(void);
-void make_account(t_account* pt, int* pn); // 계좌 개설
-void deposit_money(t_account* pt, int* pn); // 입금
-void with_draw_money(t_account* pt, int* pn); // 출금
-void show_all_acc_info(t_account* pt, int* pn); // 잔액조회
 
 //#define : 매크로 (MACRO)
 #define MAKE     1
@@ -37,14 +111,20 @@ typedef struct // t_account 로 redefine 한다			28byte
 	char cus_name[NAME_LEN];   // 고객이름
 } t_account;
 
+void show_menu(void);
+void make_account(t_account* pt, int* pn); // 계좌 개설
+void deposit_money(t_account* pt, int* pn); // 입금
+void with_draw_money(t_account* pt, int* pn); // 출금
+void show_all_acc_info(t_account* pt, int* pn); // 잔액조회
+
 int main()  // int main(argc, char *argv[])
 {
 	int choice;
 	int acc_num = 0;        // 저장된 Account 수
 #if 1
-	t_account *acc_arr;	// acc_arr이라는 변수는 t_account 타입의 구조체 타입의
+	t_account* acc_arr;	// acc_arr이라는 변수는 t_account 타입의 구조체 타입의
 	//포인터(주소를 저장하는 공간(변수))이다.
-	void (*fp[]) (t_account *, int *) =
+	void (*fp[]) (t_account*, int*) =
 	{
 		NULL, // 0번 배열은 버림.
 		make_account,
@@ -53,8 +133,8 @@ int main()  // int main(argc, char *argv[])
 		show_all_acc_info
 	};
 
-	
-	acc_arr = (t_account *)malloc(sizeof(t_account) * 10); // 구조체 사이즈만큼 넘겨줌        acc_arr[10];이랑 같음.			malloc은 char타입이라 형변환 필요.
+
+	acc_arr = (t_account*)malloc(sizeof(t_account) * 10); // 구조체 사이즈만큼 넘겨줌        acc_arr[10];이랑 같음.			malloc은 char타입이라 형변환 필요.
 	// malloc의 리턴되는 default는 char *이나 이를 구조체 포인터로 변환. (t_account *) 붙임.
 	// acc_arr에는 시작 번지가 리턴된다.
 	if (acc_arr == NULL)
@@ -71,7 +151,7 @@ int main()  // int main(argc, char *argv[])
 	while (1)
 	{
 		show_menu();
-		printf("선택:(1 : make, 2: deposit, 3: withdraw, 4 : inquire, 9 : exit");
+		printf("선택:(1 : make, 2: deposit, 3: withdraw, 4 : inquire, 9 : exit)");
 		scanf("%d", &choice);  // '1' --> 1 --> choice
 		printf("\n");
 		if (choice == 9)
@@ -129,7 +209,7 @@ void show_menu(void)
 		printf("%s", *(menu + i)); // printf("%s", menu[i]);
 }
 
-void make_account(t_account * pt, int* pn)
+void make_account(t_account* pt, int* pn)
 {
 	int id;
 	char name[NAME_LEN];
@@ -151,7 +231,7 @@ void make_account(t_account * pt, int* pn)
 	*pn += 1;	// pn += 1 이렇게 주소가 증가됨.
 }
 
-void deposit_money(t_account * pt, int* pn)
+void deposit_money(t_account* pt, int* pn)
 {
 	int money;
 	int id, i;
@@ -175,7 +255,7 @@ void deposit_money(t_account * pt, int* pn)
 	printf("유효하지 않은 ID 입니다.\n\n");
 }
 
-void with_draw_money(t_account * pt, int* pn)
+void with_draw_money(t_account* pt, int* pn)
 {
 	t_account* p = pt;
 	int money;
@@ -205,7 +285,7 @@ void with_draw_money(t_account * pt, int* pn)
 	printf("유효하지 않은 ID 입니다.\n\n");
 }
 
-void show_all_acc_info(t_account * pt, int* pn)
+void show_all_acc_info(t_account* pt, int* pn)
 {
 	t_account* p = pt;
 	int i;
@@ -240,14 +320,14 @@ typedef struct // t_account 로 redefine 한다
 } t_account;
 
 void show_menu(void);
-void make_account(t_account *pt, int *acc_num); // 계좌 개설
-void deposit_money(t_account* pt, int *acc_num); // 입금
-void with_draw_money(t_account* pt, int *acc_num); // 출금
-void show_all_acc_info(t_account* pt, int *acc_num); // 잔액조회
+void make_account(t_account* pt, int* acc_num); // 계좌 개설
+void deposit_money(t_account* pt, int* acc_num); // 입금
+void with_draw_money(t_account* pt, int* acc_num); // 출금
+void show_all_acc_info(t_account* pt, int* acc_num); // 잔액조회
 
 int main()  // int main(argc, char *argv[])
 {
-	t_account [100];   // Account 저장을 위한 배열, 100개가 연속으로 잡힌다.
+	t_account acc_arr[100];   // Account 저장을 위한 배열, 100개가 연속으로 잡힌다.
 
 	int acc_num = 0;        // 저장된 Account 수
 	int choice;
@@ -299,7 +379,7 @@ void show_menu(void)
 		printf("%s", *(menu + i)); // printf("%s", menu[i]);
 }
 
-void make_account(t_account *pt, int *acc_num)
+void make_account(t_account* pt, int* acc_num)
 {
 	int id;
 	char name[NAME_LEN];
@@ -321,7 +401,7 @@ void make_account(t_account *pt, int *acc_num)
 	*acc_num += 1;	// pn += 1 이렇게 주소가 증가됨.
 }
 
-void deposit_money(t_account* pt, int *acc_num)
+void deposit_money(t_account* pt, int* acc_num)
 {
 	int money;
 	int id, i;
@@ -345,7 +425,7 @@ void deposit_money(t_account* pt, int *acc_num)
 	printf("유효하지 않은 ID 입니다.\n\n");
 }
 
-void with_draw_money(t_account* pt, int *acc_num)
+void with_draw_money(t_account* pt, int* acc_num)
 {
 	t_account* p = pt;
 	int money;
@@ -375,7 +455,7 @@ void with_draw_money(t_account* pt, int *acc_num)
 	printf("유효하지 않은 ID 입니다.\n\n");
 }
 
-void show_all_acc_info(t_account* pt, int *acc_num)
+void show_all_acc_info(t_account* pt, int* acc_num)
 {
 	t_account* p = pt;
 	int i;
@@ -412,7 +492,7 @@ int main(void)
 {
 	t_person p1[NUMBER]; //사람을 저장하기 위한 배열
 	char name[20];
-	int age=0;
+	int age = 0;
 	char address[40];
 	int count = 0;
 
@@ -438,7 +518,7 @@ int main(void)
 	return 0;
 }
 
-copy_person(t_person *p, char *pn, int *page, char *paddr, int *pcount)
+copy_person(t_person* p, char* pn, int* page, char* paddr, int* pcount)
 {
 	strcpy((*p).name, pn); // strcpy는 주소를 넘겨줘서 *를 안 붙임
 	p->age = *page;
@@ -446,7 +526,7 @@ copy_person(t_person *p, char *pn, int *page, char *paddr, int *pcount)
 	*pcount += 1;
 }
 
-print_person(t_person *p, int n)
+print_person(t_person* p, int n)
 {
 	t_person* pt = p;
 
@@ -522,7 +602,7 @@ merge_func(char* p1, char* p2, char* po)
 
 
 /*
-선택(0: +, 1: -, 2: *, 3: /, 9: exit) : 
+선택(0: +, 1: -, 2: *, 3: /, 9: exit) :
 두 수를 입력 (num1, num2)
 결과: num1 + num2 =
 */
@@ -577,7 +657,7 @@ int main(void)
 	return 0;
 }
 // call by reference
-int space_check(char *pi)
+int space_check(char* pi)
 {
 	for (int i = 0; i < 100; i++)
 	{
@@ -610,10 +690,10 @@ void div(int a, int b)
 // 함수 포인터 
 // 상태천이(state transition)할 때 switch ~ case 문 보다 함수 포인터 사용을 권장.
 #if 0
-void add(int , int );
-void sub(int , int );
-void mul(int , int );
-void div1(int , int );
+void add(int, int);
+void sub(int, int);
+void mul(int, int);
+void div1(int, int);
 
 //함수 포인터 변수
 void (*fp[]) (int, int) = // 함수 주소를 저장하고 있는 배열
@@ -636,7 +716,7 @@ int main(void)
 	int num1, num2;
 	int sp = 0, sel = 0;
 
-	input = (char *)malloc(100); // 100byte를 할당 받아서 char 형으로 변환하여 시작 번지를 input이라는 포인터(주소를 저장하는 변수)에 넣어라.
+	input = (char*)malloc(100); // 100byte를 할당 받아서 char 형으로 변환하여 시작 번지를 input이라는 포인터(주소를 저장하는 변수)에 넣어라.
 
 	while (1)
 	{
@@ -651,8 +731,8 @@ int main(void)
 
 		num1 = atoi(input);
 		num2 = atoi(input + sp + 1);
-			
-		fp[sel] (num1, num2);
+
+		fp[sel](num1, num2);
 	}
 	free(input); // 동적 메모리 할당 받은 메모리를 반납
 
@@ -948,7 +1028,7 @@ int main(void) {
 
 #if 0
 int main(void) {
-	
+
 	char buff[10]; //지역 변수
 	int num1, num2, result;
 
