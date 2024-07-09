@@ -4,6 +4,431 @@
 #include <string.h>
 #include <stdlib.h> // malloc 함수 여기있음.
 #endif
+
+/*
+1. 구조체 배열
+2. 구조체 포인터 (전역 -> 지역)
+3. 정적 메모리 -> 동적 메모리 (switch~case -> 함수 포인터 배열)
+4. reset -> 파일 처리
+5. union
+*/
+
+// union (공용체) 학습
+// union을 이해하고 union을 쓰는 목적 및 용도를 이해한다.
+//--- Big Endian(모토롤라계열)과 Little Endion(인텔)의 차이점
+// - 데이터를 처리하는 어드레싱의 최소 단위 : byte
+//   데이터를 처리하는데 큰단위 부터 처리할 것인가 작은 단위부터 처리할 것인가
+//	 큰단위 처리:Big Endian, 작은단위 처리:Little Endion
+// - 0x12345678의 byte data가 있다고 가정하자
+//   3130................0
+// 
+//   MSB(Most Significant Byte) : 0x12
+//   LSB(Least Significant Byte) : 0x78
+// - Big Endian(모토롤라계열) type으로 데이터를 저장(읽음)
+//   0x12 0x34 0x56 0x78
+// - Little Endion(인텔계열) type으로 데이터를 저장(읽음)
+//   0x78 0x56 0x23 0x12
+#if 0
+int main(void)
+{
+	union
+	{
+		// BYTE 변수의 내용이 변경되면 struct { } s;내의 값도 같이 바뀐다. (공용체)
+		unsigned char BYTE;		// 0x1000번지에 메모리가 1byte가 할당 되었다고 가정하자.
+		struct   // little endian 0x1000번지 부터 시작
+		{
+			unsigned b0 : 1;  // 1bit 할당
+			unsigned b1 : 1;
+			unsigned b2 : 1;
+			unsigned b3 : 1;	// 서로 b0~b3는 연동됨.
+			unsigned dummy : 4;
+		} s;
+	} u;
+
+	u.BYTE = 0xff;
+	printf("u.BYTE : %0x\n", u.BYTE);
+	u.s.b3 = 0;
+	printf("u.BYTE : %0x\n", u.BYTE);
+	u.s.dummy = 0;
+	printf("u.BYTE : %0x\n", u.BYTE);
+
+	return 0;
+}
+#endif
+
+//구조체를 파일 처리(파일 포인터. fseek, rewind)로 구조 변경
+// --> 프로그램을 종료 하더라도 이전 정보가 그대로 남아 있도록 하기 위함
+// --> 마치 DB와 비슷함.
+#if 0
+#define _CRT_SECURE_NO_WARNINGS 
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>    // atoi itoa malloc등이 들어 있다. 
+#define NAME_LEN   20
+
+void show_menu(void);       // 메뉴출력
+void make_account(void);       // 계좌개설을 위한 함수
+void deposit_money(void);       // 입    금
+void with_draw_money(void);      // 출    금
+void show_all_acc_info(void);     // 잔액조회
+
+enum { MAKE = 1, DEPOSIT, WITHDRAW, INQUIRE, EXIT = 9 };
+
+// #define : 매크로 (MACRO)
+#define MAKE     1
+#define DEPOSIT  2
+#define WITHDRAW 3
+#define INQUIRE  4
+#define EXIT     9
+
+
+typedef struct
+{
+	int acc_id;      // 계좌번호
+	int balance;    // 잔    액
+	char cus_name[NAME_LEN];   // 고객이름
+} t_account;
+/*
+struct
+{
+	int acc_id;     // 계좌번호
+	int balance;    // 잔    액
+	char cus_name[NAME_LEN];   // 고객이름
+} account;
+
+struct account acc_arr[100];
+*/
+void make_account(t_account* pt, int* pn);   // 계좌개설
+void deposit_money(t_account* pt, int* pn);  // 입금
+void with_draw_money(t_account* pt, int* pn);  // 출금 
+void show_all_acc_info(t_account* pt, int* pn); // 잔액조회
+
+FILE* filep;   // 이름은 money_file
+
+
+
+int main()  // int main(argc, char *argv[])
+{
+	int choice;
+#if 0
+	t_account* acc_arr;   // acc_arr라는 변수는 t_account 타입의 구조체 타입의 
+	// 포인터(주소를 저장하는 공간(변수) 이다. 
+	void (*fp[]) (t_account*, int*) =
+	{
+		NULL, // 0
+		make_account,
+		deposit_money,
+		with_draw_money,
+		show_all_acc_info
+	};
+
+
+	acc_arr = (t_account*)malloc(sizeof(t_account) * 10);   // acc_arr[10];
+	// malloc의 리턴 되는 default는 char *이나 이를 구조체 포인터로 변환
+	// acc_arr에는 시작 번지가 리턴 된다. 
+	if (acc_arr == NULL)
+	{
+		printf("메모리 할당 실패 @!!!!!\n");
+		return -1;   // 0: 정상종, -1: 심각한 error
+	}
+
+#else  // orginal 
+	void (*fp[]) (t_account*, int*) =
+	{
+		NULL, // 0
+		make_account,
+		deposit_money,
+		with_draw_money,
+		show_all_acc_info
+	};
+	t_account acc_arr[10];   // Account 저장을 위한 배열
+#endif 
+
+	int acc_num = 0;        // 저장된 Account 수
+
+	if ((filep = fopen("money_file", "rb+")) == NULL) // 파일 주소 반환
+	{
+		if ((filep = fopen("money_file", "wb+")) == NULL)
+		{
+			fprintf(stderr, "can't open money_file !!!\n");
+			exit(1); // 실행종료 error code 1
+		}
+	}
+	while (1)
+	{
+		show_menu();
+		printf("선택: ");
+		scanf("%d", &choice);  // '1' --> 1 --> choice
+		printf("\n");
+		if (choice == 9)
+		{
+			// free(acc_arr);
+			fclose(filep);   // 파일의 연결을 끊는다.
+			break;
+		}
+		if (choice >= 1 && choice <= 4)
+			fp[choice](acc_arr, &acc_num);
+
+#if 0  // 함수 포인터 배열로 동작 되도록 완성 하시오 
+		switch (choice)
+		{
+		case MAKE:  // 	case 1:
+			make_account(acc_arr, &acc_num);
+			break;
+		case DEPOSIT:
+			deposit_money(acc_arr, &acc_num);
+			break;
+		case WITHDRAW:
+			with_draw_money(acc_arr, &acc_num);
+			break;
+		case INQUIRE:   // case 4:
+			show_all_acc_info(acc_arr, &acc_num);
+			break;
+		case EXIT:
+			free(acc_arr);   // 동적 메모리를 해제 한다. 
+			return 0;
+		default:
+			printf("Illegal selection..\n");
+		}
+#endif 
+	}
+	return 0;
+}
+
+void show_menu(void)
+{
+	char* menu[] =   //  
+	{
+	 "-----Menu------\n",
+	 "1. 계좌개설\n",
+	 "2. 입    금\n",
+	 "3. 출    금\n",
+	 "4. 계좌정보 전체 출력\n",
+	 "9. 종    료\n"
+	};
+
+	int i;
+
+	for (i = 0; i < 6; i++)
+		printf("%s", *(menu + i));   // printf("%s", menu[i]);
+}
+
+void make_account(t_account* pt, int* pn)
+{
+	int id;
+	char name[NAME_LEN];
+	int balance;
+	t_account* p = pt + *pn;
+
+	printf("[계좌개설]\n");
+	printf("계좌ID: ");
+	scanf("%d", &id);
+	printf("이  름: ");
+	scanf("%s", name);
+	printf("입금액: ");
+	scanf("%d", &balance);
+	printf("\n");
+
+	rewind(filep); // 파일의 헤더를 처음으로 위치시킨다.
+	for (int i = 0; ; i++)
+	{
+		if (fread((char*)&p->acc_id, 1, sizeof(t_account), filep) == NULL)
+		{
+			break;   // 더이상 읽을 데이터가 없을 때
+		}
+		//읽는 것을 성공 했을 때
+		else if (p->acc_id == id)
+		{
+			printf("Already exist ID %d\n", id);
+			return;
+		}
+	}
+
+	fseek(filep, 0, SEEK_END); // 헤더를 파일의 맨 끝으로 보냄
+
+	p->acc_id = id;   // (*p).acc_id = id;
+	p->balance = balance;
+	strcpy(p->cus_name, name);
+	fwrite((char*)&p->acc_id, 1, sizeof(t_account), filep);
+	*pn += 1;  // pn +=1   주소가 증가 되는것이다. 
+}
+
+void deposit_money(t_account* pt, int* pn)
+{
+	int money;
+	int id, i, size;
+	t_account* p = pt;
+
+	printf("[입    금]\n");
+	printf("계좌ID: ");
+	scanf("%d", &id);
+	printf("입금액: ");
+	scanf("%d", &money);
+
+	rewind(filep);
+
+	//for (i = 0; i < *pn; i++, p++)
+	for (i = 0; ; i++, p++)
+	{
+		if (fread((char*)&p->acc_id, 1, sizeof(t_account), filep) == NULL)
+		{
+			break;   // 더이상 읽을 데이터가 없을 때
+		}
+		//읽는 것을 성공 했을 때
+		else if (p->acc_id == id)
+		{
+			p->balance += money;
+			size = sizeof(t_account);
+			fseek(filep, -size, SEEK_CUR); // 현재 헤더에서 -28byte만큼 옮긴다..
+			fwrite((char*)&p->acc_id, 1, sizeof(t_account), filep);
+			printf("입금완료\n\n");
+			return;
+		}
+	}
+	printf("유효하지 않은 ID 입니다.\n\n");
+}
+
+void with_draw_money(t_account* pt, int* pn)
+{
+	int money;
+	int id, i, size;
+	t_account* p = pt;
+
+	printf("[출    금]\n");
+	printf("계좌ID: ");
+	scanf("%d", &id);
+	printf("출금액: ");
+	scanf("%d", &money);
+
+	rewind(filep);
+
+	//for (i = 0; i < *pn; i++, p++)
+	for (i = 0; ; i++, p++)
+	{
+		if (fread((char*)&p->acc_id, 1, sizeof(t_account), filep) == NULL)
+		{
+			break;   // 더이상 읽을 데이터가 없을 때
+		}
+		else if (p->acc_id == id)
+		{
+
+			if (p->balance < money)
+			{
+				printf("잔액부족\n\n");
+				return;
+			}
+
+			p->balance -= money;  // acc_arr[i].balance = acc_arr[i].balance - money;
+			size = sizeof(t_account);
+			fseek(filep, -size, SEEK_CUR); // 현재 헤더에서 -28byte만큼 옮긴다..
+			fwrite((char*)&p->acc_id, 1, sizeof(t_account), filep);
+			printf("출금완료\n\n");
+			return;
+		}
+	}
+	printf("유효하지 않은 ID 입니다.\n\n");
+}
+
+void show_all_acc_info(t_account* pt, int* pn)
+{
+	int i;
+	t_account* p = pt;
+
+	rewind(filep); //헤더를 맨 위로 옮김
+
+	//for (i = 0; i < *pn; i++, p++)
+	for (i = 0; ; i++, p++)
+	{
+		if (fread((char*)&p->acc_id, 1, sizeof(t_account), filep) == NULL)
+		{
+			break;   // 더이상 읽을 데이터가 없을 때
+		}
+		printf("계좌ID: %d\n", p->acc_id);
+		printf("이  름: %s\n", p->cus_name);
+		printf("잔  액: %d\n\n", p->balance);
+	}
+	printf("\n");
+}
+#endif
+
+//17-8 문제    구조체 포인터 배열
+#if 0
+struct address
+{
+	char name[20];
+	int age;
+	char tel[20];
+	char addr[80];
+};
+typedef struct address t_address;
+
+void print_all(t_address* lp);
+void print_one(t_address* lp, char* nm);
+
+void print_list(struct address* lp);
+
+int main(void)
+{
+	char input[80];
+	char name[80];
+	struct address list[5] = {
+		{"홍길동", 23, "111-1111", "울릉도 독도"},
+		{"이순신", 35, "222-2222", "서울 건천동"},
+		{"장보고", 19, "333-3333", "완도 청해진"},
+		{"유관순", 15, "444-4444", "충남 천안"},
+		{"안중근", 45, "555-5555", "황해도 해주"},
+	};
+
+	while (1)
+	{
+		printf("1: 전체 보기, 2: 선택 보기, 9: 나가기   입력 : ");
+		fgets(input, 10, stdin);
+		int sel = atoi(input);
+		if (sel == 9)
+		{
+			break;
+		}
+		else if (sel == 1)
+		{
+			print_all(list);
+		}
+		else if (sel == 2)
+		{
+			printf("이름 : ");
+			scanf("%s", name);
+			getchar();
+			print_one(list, name);
+		}
+	}
+
+	return 0;
+}
+
+void print_all(t_address* lp)
+{
+	int i;
+	for (i = 0; i < 5; i++)
+	{
+		printf("%10s%5d%15s%20s\n", (lp + i)->name, (lp + i)->age, (lp + i)->tel, (lp + i)->addr);
+	}
+}
+
+void print_one(t_address* lp, char* nm)
+{
+	int i = 0;
+	while (1)
+	{
+		if (strncmp((lp + i)->name, nm, 3) == 0)
+		{
+			break;
+		}
+		i++;
+	}
+	printf("%10s%5d%15s%20s\n", (lp + i)->name, (lp + i)->age, (lp + i)->tel, (lp + i)->addr);
+}
+
+#endif
+
 // 동적 메모리 할당
 /*
 1. 구조체 배열 정적 메모리를 동적 메모리로 할당하기
@@ -15,12 +440,6 @@
 #include <string.h>
 #include <stdlib.h>
 #define NAME_LEN   20
-
-void show_menu(void);
-void make_account(t_account* pt, int* pn); // 계좌 개설
-void deposit_money(t_account* pt, int* pn); // 입금
-void with_draw_money(t_account* pt, int* pn); // 출금
-void show_all_acc_info(t_account* pt, int* pn); // 잔액조회
 
 //#define : 매크로 (MACRO)
 #define MAKE     1
@@ -36,6 +455,12 @@ typedef struct // t_account 로 redefine 한다			28byte
 	int balance;    // 잔    액
 	char cus_name[NAME_LEN];   // 고객이름
 } t_account;
+
+void show_menu(void);
+void make_account(t_account* pt, int* pn); // 계좌 개설
+void deposit_money(t_account* pt, int* pn); // 입금
+void with_draw_money(t_account* pt, int* pn); // 출금
+void show_all_acc_info(t_account* pt, int* pn); // 잔액조회
 
 int main()  // int main(argc, char *argv[])
 {
@@ -71,7 +496,7 @@ int main()  // int main(argc, char *argv[])
 	while (1)
 	{
 		show_menu();
-		printf("선택:(1 : make, 2: deposit, 3: withdraw, 4 : inquire, 9 : exit");
+		printf("선택:(1 : make, 2: deposit, 3: withdraw, 4 : inquire, 9 : exit)");
 		scanf("%d", &choice);  // '1' --> 1 --> choice
 		printf("\n");
 		if (choice == 9)

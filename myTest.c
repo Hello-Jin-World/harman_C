@@ -679,7 +679,7 @@ void input_nums(int* lotto_nums)
 				lotto_nums[i] = num;
 				break;
 			}
-			
+
 		}
 	}
 }
@@ -873,7 +873,7 @@ void swap();
 
 int main(void)
 {
-	int age1= 0, age2 = 0;
+	int age1 = 0, age2 = 0;
 	double height1 = 0, height2 = 0;
 	void* vp;
 	printf("첫 번째 사람의 나이와 키 입력 : ");
@@ -972,7 +972,7 @@ int main()
 		}
 		else
 		{
-			printf("%5c",'X');
+			printf("%5c", 'X');
 		}
 		if ((i + 1) % 5 == 0)
 		{
@@ -985,7 +985,7 @@ int main()
 #endif 
 
 //17-2실전
-#if 1
+#if 0
 typedef struct
 {
 	int stnum;
@@ -1090,6 +1090,173 @@ void print(Student* pary)
 }
 #endif
 
+//17-2 실전 연습
+#if 0
+typedef struct
+{
+	int id;
+	char name[20];
+	int kor, eng, math;
+	int total;
+	double avg;
+	char grade;
+} person;
+
+void input(person* pary);
+void cal(person* pary);
+void sort(person* pary);
+void print(person* pary);
+
+int main(void)
+{
+	person ary[5];
+	input(ary);
+	cal(ary);
+	printf("# 정렬 전 데이터...\n");
+	print(ary);
+	sort(ary);
+	printf("# 정렬 후 데이터...\n");
+	print(ary);
+}
+
+void input(person* pary)
+{
+	for (int i = 0; i < 5; i++)
+	{
+		printf("학번 : ");
+		scanf("%d", &pary->id);
+		printf("이름 : ");
+		scanf("%s", pary->name);
+		printf("국어, 영어, 수학 점수 : ");
+		scanf("%d %d %d", &pary->kor, &pary->eng, &pary->math);
+		pary++;
+	}
+}
+
+void cal(person* pary)
+{
+
+	for (int i = 0; i < 5; i++)
+	{
+		pary->total = pary->kor + pary->eng + pary->math;
+		pary->avg = pary->total / 3.0;
+
+		if (pary->avg >= 90.0)
+		{
+			pary->grade = 'A';
+		}
+		else if (pary->avg >= 80.0)
+		{
+			pary->grade = 'B';
+		}
+		else if (pary->avg >= 70.0)
+		{
+			pary->grade = 'C';
+		}
+		else
+		{
+			pary->grade = 'F';
+		}
+		pary++;
+	}
+}
+
+void sort(person* pary)
+{
+	int i, j, max;
+	person temp;
+	for (i = 0; i < 4; i++)
+	{
+		max = i;
+		for (j = i + 1; j < 5; j++)
+		{
+			if (pary[max].total < pary[j].total)
+			{
+				max = j;
+			}
+		}
+		if (max != i)
+		{
+			temp = pary[max];
+			pary[max] = pary[i];
+			pary[i] = temp;
+		}
+	}
+}
+
+void print(person* pary)
+{
+	for (int i = 0; i < 5; i++)
+	{
+		printf("%5d%5s%5d%5d%5d%5d  %.1f%5c\n", (pary + i)->id, (pary + i)->name, (pary + i)->kor, (pary + i)->eng, (pary + i)->math, (pary + i)->total, (pary + i)->avg, (pary + i)->grade);
+	}
+}
+#endif
+//18-2 실전
+#if 1
+int check(char(*word_ary)[21], char* word, int cnt);
+
+int main(void)
+{
+	FILE* afp, * bfp,* cfp;
+	char word_ary[10][21];
+	char word[21];
+	int i, count;
+
+	afp = fopen("a.txt", "r");
+	if (afp == NULL)
+	{
+		printf("파일을 오픈하지 못 했습니다.\n");
+		exit(1);
+	}
+	bfp = fopen("b.txt", "r");
+	if (bfp == NULL)
+	{
+		printf("파일을 오픈하지 못 했습니다.\n");
+		exit(1);
+	}
+	cfp = fopen("c.txt", "w");
+	if (cfp == NULL)
+	{
+		printf("파일을 오픈하지 못 했습니다.\n");
+		exit(1);
+	}
+
+	for (i = 0; i < 10; i++)
+	{
+		fscanf(afp, "%s", word_ary[i]);
+		if (feof(afp))
+			break;
+	}
+	count = i;
+	printf("count : %d\n", count);
+
+	while (fscanf(bfp, "%s", word) != EOF)
+	{
+		if (!check(word_ary, word, count))
+		{
+			fprintf(cfp, "%s\n", word);
+		}
+	}
+
+	fclose(afp);
+	fclose(bfp);
+	fclose(cfp);
+	return 0;
+}
+
+int check(char(*word_ary)[21], char* word, int count)
+{
+	int i;
+
+	for (i = 0; i < count; i++)
+	{
+		if (strcmp(word_ary[i], word) == 0)
+			return 1;
+	}
+	return 0;
+}
+#endif
 #if 0
 int main(void) {
 	int num1, num2, result;
