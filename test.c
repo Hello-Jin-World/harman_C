@@ -1,15 +1,65 @@
-#if 0
+#if 1
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h> // malloc 함수 여기있음.
 #endif
 
-#if 1
 /*
- 1. 구조체 배열 정적 메모리를 동적 메모리로 할당하기
- 2. switch ~ case문을 함수 포인터 배열로 동작 하도록 하기
+1. 구조체 배열
+2. 구조체 포인터 (전역 -> 지역)
+3. 정적 메모리 -> 동적 메모리 (switch~case -> 함수 포인터 배열)
+4. reset -> 파일 처리
+5. union
 */
+
+// union (공용체) 학습
+// union을 이해하고 union을 쓰는 목적 및 용도를 이해한다.
+//--- Big Endian(모토롤라계열)과 Little Endion(인텔)의 차이점
+// - 데이터를 처리하는 어드레싱의 최소 단위 : byte
+//   데이터를 처리하는데 큰단위 부터 처리할 것인가 작은 단위부터 처리할 것인가
+//	 큰단위 처리:Big Endian, 작은단위 처리:Little Endion
+// - 0x12345678의 byte data가 있다고 가정하자
+//   3130................0
+// 
+//   MSB(Most Significant Byte) : 0x12
+//   LSB(Least Significant Byte) : 0x78
+// - Big Endian(모토롤라계열) type으로 데이터를 저장(읽음)
+//   0x12 0x34 0x56 0x78
+// - Little Endion(인텔계열) type으로 데이터를 저장(읽음)
+//   0x78 0x56 0x23 0x12
+#if 1
+int main(void)
+{
+	union
+	{
+		// BYTE 변수의 내용이 변경되면 struct { } s;내의 값도 같이 바뀐다. (공용체)
+		unsigned char BYTE;		// 0x1000번지에 메모리가 1byte가 할당 되었다고 가정하자.
+		struct   // little endian 0x1000번지 부터 시작
+		{
+			unsigned b0 : 1;  // 1bit 할당
+			unsigned b1 : 1;
+			unsigned b2 : 1;
+			unsigned b3 : 1;	// 서로 b0~b3는 연동됨.
+			unsigned dummy : 4;
+		} s;
+	} u;
+
+	u.BYTE = 0xff;
+	printf("u.BYTE : %0x\n", u.BYTE);
+	u.s.b3 = 0;
+	printf("u.BYTE : %0x\n", u.BYTE);
+	u.s.dummy = 0;
+	printf("u.BYTE : %0x\n", u.BYTE);
+
+	return 0;
+}
+#endif
+
+//구조체를 파일 처리(파일 포인터. fseek, rewind)로 구조 변경
+// --> 프로그램을 종료 하더라도 이전 정보가 그대로 남아 있도록 하기 위함
+// --> 마치 DB와 비슷함.
+#if 0
 #define _CRT_SECURE_NO_WARNINGS 
 #include <stdio.h>
 #include <string.h>
