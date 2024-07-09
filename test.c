@@ -1,12 +1,308 @@
-#if 1
+#if 0
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h> // malloc 함수 여기있음.
 #endif
 
-//17-8 문제    구조체 배열
 #if 1
+/*
+ 1. 구조체 배열 정적 메모리를 동적 메모리로 할당하기
+ 2. switch ~ case문을 함수 포인터 배열로 동작 하도록 하기
+*/
+#define _CRT_SECURE_NO_WARNINGS 
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>    // atoi itoa malloc등이 들어 있다. 
+#define NAME_LEN   20
+
+void show_menu(void);       // 메뉴출력
+void make_account(void);       // 계좌개설을 위한 함수
+void deposit_money(void);       // 입    금
+void with_draw_money(void);      // 출    금
+void show_all_acc_info(void);     // 잔액조회
+
+enum { MAKE = 1, DEPOSIT, WITHDRAW, INQUIRE, EXIT = 9 };
+
+// #define : 매크로 (MACRO)
+#define MAKE     1
+#define DEPOSIT  2
+#define WITHDRAW 3
+#define INQUIRE  4
+#define EXIT     9
+
+
+typedef struct
+{
+	int acc_id;      // 계좌번호
+	int balance;    // 잔    액
+	char cus_name[NAME_LEN];   // 고객이름
+} t_account;
+/*
+struct
+{
+	int acc_id;     // 계좌번호
+	int balance;    // 잔    액
+	char cus_name[NAME_LEN];   // 고객이름
+} account;
+
+struct account acc_arr[100];
+*/
+void make_account(t_account* pt, int* pn);   // 계좌개설
+void deposit_money(t_account* pt, int* pn);  // 입금
+void with_draw_money(t_account* pt, int* pn);  // 출금 
+void show_all_acc_info(t_account* pt, int* pn); // 잔액조회
+
+FILE* filep;   // 이름은 money_file
+
+
+
+int main()  // int main(argc, char *argv[])
+{
+	int choice;
+#if 0
+	t_account* acc_arr;   // acc_arr라는 변수는 t_account 타입의 구조체 타입의 
+	// 포인터(주소를 저장하는 공간(변수) 이다. 
+	void (*fp[]) (t_account*, int*) =
+	{
+		NULL, // 0
+		make_account,
+		deposit_money,
+		with_draw_money,
+		show_all_acc_info
+	};
+
+
+	acc_arr = (t_account*)malloc(sizeof(t_account) * 10);   // acc_arr[10];
+	// malloc의 리턴 되는 default는 char *이나 이를 구조체 포인터로 변환
+	// acc_arr에는 시작 번지가 리턴 된다. 
+	if (acc_arr == NULL)
+	{
+		printf("메모리 할당 실패 @!!!!!\n");
+		return -1;   // 0: 정상종, -1: 심각한 error
+	}
+
+#else  // orginal 
+	void (*fp[]) (t_account*, int*) =
+	{
+		NULL, // 0
+		make_account,
+		deposit_money,
+		with_draw_money,
+		show_all_acc_info
+	};
+	t_account acc_arr[10];   // Account 저장을 위한 배열
+#endif 
+
+	int acc_num = 0;        // 저장된 Account 수
+
+	if ((filep = fopen("money_file", "rb+")) == NULL) // 파일 주소 반환
+	{
+		if ((filep = fopen("money_file", "wb+")) == NULL)
+		{
+			fprintf(stderr, "can't open money_file !!!\n");
+			exit(1); // 실행종료 error code 1
+		}
+	}
+	while (1)
+	{
+		show_menu();
+		printf("선택: ");
+		scanf("%d", &choice);  // '1' --> 1 --> choice
+		printf("\n");
+		if (choice == 9)
+		{
+			// free(acc_arr);
+			fclose(filep);   // 파일의 연결을 끊는다.
+			break;
+		}
+		if (choice >= 1 && choice <= 4)
+			fp[choice](acc_arr, &acc_num);
+
+#if 0  // 함수 포인터 배열로 동작 되도록 완성 하시오 
+		switch (choice)
+		{
+		case MAKE:  // 	case 1:
+			make_account(acc_arr, &acc_num);
+			break;
+		case DEPOSIT:
+			deposit_money(acc_arr, &acc_num);
+			break;
+		case WITHDRAW:
+			with_draw_money(acc_arr, &acc_num);
+			break;
+		case INQUIRE:   // case 4:
+			show_all_acc_info(acc_arr, &acc_num);
+			break;
+		case EXIT:
+			free(acc_arr);   // 동적 메모리를 해제 한다. 
+			return 0;
+		default:
+			printf("Illegal selection..\n");
+		}
+#endif 
+	}
+	return 0;
+}
+
+void show_menu(void)
+{
+	char* menu[] =   //  
+	{
+	 "-----Menu------\n",
+	 "1. 계좌개설\n",
+	 "2. 입    금\n",
+	 "3. 출    금\n",
+	 "4. 계좌정보 전체 출력\n",
+	 "9. 종    료\n"
+	};
+
+	int i;
+
+	for (i = 0; i < 6; i++)
+		printf("%s", *(menu + i));   // printf("%s", menu[i]);
+}
+
+void make_account(t_account* pt, int* pn)
+{
+	int id;
+	char name[NAME_LEN];
+	int balance;
+	t_account* p = pt + *pn;
+
+	printf("[계좌개설]\n");
+	printf("계좌ID: ");
+	scanf("%d", &id);
+	printf("이  름: ");
+	scanf("%s", name);
+	printf("입금액: ");
+	scanf("%d", &balance);
+	printf("\n");
+
+	rewind(filep); // 파일의 헤더를 처음으로 위치시킨다.
+	for (int i = 0; ;i++)
+	{
+		if (fread((char*)&p->acc_id, 1, sizeof(t_account), filep) == NULL)
+		{
+			break;   // 더이상 읽을 데이터가 없을 때
+		}
+		//읽는 것을 성공 했을 때
+		else if (p->acc_id == id)
+		{
+			printf("Already exist ID %d\n", id);
+			return;
+		}
+	}
+
+	fseek(filep, 0, SEEK_END); // 헤더를 파일의 맨 끝으로 보냄
+
+	p->acc_id = id;   // (*p).acc_id = id;
+	p->balance = balance;
+	strcpy(p->cus_name, name);
+	fwrite((char*)&p->acc_id, 1, sizeof(t_account), filep);
+	*pn += 1;  // pn +=1   주소가 증가 되는것이다. 
+}
+
+void deposit_money(t_account* pt, int* pn)
+{
+	int money;
+	int id, i, size;
+	t_account* p = pt;
+
+	printf("[입    금]\n");
+	printf("계좌ID: ");
+	scanf("%d", &id);
+	printf("입금액: ");
+	scanf("%d", &money);
+
+	rewind(filep);
+
+	//for (i = 0; i < *pn; i++, p++)
+	for (i = 0; ; i++, p++)
+	{
+		if (fread((char*)&p->acc_id, 1, sizeof(t_account), filep) == NULL)
+		{
+			break;   // 더이상 읽을 데이터가 없을 때
+		}
+		//읽는 것을 성공 했을 때
+		else if (p->acc_id == id)
+		{
+			p->balance += money;
+			size = sizeof(t_account);
+			fseek(filep, -size, SEEK_CUR); // 현재 헤더에서 -28byte만큼 옮긴다..
+			fwrite((char*)&p->acc_id, 1, sizeof(t_account), filep);
+			printf("입금완료\n\n");
+			return;
+		}
+	}
+	printf("유효하지 않은 ID 입니다.\n\n");
+}
+
+void with_draw_money(t_account* pt, int* pn)
+{
+	int money;
+	int id, i, size;
+	t_account* p = pt;
+
+	printf("[출    금]\n");
+	printf("계좌ID: ");
+	scanf("%d", &id);
+	printf("출금액: ");
+	scanf("%d", &money);
+
+	rewind(filep);
+
+	//for (i = 0; i < *pn; i++, p++)
+	for (i = 0; ; i++, p++)
+	{
+		if (fread((char*)&p->acc_id, 1, sizeof(t_account), filep) == NULL)
+		{
+			break;   // 더이상 읽을 데이터가 없을 때
+		}
+		else if (p->acc_id == id)
+		{
+
+			if (p->balance < money)
+			{
+				printf("잔액부족\n\n");
+				return;
+			}
+
+			p->balance -= money;  // acc_arr[i].balance = acc_arr[i].balance - money;
+			size = sizeof(t_account);
+			fseek(filep, -size, SEEK_CUR); // 현재 헤더에서 -28byte만큼 옮긴다..
+			fwrite((char*)&p->acc_id, 1, sizeof(t_account), filep);
+			printf("출금완료\n\n");
+			return;
+		}
+	}
+	printf("유효하지 않은 ID 입니다.\n\n");
+}
+
+void show_all_acc_info(t_account* pt, int* pn)
+{
+	int i;
+	t_account* p = pt;
+
+	rewind(filep); //헤더를 맨 위로 옮김
+
+	//for (i = 0; i < *pn; i++, p++)
+	for (i = 0; ;i++, p++)
+	{
+		if (fread((char*)&p->acc_id, 1, sizeof(t_account), filep) == NULL)
+		{
+			break;   // 더이상 읽을 데이터가 없을 때
+		}
+		printf("계좌ID: %d\n", p->acc_id);
+		printf("이  름: %s\n", p->cus_name);
+		printf("잔  액: %d\n\n", p->balance);
+	}
+	printf("\n");
+}
+#endif
+
+//17-8 문제    구조체 포인터 배열
+#if 0
 struct address
 {
 	char name[20];
@@ -82,7 +378,6 @@ void print_one(t_address* lp, char* nm)
 }
 
 #endif
-
 
 // 동적 메모리 할당
 /*
