@@ -1091,7 +1091,7 @@ void print(Student* pary)
 #endif
 
 //17-2 실전 연습
-#if 0
+#if 1
 typedef struct
 {
 	int id;
@@ -1193,7 +1193,7 @@ void print(person* pary)
 }
 #endif
 //18-2 실전
-#if 1
+#if 0
 int main(void)
 {
 	FILE* afp, * bfp;
