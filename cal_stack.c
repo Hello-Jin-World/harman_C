@@ -165,7 +165,7 @@ int main(void)
     printf("공백제거한 문자열 출력 : %s\n", postfix); 
 
     in_to_post(input, postfix);
-    printf("후위표기법 배열 : %s\n", postfix);
+    printf("후위표기법 배열 : ", postfix);
 
     return 0;
 }
