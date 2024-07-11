@@ -24,5 +24,8 @@
     <ClCompile Include="menu.c">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="cal_stack.c">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -1,4 +1,4 @@
-#if 1
+#if 0
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <string.h>
@@ -1091,7 +1091,7 @@ void print(Student* pary)
 #endif
 
 //17-2 실전 연습
-#if 1
+#if 0
 typedef struct
 {
 	int id;
