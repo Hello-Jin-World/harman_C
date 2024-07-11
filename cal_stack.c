@@ -75,14 +75,14 @@ void in_to_post(char* infix, char* postfix) {
         }
         else if (*infix == '(')
         {
-            push(&s, *infix);
+            push(&s, *infix); // '(' 는 스택에 저장
             infix++;
         }
         else if (*infix == ')')
         {
             while (peek(&s) != '(')
             {
-                *postfix++ = pop(&s);
+                *postfix++ = pop(&s); // ')'가 입력되려고 하면 '('이 나올때 까지 연산자를 pop하고 배열에 저장
                 *postfix++ = ' ';
             }
             pop(&s); // '(' 제거
@@ -114,11 +114,11 @@ void in_to_post(char* infix, char* postfix) {
     }
     while (!is_empty(&s))
     {
-        *postfix++ = pop(&s);
+        *postfix++ = pop(&s); // 배열이 모두 끝나면 스택에 남아있는 연산자 pop해서 배열에 저장
         *postfix++ = ' ';
     }
     postfix--;
-    *postfix = '\0';
+    *postfix = '\0'; // 맨 끝에 '\0' 저장
 }
 
 void rm_space(char *infix, char* postfix)
@@ -131,7 +131,7 @@ void rm_space(char *infix, char* postfix)
     {
         if (*infix != ' ')
         {
-            push(&s, *infix);
+            push(&s, *infix); // ' ' space빼고 모든 문자 저장
         }
         infix++;
     }
@@ -139,11 +139,11 @@ void rm_space(char *infix, char* postfix)
     int idx = 0;
     while (!is_empty(&s))
     {
-        postfix[idx++] = pop(&s);
+        postfix[idx++] = pop(&s); // 모든문자 pop해서 배열에 저장
     }
     postfix[idx] = '\0';
 
-    for (i = 0; i < idx / 2; i++)
+    for (i = 0; i < idx / 2; i++) // 마지막으로 들어간 문자가 처음으로 나오니까 배열 뒤집기
     {
         char temp = postfix[i];
         postfix[i] = postfix[idx - 1 - i];
@@ -165,7 +165,7 @@ int main(void)
     printf("공백제거한 문자열 출력 : %s\n", postfix); 
 
     in_to_post(input, postfix);
-    printf("후위표기법 배열 : ", postfix);
+    printf("후위표기법 배열 : %s\n", postfix);
 
     return 0;
 }
