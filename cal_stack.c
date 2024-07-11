@@ -8,7 +8,6 @@
 typedef int element;
 
 typedef struct {
-    char *data;
     element stack[STACK_SIZE];
     int top;
 } StackType;
