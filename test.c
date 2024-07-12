@@ -59,7 +59,7 @@ int main(void)
 //구조체를 파일 처리(파일 포인터. fseek, rewind)로 구조 변경
 // --> 프로그램을 종료 하더라도 이전 정보가 그대로 남아 있도록 하기 위함
 // --> 마치 DB와 비슷함.
-#if 0
+#if 1
 #define _CRT_SECURE_NO_WARNINGS 
 #include <stdio.h>
 #include <string.h>
