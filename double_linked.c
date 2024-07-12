@@ -1,3 +1,4 @@
+#if 0
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <string.h>
@@ -5,16 +6,16 @@
 
 typedef struct __node
 {
-	int value; // ÇöÀç ³ëµåÀÇ °ª
-	struct __node* next; // ´ÙÀ½ ³ëµå
-	struct __node* prev; // ÀÌÀü ³ëµå
+	int value; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
+	struct __node* next; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+	struct __node* prev; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
 } Node;
 
 Node* getNode(Node* ptr)
 {
-	if (ptr == NULL) // Æ÷ÀÎÅÍ°¡ NULLÀÏ ¶§¸¸ ³ëµå »ý¼º
+	if (ptr == NULL) // ï¿½ï¿½ï¿½ï¿½ï¿½Í°ï¿½ NULLï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	{
-		ptr = malloc(sizeof(Node)); // ³ëµå »çÀÌÁî ¸¸Å­ »ý¼º
+		ptr = malloc(sizeof(Node)); // ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Å­ ï¿½ï¿½ï¿½ï¿½
 		ptr->value = 0; // 4byte
 		ptr->next = NULL; // 8byte
 		ptr->prev = NULL; // 8byte
@@ -25,3 +26,4 @@ Node* getNode(Node* ptr)
 }
 
 void appendFirst(Node* head, int data)
+#endif

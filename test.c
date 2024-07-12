@@ -2,45 +2,45 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <string.h>
-#include <stdlib.h> // malloc ÇÔ¼ö ¿©±âÀÖÀ½.
+#include <stdlib.h> // malloc ï¿½Ô¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
 #endif
 
 /*
-1. ±¸Á¶Ã¼ ¹è¿­
-2. ±¸Á¶Ã¼ Æ÷ÀÎÅÍ (Àü¿ª -> Áö¿ª)
-3. Á¤Àû ¸Þ¸ð¸® -> µ¿Àû ¸Þ¸ð¸® (switch~case -> ÇÔ¼ö Æ÷ÀÎÅÍ ¹è¿­)
-4. reset -> ÆÄÀÏ Ã³¸®
+1. ï¿½ï¿½ï¿½ï¿½Ã¼ ï¿½è¿­
+2. ï¿½ï¿½ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½ -> ï¿½ï¿½ï¿½ï¿½)
+3. ï¿½ï¿½ï¿½ï¿½ ï¿½Þ¸ï¿½ -> ï¿½ï¿½ï¿½ï¿½ ï¿½Þ¸ï¿½ (switch~case -> ï¿½Ô¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½è¿­)
+4. reset -> ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½
 5. union
 */
 
-// union (°ø¿ëÃ¼) ÇÐ½À
-// unionÀ» ÀÌÇØÇÏ°í unionÀ» ¾²´Â ¸ñÀû ¹× ¿ëµµ¸¦ ÀÌÇØÇÑ´Ù.
-//--- Big Endian(¸ðÅä·Ñ¶ó°è¿­)°ú Little Endion(ÀÎÅÚ)ÀÇ Â÷ÀÌÁ¡
-// - µ¥ÀÌÅÍ¸¦ Ã³¸®ÇÏ´Â ¾îµå·¹½ÌÀÇ ÃÖ¼Ò ´ÜÀ§ : byte
-//   µ¥ÀÌÅÍ¸¦ Ã³¸®ÇÏ´Âµ¥ Å«´ÜÀ§ ºÎÅÍ Ã³¸®ÇÒ °ÍÀÎ°¡ ÀÛÀº ´ÜÀ§ºÎÅÍ Ã³¸®ÇÒ °ÍÀÎ°¡
-//	 Å«´ÜÀ§ Ã³¸®:Big Endian, ÀÛÀº´ÜÀ§ Ã³¸®:Little Endion
-// - 0x12345678ÀÇ byte data°¡ ÀÖ´Ù°í °¡Á¤ÇÏÀÚ
+// union (ï¿½ï¿½ï¿½ï¿½Ã¼) ï¿½Ð½ï¿½
+// unionï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ unionï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ëµµï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
+//--- Big Endian(ï¿½ï¿½ï¿½ï¿½Ñ¶ï¿½è¿­)ï¿½ï¿½ Little Endion(ï¿½ï¿½ï¿½ï¿½)ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+// - ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ Ã³ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½å·¹ï¿½ï¿½ï¿½ï¿½ ï¿½Ö¼ï¿½ ï¿½ï¿½ï¿½ï¿½ : byte
+//   ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ Ã³ï¿½ï¿½ï¿½Ï´Âµï¿½ Å«ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Î°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Î°ï¿½
+//	 Å«ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½:Big Endian, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½:Little Endion
+// - 0x12345678ï¿½ï¿½ byte dataï¿½ï¿½ ï¿½Ö´Ù°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 //   3130................0
 // 
 //   MSB(Most Significant Byte) : 0x12
 //   LSB(Least Significant Byte) : 0x78
-// - Big Endian(¸ðÅä·Ñ¶ó°è¿­) typeÀ¸·Î µ¥ÀÌÅÍ¸¦ ÀúÀå(ÀÐÀ½)
+// - Big Endian(ï¿½ï¿½ï¿½ï¿½Ñ¶ï¿½è¿­) typeï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½)
 //   0x12 0x34 0x56 0x78
-// - Little Endion(ÀÎÅÚ°è¿­) typeÀ¸·Î µ¥ÀÌÅÍ¸¦ ÀúÀå(ÀÐÀ½)
+// - Little Endion(ï¿½ï¿½ï¿½Ú°è¿­) typeï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½)
 //   0x78 0x56 0x23 0x12
 #if 0
 int main(void)
 {
 	union
 	{
-		// BYTE º¯¼öÀÇ ³»¿ëÀÌ º¯°æµÇ¸é struct { } s;³»ÀÇ °ªµµ °°ÀÌ ¹Ù²ï´Ù. (°ø¿ëÃ¼)
-		unsigned char BYTE;		// 0x1000¹øÁö¿¡ ¸Þ¸ð¸®°¡ 1byte°¡ ÇÒ´ç µÇ¾ú´Ù°í °¡Á¤ÇÏÀÚ.
-		struct   // little endian 0x1000¹øÁö ºÎÅÍ ½ÃÀÛ
+		// BYTE ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ç¸ï¿½ struct { } s;ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ù²ï¿½ï¿½. (ï¿½ï¿½ï¿½ï¿½Ã¼)
+		unsigned char BYTE;		// 0x1000ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Þ¸ð¸®°ï¿½ 1byteï¿½ï¿½ ï¿½Ò´ï¿½ ï¿½Ç¾ï¿½ï¿½Ù°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
+		struct   // little endian 0x1000ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		{
-			unsigned b0 : 1;  // 1bit ÇÒ´ç
+			unsigned b0 : 1;  // 1bit ï¿½Ò´ï¿½
 			unsigned b1 : 1;
 			unsigned b2 : 1;
-			unsigned b3 : 1;	// ¼­·Î b0~b3´Â ¿¬µ¿µÊ.
+			unsigned b3 : 1;	// ï¿½ï¿½ï¿½ï¿½ b0~b3ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
 			unsigned dummy : 4;
 		} s;
 	} u;
@@ -56,25 +56,25 @@ int main(void)
 }
 #endif
 
-//±¸Á¶Ã¼¸¦ ÆÄÀÏ Ã³¸®(ÆÄÀÏ Æ÷ÀÎÅÍ. fseek, rewind)·Î ±¸Á¶ º¯°æ
-// --> ÇÁ·Î±×·¥À» Á¾·á ÇÏ´õ¶óµµ ÀÌÀü Á¤º¸°¡ ±×´ë·Î ³²¾Æ ÀÖµµ·Ï ÇÏ±â À§ÇÔ
-// --> ¸¶Ä¡ DB¿Í ºñ½ÁÇÔ.
-#if 1
+//ï¿½ï¿½ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½. fseek, rewind)ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+// --> ï¿½ï¿½ï¿½Î±×·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ï´ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½×´ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Öµï¿½ï¿½ï¿½ ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½
+// --> ï¿½ï¿½Ä¡ DBï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½.
+#if 0
 #define _CRT_SECURE_NO_WARNINGS 
 #include <stdio.h>
 #include <string.h>
-#include <stdlib.h>    // atoi itoa mallocµîÀÌ µé¾î ÀÖ´Ù. 
+#include <stdlib.h>    // atoi itoa mallocï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½. 
 #define NAME_LEN   20
 
-void show_menu(void);       // ¸Þ´ºÃâ·Â
-void make_account(void);       // °èÁÂ°³¼³À» À§ÇÑ ÇÔ¼ö
-void deposit_money(void);       // ÀÔ    ±Ý
-void with_draw_money(void);      // Ãâ    ±Ý
-void show_all_acc_info(void);     // ÀÜ¾×Á¶È¸
+void show_menu(void);       // ï¿½Þ´ï¿½ï¿½ï¿½ï¿½
+void make_account(void);       // ï¿½ï¿½ï¿½Â°ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½
+void deposit_money(void);       // ï¿½ï¿½    ï¿½ï¿½
+void with_draw_money(void);      // ï¿½ï¿½    ï¿½ï¿½
+void show_all_acc_info(void);     // ï¿½Ü¾ï¿½ï¿½ï¿½È¸
 
 enum { MAKE = 1, DEPOSIT, WITHDRAW, INQUIRE, EXIT = 9 };
 
-// #define : ¸ÅÅ©·Î (MACRO)
+// #define : ï¿½ï¿½Å©ï¿½ï¿½ (MACRO)
 #define MAKE     1
 #define DEPOSIT  2
 #define WITHDRAW 3
@@ -84,26 +84,26 @@ enum { MAKE = 1, DEPOSIT, WITHDRAW, INQUIRE, EXIT = 9 };
 
 typedef struct
 {
-	int acc_id;      // °èÁÂ¹øÈ£
-	int balance;    // ÀÜ    ¾×
-	char cus_name[NAME_LEN];   // °í°´ÀÌ¸§
+	int acc_id;      // ï¿½ï¿½ï¿½Â¹ï¿½È£
+	int balance;    // ï¿½ï¿½    ï¿½ï¿½
+	char cus_name[NAME_LEN];   // ï¿½ï¿½ï¿½ï¿½ï¿½Ì¸ï¿½
 } t_account;
 /*
 struct
 {
-	int acc_id;     // °èÁÂ¹øÈ£
-	int balance;    // ÀÜ    ¾×
-	char cus_name[NAME_LEN];   // °í°´ÀÌ¸§
+	int acc_id;     // ï¿½ï¿½ï¿½Â¹ï¿½È£
+	int balance;    // ï¿½ï¿½    ï¿½ï¿½
+	char cus_name[NAME_LEN];   // ï¿½ï¿½ï¿½ï¿½ï¿½Ì¸ï¿½
 } account;
 
 struct account acc_arr[100];
 */
-void make_account(t_account* pt, int* pn);   // °èÁÂ°³¼³
-void deposit_money(t_account* pt, int* pn);  // ÀÔ±Ý
-void with_draw_money(t_account* pt, int* pn);  // Ãâ±Ý 
-void show_all_acc_info(t_account* pt, int* pn); // ÀÜ¾×Á¶È¸
+void make_account(t_account* pt, int* pn);   // ï¿½ï¿½ï¿½Â°ï¿½ï¿½ï¿½
+void deposit_money(t_account* pt, int* pn);  // ï¿½Ô±ï¿½
+void with_draw_money(t_account* pt, int* pn);  // ï¿½ï¿½ï¿½ 
+void show_all_acc_info(t_account* pt, int* pn); // ï¿½Ü¾ï¿½ï¿½ï¿½È¸
 
-FILE* filep;   // ÀÌ¸§Àº money_file
+FILE* filep;   // ï¿½Ì¸ï¿½ï¿½ï¿½ money_file
 
 
 
@@ -111,8 +111,8 @@ int main()  // int main(argc, char *argv[])
 {
 	int choice;
 #if 0
-	t_account* acc_arr;   // acc_arr¶ó´Â º¯¼ö´Â t_account Å¸ÀÔÀÇ ±¸Á¶Ã¼ Å¸ÀÔÀÇ 
-	// Æ÷ÀÎÅÍ(ÁÖ¼Ò¸¦ ÀúÀåÇÏ´Â °ø°£(º¯¼ö) ÀÌ´Ù. 
+	t_account* acc_arr;   // acc_arrï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ t_account Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ã¼ Å¸ï¿½ï¿½ï¿½ï¿½ 
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(ï¿½Ö¼Ò¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½) ï¿½Ì´ï¿½. 
 	void (*fp[]) (t_account*, int*) =
 	{
 		NULL, // 0
@@ -124,12 +124,12 @@ int main()  // int main(argc, char *argv[])
 
 
 	acc_arr = (t_account*)malloc(sizeof(t_account) * 10);   // acc_arr[10];
-	// mallocÀÇ ¸®ÅÏ µÇ´Â default´Â char *ÀÌ³ª ÀÌ¸¦ ±¸Á¶Ã¼ Æ÷ÀÎÅÍ·Î º¯È¯
-	// acc_arr¿¡´Â ½ÃÀÛ ¹øÁö°¡ ¸®ÅÏ µÈ´Ù. 
+	// mallocï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ç´ï¿½ defaultï¿½ï¿½ char *ï¿½Ì³ï¿½ ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½ï¿½Í·ï¿½ ï¿½ï¿½È¯
+	// acc_arrï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½È´ï¿½. 
 	if (acc_arr == NULL)
 	{
-		printf("¸Þ¸ð¸® ÇÒ´ç ½ÇÆÐ @!!!!!\n");
-		return -1;   // 0: Á¤»óÁ¾, -1: ½É°¢ÇÑ error
+		printf("ï¿½Þ¸ï¿½ ï¿½Ò´ï¿½ ï¿½ï¿½ï¿½ï¿½ @!!!!!\n");
+		return -1;   // 0: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, -1: ï¿½É°ï¿½ï¿½ï¿½ error
 	}
 
 #else  // orginal 
@@ -141,35 +141,35 @@ int main()  // int main(argc, char *argv[])
 		with_draw_money,
 		show_all_acc_info
 	};
-	t_account acc_arr[10];   // Account ÀúÀåÀ» À§ÇÑ ¹è¿­
+	t_account acc_arr[10];   // Account ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½è¿­
 #endif 
 
-	int acc_num = 0;        // ÀúÀåµÈ Account ¼ö
+	int acc_num = 0;        // ï¿½ï¿½ï¿½ï¿½ï¿½ Account ï¿½ï¿½
 
-	if ((filep = fopen("money_file", "rb+")) == NULL) // ÆÄÀÏ ÁÖ¼Ò ¹ÝÈ¯
+	if ((filep = fopen("money_file", "rb+")) == NULL) // ï¿½ï¿½ï¿½ï¿½ ï¿½Ö¼ï¿½ ï¿½ï¿½È¯
 	{
 		if ((filep = fopen("money_file", "wb+")) == NULL)
 		{
 			fprintf(stderr, "can't open money_file !!!\n");
-			exit(1); // ½ÇÇàÁ¾·á error code 1
+			exit(1); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ error code 1
 		}
 	}
 	while (1)
 	{
 		show_menu();
-		printf("¼±ÅÃ: ");
+		printf("ï¿½ï¿½ï¿½ï¿½: ");
 		scanf("%d", &choice);  // '1' --> 1 --> choice
 		printf("\n");
 		if (choice == 9)
 		{
 			// free(acc_arr);
-			fclose(filep);   // ÆÄÀÏÀÇ ¿¬°áÀ» ²÷´Â´Ù.
+			fclose(filep);   // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â´ï¿½.
 			break;
 		}
 		if (choice >= 1 && choice <= 4)
 			fp[choice](acc_arr, &acc_num);
 
-#if 0  // ÇÔ¼ö Æ÷ÀÎÅÍ ¹è¿­·Î µ¿ÀÛ µÇµµ·Ï ¿Ï¼º ÇÏ½Ã¿À 
+#if 0  // ï¿½Ô¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½è¿­ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Çµï¿½ï¿½ï¿½ ï¿½Ï¼ï¿½ ï¿½Ï½Ã¿ï¿½ 
 		switch (choice)
 		{
 		case MAKE:  // 	case 1:
@@ -185,7 +185,7 @@ int main()  // int main(argc, char *argv[])
 			show_all_acc_info(acc_arr, &acc_num);
 			break;
 		case EXIT:
-			free(acc_arr);   // µ¿Àû ¸Þ¸ð¸®¸¦ ÇØÁ¦ ÇÑ´Ù. 
+			free(acc_arr);   // ï¿½ï¿½ï¿½ï¿½ ï¿½Þ¸ð¸®¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ´ï¿½. 
 			return 0;
 		default:
 			printf("Illegal selection..\n");
@@ -200,11 +200,11 @@ void show_menu(void)
 	char* menu[] =   //  
 	{
 	 "-----Menu------\n",
-	 "1. °èÁÂ°³¼³\n",
-	 "2. ÀÔ    ±Ý\n",
-	 "3. Ãâ    ±Ý\n",
-	 "4. °èÁÂÁ¤º¸ ÀüÃ¼ Ãâ·Â\n",
-	 "9. Á¾    ·á\n"
+	 "1. ï¿½ï¿½ï¿½Â°ï¿½ï¿½ï¿½\n",
+	 "2. ï¿½ï¿½    ï¿½ï¿½\n",
+	 "3. ï¿½ï¿½    ï¿½ï¿½\n",
+	 "4. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½\n",
+	 "9. ï¿½ï¿½    ï¿½ï¿½\n"
 	};
 
 	int i;
@@ -220,23 +220,23 @@ void make_account(t_account* pt, int* pn)
 	int balance;
 	t_account* p = pt + *pn;
 
-	printf("[°èÁÂ°³¼³]\n");
-	printf("°èÁÂID: ");
+	printf("[ï¿½ï¿½ï¿½Â°ï¿½ï¿½ï¿½]\n");
+	printf("ï¿½ï¿½ï¿½ï¿½ID: ");
 	scanf("%d", &id);
-	printf("ÀÌ  ¸§: ");
+	printf("ï¿½ï¿½  ï¿½ï¿½: ");
 	scanf("%s", name);
-	printf("ÀÔ±Ý¾×: ");
+	printf("ï¿½Ô±Ý¾ï¿½: ");
 	scanf("%d", &balance);
 	printf("\n");
 
-	rewind(filep); // ÆÄÀÏÀÇ Çì´õ¸¦ Ã³À½À¸·Î À§Ä¡½ÃÅ²´Ù.
-	for (int i = 0; ;i++)
+	rewind(filep); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½Å²ï¿½ï¿½.
+	for (int i = 0; ; i++)
 	{
 		if (fread((char*)&p->acc_id, 1, sizeof(t_account), filep) == NULL)
 		{
-			break;   // ´õÀÌ»ó ÀÐÀ» µ¥ÀÌÅÍ°¡ ¾øÀ» ¶§
+			break;   // ï¿½ï¿½ï¿½Ì»ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
 		}
-		//ÀÐ´Â °ÍÀ» ¼º°ø ÇßÀ» ¶§
+		//ï¿½Ð´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
 		else if (p->acc_id == id)
 		{
 			printf("Already exist ID %d\n", id);
@@ -244,13 +244,13 @@ void make_account(t_account* pt, int* pn)
 		}
 	}
 
-	fseek(filep, 0, SEEK_END); // Çì´õ¸¦ ÆÄÀÏÀÇ ¸Ç ³¡À¸·Î º¸³¿
+	fseek(filep, 0, SEEK_END); // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
 	p->acc_id = id;   // (*p).acc_id = id;
 	p->balance = balance;
 	strcpy(p->cus_name, name);
 	fwrite((char*)&p->acc_id, 1, sizeof(t_account), filep);
-	*pn += 1;  // pn +=1   ÁÖ¼Ò°¡ Áõ°¡ µÇ´Â°ÍÀÌ´Ù. 
+	*pn += 1;  // pn +=1   ï¿½Ö¼Ò°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ç´Â°ï¿½ï¿½Ì´ï¿½. 
 }
 
 void deposit_money(t_account* pt, int* pn)
@@ -259,10 +259,10 @@ void deposit_money(t_account* pt, int* pn)
 	int id, i, size;
 	t_account* p = pt;
 
-	printf("[ÀÔ    ±Ý]\n");
-	printf("°èÁÂID: ");
+	printf("[ï¿½ï¿½    ï¿½ï¿½]\n");
+	printf("ï¿½ï¿½ï¿½ï¿½ID: ");
 	scanf("%d", &id);
-	printf("ÀÔ±Ý¾×: ");
+	printf("ï¿½Ô±Ý¾ï¿½: ");
 	scanf("%d", &money);
 
 	rewind(filep);
@@ -272,20 +272,20 @@ void deposit_money(t_account* pt, int* pn)
 	{
 		if (fread((char*)&p->acc_id, 1, sizeof(t_account), filep) == NULL)
 		{
-			break;   // ´õÀÌ»ó ÀÐÀ» µ¥ÀÌÅÍ°¡ ¾øÀ» ¶§
+			break;   // ï¿½ï¿½ï¿½Ì»ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
 		}
-		//ÀÐ´Â °ÍÀ» ¼º°ø ÇßÀ» ¶§
+		//ï¿½Ð´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
 		else if (p->acc_id == id)
 		{
 			p->balance += money;
 			size = sizeof(t_account);
-			fseek(filep, -size, SEEK_CUR); // ÇöÀç Çì´õ¿¡¼­ -28byte¸¸Å­ ¿Å±ä´Ù..
+			fseek(filep, -size, SEEK_CUR); // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ -28byteï¿½ï¿½Å­ ï¿½Å±ï¿½ï¿½..
 			fwrite((char*)&p->acc_id, 1, sizeof(t_account), filep);
-			printf("ÀÔ±Ý¿Ï·á\n\n");
+			printf("ï¿½Ô±Ý¿Ï·ï¿½\n\n");
 			return;
 		}
 	}
-	printf("À¯È¿ÇÏÁö ¾ÊÀº ID ÀÔ´Ï´Ù.\n\n");
+	printf("ï¿½ï¿½È¿ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ID ï¿½Ô´Ï´ï¿½.\n\n");
 }
 
 void with_draw_money(t_account* pt, int* pn)
@@ -294,10 +294,10 @@ void with_draw_money(t_account* pt, int* pn)
 	int id, i, size;
 	t_account* p = pt;
 
-	printf("[Ãâ    ±Ý]\n");
-	printf("°èÁÂID: ");
+	printf("[ï¿½ï¿½    ï¿½ï¿½]\n");
+	printf("ï¿½ï¿½ï¿½ï¿½ID: ");
 	scanf("%d", &id);
-	printf("Ãâ±Ý¾×: ");
+	printf("ï¿½ï¿½Ý¾ï¿½: ");
 	scanf("%d", &money);
 
 	rewind(filep);
@@ -307,26 +307,26 @@ void with_draw_money(t_account* pt, int* pn)
 	{
 		if (fread((char*)&p->acc_id, 1, sizeof(t_account), filep) == NULL)
 		{
-			break;   // ´õÀÌ»ó ÀÐÀ» µ¥ÀÌÅÍ°¡ ¾øÀ» ¶§
+			break;   // ï¿½ï¿½ï¿½Ì»ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
 		}
 		else if (p->acc_id == id)
 		{
 
 			if (p->balance < money)
 			{
-				printf("ÀÜ¾×ºÎÁ·\n\n");
+				printf("ï¿½Ü¾×ºï¿½ï¿½ï¿½\n\n");
 				return;
 			}
 
 			p->balance -= money;  // acc_arr[i].balance = acc_arr[i].balance - money;
 			size = sizeof(t_account);
-			fseek(filep, -size, SEEK_CUR); // ÇöÀç Çì´õ¿¡¼­ -28byte¸¸Å­ ¿Å±ä´Ù..
+			fseek(filep, -size, SEEK_CUR); // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ -28byteï¿½ï¿½Å­ ï¿½Å±ï¿½ï¿½..
 			fwrite((char*)&p->acc_id, 1, sizeof(t_account), filep);
-			printf("Ãâ±Ý¿Ï·á\n\n");
+			printf("ï¿½ï¿½Ý¿Ï·ï¿½\n\n");
 			return;
 		}
 	}
-	printf("À¯È¿ÇÏÁö ¾ÊÀº ID ÀÔ´Ï´Ù.\n\n");
+	printf("ï¿½ï¿½È¿ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ID ï¿½Ô´Ï´ï¿½.\n\n");
 }
 
 void show_all_acc_info(t_account* pt, int* pn)
@@ -334,24 +334,24 @@ void show_all_acc_info(t_account* pt, int* pn)
 	int i;
 	t_account* p = pt;
 
-	rewind(filep); //Çì´õ¸¦ ¸Ç À§·Î ¿Å±è
+	rewind(filep); //ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Å±ï¿½
 
 	//for (i = 0; i < *pn; i++, p++)
-	for (i = 0; ;i++, p++)
+	for (i = 0; ; i++, p++)
 	{
 		if (fread((char*)&p->acc_id, 1, sizeof(t_account), filep) == NULL)
 		{
-			break;   // ´õÀÌ»ó ÀÐÀ» µ¥ÀÌÅÍ°¡ ¾øÀ» ¶§
+			break;   // ï¿½ï¿½ï¿½Ì»ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
 		}
-		printf("°èÁÂID: %d\n", p->acc_id);
-		printf("ÀÌ  ¸§: %s\n", p->cus_name);
-		printf("ÀÜ  ¾×: %d\n\n", p->balance);
+		printf("ï¿½ï¿½ï¿½ï¿½ID: %d\n", p->acc_id);
+		printf("ï¿½ï¿½  ï¿½ï¿½: %s\n", p->cus_name);
+		printf("ï¿½ï¿½  ï¿½ï¿½: %d\n\n", p->balance);
 	}
 	printf("\n");
 }
 #endif
 
-//17-8 ¹®Á¦    ±¸Á¶Ã¼ Æ÷ÀÎÅÍ ¹è¿­
+//17-8 ï¿½ï¿½ï¿½ï¿½    ï¿½ï¿½ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½è¿­
 #if 0
 struct address
 {
@@ -362,8 +362,8 @@ struct address
 };
 typedef struct address t_address;
 
-void print_all(t_address *lp);
-void print_one(t_address *lp, char *nm);
+void print_all(t_address* lp);
+void print_one(t_address* lp, char* nm);
 
 void print_list(struct address* lp);
 
@@ -372,16 +372,16 @@ int main(void)
 	char input[80];
 	char name[80];
 	struct address list[5] = {
-		{"È«±æµ¿", 23, "111-1111", "¿ï¸ªµµ µ¶µµ"},
-		{"ÀÌ¼ø½Å", 35, "222-2222", "¼­¿ï °ÇÃµµ¿"},
-		{"Àåº¸°í", 19, "333-3333", "¿Ïµµ Ã»ÇØÁø"},
-		{"À¯°ü¼ø", 15, "444-4444", "Ãæ³² Ãµ¾È"},
-		{"¾ÈÁß±Ù", 45, "555-5555", "È²ÇØµµ ÇØÁÖ"},
+		{"È«ï¿½æµ¿", 23, "111-1111", "ï¿½ï¸ªï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½"},
+		{"ï¿½Ì¼ï¿½ï¿½ï¿½", 35, "222-2222", "ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ãµï¿½ï¿½"},
+		{"ï¿½åº¸ï¿½ï¿½", 19, "333-3333", "ï¿½Ïµï¿½ Ã»ï¿½ï¿½ï¿½ï¿½"},
+		{"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", 15, "444-4444", "ï¿½æ³² Ãµï¿½ï¿½"},
+		{"ï¿½ï¿½ï¿½ß±ï¿½", 45, "555-5555", "È²ï¿½Øµï¿½ ï¿½ï¿½ï¿½ï¿½"},
 	};
 
 	while (1)
 	{
-		printf("1: ÀüÃ¼ º¸±â, 2: ¼±ÅÃ º¸±â, 9: ³ª°¡±â   ÀÔ·Â : ");
+		printf("1: ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½, 2: ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½, 9: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½   ï¿½Ô·ï¿½ : ");
 		fgets(input, 10, stdin);
 		int sel = atoi(input);
 		if (sel == 9)
@@ -394,7 +394,7 @@ int main(void)
 		}
 		else if (sel == 2)
 		{
-			printf("ÀÌ¸§ : ");
+			printf("ï¿½Ì¸ï¿½ : ");
 			scanf("%s", name);
 			getchar();
 			print_one(list, name);
@@ -429,19 +429,19 @@ void print_one(t_address* lp, char* nm)
 
 #endif
 
-// µ¿Àû ¸Þ¸ð¸® ÇÒ´ç
+// ï¿½ï¿½ï¿½ï¿½ ï¿½Þ¸ï¿½ ï¿½Ò´ï¿½
 /*
-1. ±¸Á¶Ã¼ ¹è¿­ Á¤Àû ¸Þ¸ð¸®¸¦ µ¿Àû ¸Þ¸ð¸®·Î ÇÒ´çÇÏ±â
-2. switch~case ¹®À» ÇÔ¼ö Æ÷ÀÎÅÍ ¹è¿­·Î µ¿ÀÛÇÏµµ·Ï ÇÏ±â
+1. ï¿½ï¿½ï¿½ï¿½Ã¼ ï¿½è¿­ ï¿½ï¿½ï¿½ï¿½ ï¿½Þ¸ð¸®¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Þ¸ð¸®·ï¿½ ï¿½Ò´ï¿½ï¿½Ï±ï¿½
+2. switch~case ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½è¿­ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½ ï¿½Ï±ï¿½
 */
 #if 0
 #define _CRT_SECURE_NO_WARNINGS
-#include <stdio.h> //±¸Á¶Ã¼
+#include <stdio.h> //ï¿½ï¿½ï¿½ï¿½Ã¼
 #include <string.h>
 #include <stdlib.h>
 #define NAME_LEN   20
 
-//#define : ¸ÅÅ©·Î (MACRO)
+//#define : ï¿½ï¿½Å©ï¿½ï¿½ (MACRO)
 #define MAKE     1
 #define DEPOSIT  2
 #define WITHDRAW 3
@@ -449,29 +449,29 @@ void print_one(t_address* lp, char* nm)
 #define EXIT     9
 
 
-typedef struct // t_account ·Î redefine ÇÑ´Ù			28byte
+typedef struct // t_account ï¿½ï¿½ redefine ï¿½Ñ´ï¿½			28byte
 {
-	int acc_id;      // °èÁÂ¹øÈ£
-	int balance;    // ÀÜ    ¾×
-	char cus_name[NAME_LEN];   // °í°´ÀÌ¸§
+	int acc_id;      // ï¿½ï¿½ï¿½Â¹ï¿½È£
+	int balance;    // ï¿½ï¿½    ï¿½ï¿½
+	char cus_name[NAME_LEN];   // ï¿½ï¿½ï¿½ï¿½ï¿½Ì¸ï¿½
 } t_account;
 
 void show_menu(void);
-void make_account(t_account* pt, int* pn); // °èÁÂ °³¼³
-void deposit_money(t_account* pt, int* pn); // ÀÔ±Ý
-void with_draw_money(t_account* pt, int* pn); // Ãâ±Ý
-void show_all_acc_info(t_account* pt, int* pn); // ÀÜ¾×Á¶È¸
+void make_account(t_account* pt, int* pn); // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+void deposit_money(t_account* pt, int* pn); // ï¿½Ô±ï¿½
+void with_draw_money(t_account* pt, int* pn); // ï¿½ï¿½ï¿½
+void show_all_acc_info(t_account* pt, int* pn); // ï¿½Ü¾ï¿½ï¿½ï¿½È¸
 
 int main()  // int main(argc, char *argv[])
 {
 	int choice;
-	int acc_num = 0;        // ÀúÀåµÈ Account ¼ö
+	int acc_num = 0;        // ï¿½ï¿½ï¿½ï¿½ï¿½ Account ï¿½ï¿½
 #if 1
-	t_account* acc_arr;	// acc_arrÀÌ¶ó´Â º¯¼ö´Â t_account Å¸ÀÔÀÇ ±¸Á¶Ã¼ Å¸ÀÔÀÇ
-	//Æ÷ÀÎÅÍ(ÁÖ¼Ò¸¦ ÀúÀåÇÏ´Â °ø°£(º¯¼ö))ÀÌ´Ù.
+	t_account* acc_arr;	// acc_arrï¿½Ì¶ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ t_account Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ã¼ Å¸ï¿½ï¿½ï¿½ï¿½
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(ï¿½Ö¼Ò¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½))ï¿½Ì´ï¿½.
 	void (*fp[]) (t_account*, int*) =
 	{
-		NULL, // 0¹ø ¹è¿­Àº ¹ö¸².
+		NULL, // 0ï¿½ï¿½ ï¿½è¿­ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
 		make_account,
 		deposit_money,
 		with_draw_money,
@@ -479,24 +479,24 @@ int main()  // int main(argc, char *argv[])
 	};
 
 
-	acc_arr = (t_account*)malloc(sizeof(t_account) * 10); // ±¸Á¶Ã¼ »çÀÌÁî¸¸Å­ ³Ñ°ÜÁÜ        acc_arr[10];ÀÌ¶û °°À½.			mallocÀº charÅ¸ÀÔÀÌ¶ó Çüº¯È¯ ÇÊ¿ä.
-	// mallocÀÇ ¸®ÅÏµÇ´Â default´Â char *ÀÌ³ª ÀÌ¸¦ ±¸Á¶Ã¼ Æ÷ÀÎÅÍ·Î º¯È¯. (t_account *) ºÙÀÓ.
-	// acc_arr¿¡´Â ½ÃÀÛ ¹øÁö°¡ ¸®ÅÏµÈ´Ù.
+	acc_arr = (t_account*)malloc(sizeof(t_account) * 10); // ï¿½ï¿½ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½ï¿½î¸¸Å­ ï¿½Ñ°ï¿½ï¿½ï¿½        acc_arr[10];ï¿½Ì¶ï¿½ ï¿½ï¿½ï¿½ï¿½.			mallocï¿½ï¿½ charÅ¸ï¿½ï¿½ï¿½Ì¶ï¿½ ï¿½ï¿½ï¿½ï¿½È¯ ï¿½Ê¿ï¿½.
+	// mallocï¿½ï¿½ ï¿½ï¿½ï¿½ÏµÇ´ï¿½ defaultï¿½ï¿½ char *ï¿½Ì³ï¿½ ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½ï¿½Í·ï¿½ ï¿½ï¿½È¯. (t_account *) ï¿½ï¿½ï¿½ï¿½.
+	// acc_arrï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ÏµÈ´ï¿½.
 	if (acc_arr == NULL)
 	{
-		printf("¸Þ¸ð¸® ÇÒ´ç ½ÇÆÐ!\n");
-		return -1; // 0Àº Á¤»ó Á¾·á, -1Àº ½É°¢ÇÑ error
+		printf("ï¿½Þ¸ï¿½ ï¿½Ò´ï¿½ ï¿½ï¿½ï¿½ï¿½!\n");
+		return -1; // 0ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½, -1ï¿½ï¿½ ï¿½É°ï¿½ï¿½ï¿½ error
 	}
 
 
 #else // original
-	t_account acc_arr[10];   // Account ÀúÀåÀ» À§ÇÑ ¹è¿­, 100°³°¡ ¿¬¼ÓÀ¸·Î ÀâÈù´Ù.
+	t_account acc_arr[10];   // Account ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½è¿­, 100ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
 #endif
 
 	while (1)
 	{
 		show_menu();
-		printf("¼±ÅÃ:(1 : make, 2: deposit, 3: withdraw, 4 : inquire, 9 : exit)");
+		printf("ï¿½ï¿½ï¿½ï¿½:(1 : make, 2: deposit, 3: withdraw, 4 : inquire, 9 : exit)");
 		scanf("%d", &choice);  // '1' --> 1 --> choice
 		printf("\n");
 		if (choice == 9)
@@ -509,7 +509,7 @@ int main()  // int main(argc, char *argv[])
 			fp[choice](acc_arr, &acc_num);
 		}
 
-#if 1 // ÇÔ¼ö Æ÷ÀÎÅÍ ¹è¿­·Î µ¿ÀÛµÇµµ·Ï
+#if 1 // ï¿½Ô¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½è¿­ï¿½ï¿½ ï¿½ï¿½ï¿½ÛµÇµï¿½ï¿½ï¿½
 
 #else	//original
 		switch (choice)
@@ -527,7 +527,7 @@ int main()  // int main(argc, char *argv[])
 			show_all_acc_info();
 			break;
 		case EXIT:
-			free(acc_arr);	// µ¿Àû ¸Þ¸ð¸®¸¦ ÇØÁ¦ÇÑ´Ù.
+			free(acc_arr);	// ï¿½ï¿½ï¿½ï¿½ ï¿½Þ¸ð¸®¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
 			return 0;
 		default:
 			printf("Illegal selection..\n");
@@ -539,14 +539,14 @@ int main()  // int main(argc, char *argv[])
 
 void show_menu(void)
 {
-	char* menu[] =  // ¿ø·¡´Â char menu[6][32] = ÀÌ·±½ÄÀ¸·Î ¸Þ¸ð¸®¸¦ °è¼Ó Àâ°í ÀÖ¾î¾ßÇßÀ½.
+	char* menu[] =  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ char menu[6][32] = ï¿½Ì·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Þ¸ð¸®¸ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Ö¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
 	{
 	 "-----Menu------\n",
-	 "1. °èÁÂ°³¼³\n",
-	 "2. ÀÔ    ±Ý\n",
-	 "3. Ãâ    ±Ý\n",
-	 "4. °èÁÂÁ¤º¸ ÀüÃ¼ Ãâ·Â\n",
-	 "9. Á¾    ·á\n"
+	 "1. ï¿½ï¿½ï¿½Â°ï¿½ï¿½ï¿½\n",
+	 "2. ï¿½ï¿½    ï¿½ï¿½\n",
+	 "3. ï¿½ï¿½    ï¿½ï¿½\n",
+	 "4. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½\n",
+	 "9. ï¿½ï¿½    ï¿½ï¿½\n"
 	};
 	int i;
 
@@ -559,21 +559,21 @@ void make_account(t_account* pt, int* pn)
 	int id;
 	char name[NAME_LEN];
 	int balance;
-	t_account* p = pt + *pn; //µÚ¿¡¼­ ÁÖ¼ÒÀÇ ½ÃÀÛÁ¡ÀÌ Æ²¾îÁú ¼ö ÀÖ¾î¼­ ´ëÇÇ½ÃÅ´.
+	t_account* p = pt + *pn; //ï¿½Ú¿ï¿½ï¿½ï¿½ ï¿½Ö¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Æ²ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ö¾î¼­ ï¿½ï¿½ï¿½Ç½ï¿½Å´.
 
-	printf("[°èÁÂ°³¼³]\n");
-	printf("°èÁÂID: ");
+	printf("[ï¿½ï¿½ï¿½Â°ï¿½ï¿½ï¿½]\n");
+	printf("ï¿½ï¿½ï¿½ï¿½ID: ");
 	scanf("%d", &id);
-	printf("ÀÌ  ¸§: ");
+	printf("ï¿½ï¿½  ï¿½ï¿½: ");
 	scanf("%s", name);
-	printf("ÀÔ±Ý¾×: ");
+	printf("ï¿½Ô±Ý¾ï¿½: ");
 	scanf("%d", &balance);
 	printf("\n");
 
 	p->acc_id = id;
 	p->balance = balance;
 	strcpy(p->cus_name, name);
-	*pn += 1;	// pn += 1 ÀÌ·¸°Ô ÁÖ¼Ò°¡ Áõ°¡µÊ.
+	*pn += 1;	// pn += 1 ï¿½Ì·ï¿½ï¿½ï¿½ ï¿½Ö¼Ò°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
 }
 
 void deposit_money(t_account* pt, int* pn)
@@ -582,10 +582,10 @@ void deposit_money(t_account* pt, int* pn)
 	int id, i;
 	t_account* p = pt;
 
-	printf("[ÀÔ    ±Ý]\n");
-	printf("°èÁÂID: ");
+	printf("[ï¿½ï¿½    ï¿½ï¿½]\n");
+	printf("ï¿½ï¿½ï¿½ï¿½ID: ");
 	scanf("%d", &id);
-	printf("ÀÔ±Ý¾×: ");
+	printf("ï¿½Ô±Ý¾ï¿½: ");
 	scanf("%d", &money);
 
 	for (i = 0; i < *pn; i++, p++)
@@ -593,11 +593,11 @@ void deposit_money(t_account* pt, int* pn)
 		if (p->acc_id == id)
 		{
 			p->balance += money;
-			printf("ÀÔ±Ý¿Ï·á\n\n");
+			printf("ï¿½Ô±Ý¿Ï·ï¿½\n\n");
 			return;
 		}
 	}
-	printf("À¯È¿ÇÏÁö ¾ÊÀº ID ÀÔ´Ï´Ù.\n\n");
+	printf("ï¿½ï¿½È¿ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ID ï¿½Ô´Ï´ï¿½.\n\n");
 }
 
 void with_draw_money(t_account* pt, int* pn)
@@ -606,10 +606,10 @@ void with_draw_money(t_account* pt, int* pn)
 	int money;
 	int id, i;
 
-	printf("[Ãâ    ±Ý]\n");
-	printf("°èÁÂID: ");
+	printf("[ï¿½ï¿½    ï¿½ï¿½]\n");
+	printf("ï¿½ï¿½ï¿½ï¿½ID: ");
 	scanf("%d", &id);
-	printf("Ãâ±Ý¾×: ");
+	printf("ï¿½ï¿½Ý¾ï¿½: ");
 	scanf("%d", &money);
 
 	for (i = 0; i < *pn; i++, p++)
@@ -618,16 +618,16 @@ void with_draw_money(t_account* pt, int* pn)
 		{
 			if (p->balance < money)
 			{
-				printf("ÀÜ¾×ºÎÁ·\n\n");
+				printf("ï¿½Ü¾×ºï¿½ï¿½ï¿½\n\n");
 				return;
 			}
 
 			p->balance -= money;  // acc_arr[i].balance = acc_arr[i].balance - money;
-			printf("Ãâ±Ý¿Ï·á\n\n");
+			printf("ï¿½ï¿½Ý¿Ï·ï¿½\n\n");
 			return;
 		}
 	}
-	printf("À¯È¿ÇÏÁö ¾ÊÀº ID ÀÔ´Ï´Ù.\n\n");
+	printf("ï¿½ï¿½È¿ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ID ï¿½Ô´Ï´ï¿½.\n\n");
 }
 
 void show_all_acc_info(t_account* pt, int* pn)
@@ -637,16 +637,16 @@ void show_all_acc_info(t_account* pt, int* pn)
 
 	for (i = 0; i < *pn; i++, p++)
 	{
-		printf("°èÁÂID: %d\n", p->acc_id);
-		printf("ÀÌ  ¸§: %s\n", p->cus_name);
-		printf("ÀÜ  ¾×: %d\n\n", p->balance);
+		printf("ï¿½ï¿½ï¿½ï¿½ID: %d\n", p->acc_id);
+		printf("ï¿½ï¿½  ï¿½ï¿½: %s\n", p->cus_name);
+		printf("ï¿½ï¿½  ï¿½ï¿½: %d\n\n", p->balance);
 	}
 }
 #endif 
-// Á¤Àû ¸Þ¸ð¸® ÇÒ´ç
+// ï¿½ï¿½ï¿½ï¿½ ï¿½Þ¸ï¿½ ï¿½Ò´ï¿½
 #if 0
 #define _CRT_SECURE_NO_WARNINGS
-#include <stdio.h> //±¸Á¶Ã¼
+#include <stdio.h> //ï¿½ï¿½ï¿½ï¿½Ã¼
 #include <string.h>
 #define NAME_LEN   20
 
@@ -657,30 +657,30 @@ void show_all_acc_info(t_account* pt, int* pn)
 #define EXIT     9
 
 
-typedef struct // t_account ·Î redefine ÇÑ´Ù
+typedef struct // t_account ï¿½ï¿½ redefine ï¿½Ñ´ï¿½
 {
-	int acc_id;      // °èÁÂ¹øÈ£
-	int balance;    // ÀÜ    ¾×
-	char cus_name[NAME_LEN];   // °í°´ÀÌ¸§
+	int acc_id;      // ï¿½ï¿½ï¿½Â¹ï¿½È£
+	int balance;    // ï¿½ï¿½    ï¿½ï¿½
+	char cus_name[NAME_LEN];   // ï¿½ï¿½ï¿½ï¿½ï¿½Ì¸ï¿½
 } t_account;
 
 void show_menu(void);
-void make_account(t_account* pt, int* acc_num); // °èÁÂ °³¼³
-void deposit_money(t_account* pt, int* acc_num); // ÀÔ±Ý
-void with_draw_money(t_account* pt, int* acc_num); // Ãâ±Ý
-void show_all_acc_info(t_account* pt, int* acc_num); // ÀÜ¾×Á¶È¸
+void make_account(t_account* pt, int* acc_num); // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+void deposit_money(t_account* pt, int* acc_num); // ï¿½Ô±ï¿½
+void with_draw_money(t_account* pt, int* acc_num); // ï¿½ï¿½ï¿½
+void show_all_acc_info(t_account* pt, int* acc_num); // ï¿½Ü¾ï¿½ï¿½ï¿½È¸
 
 int main()  // int main(argc, char *argv[])
 {
-	t_account acc_arr[100];   // Account ÀúÀåÀ» À§ÇÑ ¹è¿­, 100°³°¡ ¿¬¼ÓÀ¸·Î ÀâÈù´Ù.
+	t_account acc_arr[100];   // Account ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½è¿­, 100ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
 
-	int acc_num = 0;        // ÀúÀåµÈ Account ¼ö
+	int acc_num = 0;        // ï¿½ï¿½ï¿½ï¿½ï¿½ Account ï¿½ï¿½
 	int choice;
 
 	while (1)
 	{
 		show_menu();
-		printf("¼±ÅÃ: ");
+		printf("ï¿½ï¿½ï¿½ï¿½: ");
 		scanf("%d", &choice);  // '1' --> 1 --> choice
 		printf("\n");
 
@@ -709,14 +709,14 @@ int main()  // int main(argc, char *argv[])
 
 void show_menu(void)
 {
-	char* menu[] =  // ¿ø·¡´Â char menu[6][32] = ÀÌ·±½ÄÀ¸·Î ¸Þ¸ð¸®¸¦ °è¼Ó Àâ°í ÀÖ¾î¾ßÇßÀ½.
+	char* menu[] =  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ char menu[6][32] = ï¿½Ì·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Þ¸ð¸®¸ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Ö¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
 	{
 	 "-----Menu------\n",
-	 "1. °èÁÂ°³¼³\n",
-	 "2. ÀÔ    ±Ý\n",
-	 "3. Ãâ    ±Ý\n",
-	 "4. °èÁÂÁ¤º¸ ÀüÃ¼ Ãâ·Â\n",
-	 "9. Á¾    ·á\n"
+	 "1. ï¿½ï¿½ï¿½Â°ï¿½ï¿½ï¿½\n",
+	 "2. ï¿½ï¿½    ï¿½ï¿½\n",
+	 "3. ï¿½ï¿½    ï¿½ï¿½\n",
+	 "4. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½\n",
+	 "9. ï¿½ï¿½    ï¿½ï¿½\n"
 	};
 	int i;
 
@@ -729,21 +729,21 @@ void make_account(t_account* pt, int* acc_num)
 	int id;
 	char name[NAME_LEN];
 	int balance;
-	t_account* p = pt + *acc_num; //µÚ¿¡¼­ ÁÖ¼ÒÀÇ ½ÃÀÛÁ¡ÀÌ Æ²¾îÁú ¼ö ÀÖ¾î¼­ ´ëÇÇ½ÃÅ´.
+	t_account* p = pt + *acc_num; //ï¿½Ú¿ï¿½ï¿½ï¿½ ï¿½Ö¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Æ²ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ö¾î¼­ ï¿½ï¿½ï¿½Ç½ï¿½Å´.
 
-	printf("[°èÁÂ°³¼³]\n");
-	printf("°èÁÂID: ");
+	printf("[ï¿½ï¿½ï¿½Â°ï¿½ï¿½ï¿½]\n");
+	printf("ï¿½ï¿½ï¿½ï¿½ID: ");
 	scanf("%d", &id);
-	printf("ÀÌ  ¸§: ");
+	printf("ï¿½ï¿½  ï¿½ï¿½: ");
 	scanf("%s", name);
-	printf("ÀÔ±Ý¾×: ");
+	printf("ï¿½Ô±Ý¾ï¿½: ");
 	scanf("%d", &balance);
 	printf("\n");
 
 	p->acc_id = id;
 	p->balance = balance;
 	strcpy(p->cus_name, name);
-	*acc_num += 1;	// pn += 1 ÀÌ·¸°Ô ÁÖ¼Ò°¡ Áõ°¡µÊ.
+	*acc_num += 1;	// pn += 1 ï¿½Ì·ï¿½ï¿½ï¿½ ï¿½Ö¼Ò°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
 }
 
 void deposit_money(t_account* pt, int* acc_num)
@@ -752,10 +752,10 @@ void deposit_money(t_account* pt, int* acc_num)
 	int id, i;
 	t_account* p = pt;
 
-	printf("[ÀÔ    ±Ý]\n");
-	printf("°èÁÂID: ");
+	printf("[ï¿½ï¿½    ï¿½ï¿½]\n");
+	printf("ï¿½ï¿½ï¿½ï¿½ID: ");
 	scanf("%d", &id);
-	printf("ÀÔ±Ý¾×: ");
+	printf("ï¿½Ô±Ý¾ï¿½: ");
 	scanf("%d", &money);
 
 	for (i = 0; i < *acc_num; i++, p++)
@@ -763,11 +763,11 @@ void deposit_money(t_account* pt, int* acc_num)
 		if (p->acc_id == id)
 		{
 			p->balance += money;
-			printf("ÀÔ±Ý¿Ï·á\n\n");
+			printf("ï¿½Ô±Ý¿Ï·ï¿½\n\n");
 			return;
 		}
 	}
-	printf("À¯È¿ÇÏÁö ¾ÊÀº ID ÀÔ´Ï´Ù.\n\n");
+	printf("ï¿½ï¿½È¿ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ID ï¿½Ô´Ï´ï¿½.\n\n");
 }
 
 void with_draw_money(t_account* pt, int* acc_num)
@@ -776,10 +776,10 @@ void with_draw_money(t_account* pt, int* acc_num)
 	int money;
 	int id, i;
 
-	printf("[Ãâ    ±Ý]\n");
-	printf("°èÁÂID: ");
+	printf("[ï¿½ï¿½    ï¿½ï¿½]\n");
+	printf("ï¿½ï¿½ï¿½ï¿½ID: ");
 	scanf("%d", &id);
-	printf("Ãâ±Ý¾×: ");
+	printf("ï¿½ï¿½Ý¾ï¿½: ");
 	scanf("%d", &money);
 
 	for (i = 0; i < *acc_num; i++, p++)
@@ -788,16 +788,16 @@ void with_draw_money(t_account* pt, int* acc_num)
 		{
 			if (p->balance < money)
 			{
-				printf("ÀÜ¾×ºÎÁ·\n\n");
+				printf("ï¿½Ü¾×ºï¿½ï¿½ï¿½\n\n");
 				return;
 			}
 
 			p->balance -= money;  // acc_arr[i].balance = acc_arr[i].balance - money;
-			printf("Ãâ±Ý¿Ï·á\n\n");
+			printf("ï¿½ï¿½Ý¿Ï·ï¿½\n\n");
 			return;
 		}
 	}
-	printf("À¯È¿ÇÏÁö ¾ÊÀº ID ÀÔ´Ï´Ù.\n\n");
+	printf("ï¿½ï¿½È¿ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ID ï¿½Ô´Ï´ï¿½.\n\n");
 }
 
 void show_all_acc_info(t_account* pt, int* acc_num)
@@ -807,18 +807,18 @@ void show_all_acc_info(t_account* pt, int* acc_num)
 
 	for (i = 0; i < *acc_num; i++, p++)
 	{
-		printf("°èÁÂID: %d\n", p->acc_id);
-		printf("ÀÌ  ¸§: %s\n", p->cus_name);
-		printf("ÀÜ  ¾×: %d\n\n", p->balance);
+		printf("ï¿½ï¿½ï¿½ï¿½ID: %d\n", p->acc_id);
+		printf("ï¿½ï¿½  ï¿½ï¿½: %s\n", p->cus_name);
+		printf("ï¿½ï¿½  ï¿½ï¿½: %d\n\n", p->balance);
 	}
 }
 #endif 
 
 /*
-1. ±¸Á¶Ã¼¸¦ Á¤Àû ¸Þ¸ð¸® ÇÒ´ç ÈÄ »ç¿ëÀÚ·ÎºÎÅÍ µ¥ÀÌÅÍ¸¦ ÀÔ·Â ¹Þ¾Æ printÇÏ´Â ÇÁ·Î±×·¥À» ÀÛ¼ºÇÑ´Ù. (±¸Á¶Ã¼ Æ÷ÀÎÅÍ¸¦ È°¿ë)
-	(1) ÀÌ¸§ ³ªÀÌ ÁÖ¼Ò¸¦ ÀÔ·Â ¹Þ¾Æ¼­ ±¸Á¶Ã¼ ¹è¿­¿¡ ÀúÀåÇÏ°í
-	(2) »ç¿ëÀÚ·Î ºÎÅÍ end ÀÔ·ÂÀ» ¹ÞÀ¸¸é ÀÔ·ÂÀ» Á¾·áÇÏ°í
-	(3) ÇöÀç±îÁö ±¸Á¶Ã¼ ¹è¿­¿¡ ÀúÀåµÈ µ¥ÀÌÅÍ¸¦ ÇÁ¸°Æ®ÇÑ´Ù.
+1. ï¿½ï¿½ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Þ¸ï¿½ ï¿½Ò´ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ú·Îºï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½Ô·ï¿½ ï¿½Þ¾ï¿½ printï¿½Ï´ï¿½ ï¿½ï¿½ï¿½Î±×·ï¿½ï¿½ï¿½ ï¿½Û¼ï¿½ï¿½Ñ´ï¿½. (ï¿½ï¿½ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ È°ï¿½ï¿½)
+	(1) ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ö¼Ò¸ï¿½ ï¿½Ô·ï¿½ ï¿½Þ¾Æ¼ï¿½ ï¿½ï¿½ï¿½ï¿½Ã¼ ï¿½è¿­ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½
+	(2) ï¿½ï¿½ï¿½ï¿½Ú·ï¿½ ï¿½ï¿½ï¿½ï¿½ end ï¿½Ô·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½
+	(3) ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ã¼ ï¿½è¿­ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½Ñ´ï¿½.
 */
 #if 0
 #define NUMBER 10
@@ -835,7 +835,7 @@ copy_person(t_person* p, char* pn, int* page, char* paddr, int* pcount);
 
 int main(void)
 {
-	t_person p1[NUMBER]; //»ç¶÷À» ÀúÀåÇÏ±â À§ÇÑ ¹è¿­
+	t_person p1[NUMBER]; //ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½è¿­
 	char name[20];
 	int age = 0;
 	char address[40];
@@ -847,12 +847,12 @@ int main(void)
 		scanf("%s", name);
 		scanf("%d", age);
 		scanf("%s", address);
-		// ±¸Á¶Ã¼¿¡ name, age, address¸¦ ³Ö¾î¾ßÇÔ.
+		// ï¿½ï¿½ï¿½ï¿½Ã¼ï¿½ï¿½ name, age, addressï¿½ï¿½ ï¿½Ö¾ï¿½ï¿½ï¿½ï¿½.
 		if (strncmp(name, "end", 3) == 0)
 		{
 			print_person(p1, count);
 			break;
-			//ÀÌ¸§  ³ªÀÌ  ÁÖ¼Ò
+			//ï¿½Ì¸ï¿½  ï¿½ï¿½ï¿½ï¿½  ï¿½Ö¼ï¿½
 			//==== ===== =====
 		}
 		else
@@ -865,7 +865,7 @@ int main(void)
 
 copy_person(t_person* p, char* pn, int* page, char* paddr, int* pcount)
 {
-	strcpy((*p).name, pn); // strcpy´Â ÁÖ¼Ò¸¦ ³Ñ°ÜÁà¼­ *¸¦ ¾È ºÙÀÓ
+	strcpy((*p).name, pn); // strcpyï¿½ï¿½ ï¿½Ö¼Ò¸ï¿½ ï¿½Ñ°ï¿½ï¿½à¼­ *ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	p->age = *page;
 	strcpy(p->address, paddr);
 	*pcount += 1;
@@ -875,7 +875,7 @@ print_person(t_person* p, int n)
 {
 	t_person* pt = p;
 
-	printf("ÀÌ¸§   ³ªÀÌ   ÁÖ¼Ò\n");
+	printf("ï¿½Ì¸ï¿½   ï¿½ï¿½ï¿½ï¿½   ï¿½Ö¼ï¿½\n");
 	printf("===================\n");
 
 	for (int i = 0; i < n; i++)
@@ -887,10 +887,10 @@ print_person(t_person* p, int n)
 }
 #endif
 
-/*¹®ÀÚ¿­ 1°³·Î ÇÕÄ¡±â
-Ã¹¹øÂ° ¹®ÀÚ¿­ : abcdefg
-µÎ¹øÂ° ¹®ÀÚ¿­ : ABCDEFGH
-ÇÕÄ£ °á°ú : abcdefgABCDEFG
+/*ï¿½ï¿½ï¿½Ú¿ï¿½ 1ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½
+Ã¹ï¿½ï¿½Â° ï¿½ï¿½ï¿½Ú¿ï¿½ : abcdefg
+ï¿½Î¹ï¿½Â° ï¿½ï¿½ï¿½Ú¿ï¿½ : ABCDEFGH
+ï¿½ï¿½Ä£ ï¿½ï¿½ï¿½ : abcdefgABCDEFG
 */
 #if 0
 merge_func(char* p1, char* p2, char* po);
@@ -901,33 +901,33 @@ int main(void)
 	char input2[80];
 	char output[200];
 
-	printf("Ã¹¹øÂ° ¹®ÀÚ¿­ : ");
-	fgets(input1, 80, stdin); // ³¡¿¡ "\n\0"ÀÌ ºÙ´Â´Ù.
+	printf("Ã¹ï¿½ï¿½Â° ï¿½ï¿½ï¿½Ú¿ï¿½ : ");
+	fgets(input1, 80, stdin); // ï¿½ï¿½ï¿½ï¿½ "\n\0"ï¿½ï¿½ ï¿½Ù´Â´ï¿½.
 
-	printf("µÎ¹øÂ° ¹®ÀÚ¿­ : ");
+	printf("ï¿½Î¹ï¿½Â° ï¿½ï¿½ï¿½Ú¿ï¿½ : ");
 	fgets(input2, 80, stdin);
 
 	merge_func(input1, input2, output);
-	printf("ÇÕÄ£ °á°ú : %s\n", output);
+	printf("ï¿½ï¿½Ä£ ï¿½ï¿½ï¿½ : %s\n", output);
 
 	return 0;
 }
-//call by value : º¯¼ö¸¦ ³Ñ°ÜÁÖ´Â ¹æ½Ä
-//call by reference : ÁÖ¼Ò¸¦ ³Ñ°ÜÁÖ´Â ¹æ½Ä
+//call by value : ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ°ï¿½ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½
+//call by reference : ï¿½Ö¼Ò¸ï¿½ ï¿½Ñ°ï¿½ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½
 merge_func(char* p1, char* p2, char* po)
 {
 	char* potmp = po;
 	char* p2tmp = p2;
 
-	strcpy(potmp, p1); //NULLÀ» ¸¸³¯ ´ë ±îÁö º¹»ç.
-	potmp[strlen(po) - 1] = '\0'; //\n Á¦°Å
+	strcpy(potmp, p1); //NULLï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
+	potmp[strlen(po) - 1] = '\0'; //\n ï¿½ï¿½ï¿½ï¿½
 
-	while (*potmp != '\0') // potmp¸¦ nullÀÌ µé¾î ÀÖ´Â ¹øÁö·Î ÀÌµ¿ÇÑ´Ù.
+	while (*potmp != '\0') // potmpï¿½ï¿½ nullï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½ï¿½Ñ´ï¿½.
 		potmp++;
 
 	while (*p2tmp != '\0')
 	{
-		*potmp++ = *p2tmp++; // º¹»ç°¡ µÊ°ú µ¿½Ã¿¡ Áõ°¡°¡µÊ	
+		*potmp++ = *p2tmp++; // ï¿½ï¿½ï¿½ç°¡ ï¿½Ê°ï¿½ ï¿½ï¿½ï¿½Ã¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½	
 	}
 	*potmp = '\0';
 
@@ -947,9 +947,9 @@ merge_func(char* p1, char* p2, char* po)
 
 
 /*
-¼±ÅÃ(0: +, 1: -, 2: *, 3: /, 9: exit) :
-µÎ ¼ö¸¦ ÀÔ·Â (num1, num2)
-°á°ú: num1 + num2 =
+ï¿½ï¿½ï¿½ï¿½(0: +, 1: -, 2: *, 3: /, 9: exit) :
+ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½ (num1, num2)
+ï¿½ï¿½ï¿½: num1 + num2 =
 */
 #if 0
 #define SUM(a, b) ( (a) + (b))
@@ -968,12 +968,12 @@ int main(void)
 
 	while (1)
 	{
-		printf("¼±ÅÃ(0: +, 1: -, 2: *, 3: /, 9: exit) : ");
+		printf("ï¿½ï¿½ï¿½ï¿½(0: +, 1: -, 2: *, 3: /, 9: exit) : ");
 		fgets(input, 100, stdin);
-		sel = atoi(input); // 1\n\0  atoi ÇÔ¼ö Æ¯Â¡: \n or \0¸¦ ¸¸³ª¸é ÀÚµ¿À¸·Î ¸ØÃã, 1+1ÀÏ¶§ +¸¦ ¸¸³ª¸é ÀÚµ¿À¸·Î ¸ØÃã
+		sel = atoi(input); // 1\n\0  atoi ï¿½Ô¼ï¿½ Æ¯Â¡: \n or \0ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Úµï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½, 1+1ï¿½Ï¶ï¿½ +ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Úµï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		if (sel == 9) break;
 
-		printf("µÎ ¼ö¸¦ ÀÔ·Â(num1 num2) : ");
+		printf("ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½(num1 num2) : ");
 		fgets(input, 100, stdin); // 111 11
 		sp = space_check(input);
 
@@ -983,7 +983,7 @@ int main(void)
 		switch (sel)
 		{
 		case 0:
-			printf("°á°ú : %d + %d = %d\n", a, b, SUM(a, b));
+			printf("ï¿½ï¿½ï¿½ : %d + %d = %d\n", a, b, SUM(a, b));
 			//add(num1, num2);
 			break;
 		case 1:
@@ -1013,37 +1013,37 @@ int space_check(char* pi)
 // call by value
 void add(int a, int b)
 {
-	printf("°á°ú : %d + %d = %d\n", a, b, a + b);
+	printf("ï¿½ï¿½ï¿½ : %d + %d = %d\n", a, b, a + b);
 }
 
 void sub(int a, int b)
 {
-	printf("°á°ú : %d - %d = %d\n", a, b, a - b);
+	printf("ï¿½ï¿½ï¿½ : %d - %d = %d\n", a, b, a - b);
 }
 
 void mul(int a, int b)
 {
-	printf("°á°ú : %d * %d = %d\n", a, b, a * b);
+	printf("ï¿½ï¿½ï¿½ : %d * %d = %d\n", a, b, a * b);
 }
 
 void div(int a, int b)
 {
-	printf("°á°ú : %d / %d = %d\n", a, b, a / b);
+	printf("ï¿½ï¿½ï¿½ : %d / %d = %d\n", a, b, a / b);
 }
 #endif
 
-// ÇÔ¼ö Æ÷ÀÎÅÍ 
-// »óÅÂÃµÀÌ(state transition)ÇÒ ¶§ switch ~ case ¹® º¸´Ù ÇÔ¼ö Æ÷ÀÎÅÍ »ç¿ëÀ» ±ÇÀå.
+// ï¿½Ô¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 
+// ï¿½ï¿½ï¿½ï¿½Ãµï¿½ï¿½(state transition)ï¿½ï¿½ ï¿½ï¿½ switch ~ case ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
 #if 0
 void add(int, int);
 void sub(int, int);
 void mul(int, int);
 void div1(int, int);
 
-//ÇÔ¼ö Æ÷ÀÎÅÍ º¯¼ö
-void (*fp[]) (int, int) = // ÇÔ¼ö ÁÖ¼Ò¸¦ ÀúÀåÇÏ°í ÀÖ´Â ¹è¿­
+//ï¿½Ô¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+void (*fp[]) (int, int) = // ï¿½Ô¼ï¿½ ï¿½Ö¼Ò¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½Ö´ï¿½ ï¿½è¿­
 {
-	add,	// add ÇÔ¼öÀÇ ½ÃÀÛ ¹øÁö°¡ fp[0]¹ø ¹æ¿¡ µé¾î°£´Ù.
+	add,	// add ï¿½Ô¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ fp[0]ï¿½ï¿½ ï¿½æ¿¡ ï¿½ï¿½î°£ï¿½ï¿½.
 	sub,
 	mul,
 	div1
@@ -1053,24 +1053,24 @@ int space_check(char* pi);
 
 int main(void)
 {
-#if 1 // µ¿Àû ¸Þ¸ð¸® ÇÒ´ç
+#if 1 // ï¿½ï¿½ï¿½ï¿½ ï¿½Þ¸ï¿½ ï¿½Ò´ï¿½
 	char* input;
 #else
-	char input[100]; // Á¤Àû ¸Þ¸ð¸® ÇÒ´ç
+	char input[100]; // ï¿½ï¿½ï¿½ï¿½ ï¿½Þ¸ï¿½ ï¿½Ò´ï¿½
 #endif
 	int num1, num2;
 	int sp = 0, sel = 0;
 
-	input = (char*)malloc(100); // 100byte¸¦ ÇÒ´ç ¹Þ¾Æ¼­ char ÇüÀ¸·Î º¯È¯ÇÏ¿© ½ÃÀÛ ¹øÁö¸¦ inputÀÌ¶ó´Â Æ÷ÀÎÅÍ(ÁÖ¼Ò¸¦ ÀúÀåÇÏ´Â º¯¼ö)¿¡ ³Ö¾î¶ó.
+	input = (char*)malloc(100); // 100byteï¿½ï¿½ ï¿½Ò´ï¿½ ï¿½Þ¾Æ¼ï¿½ char ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯ï¿½Ï¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ inputï¿½Ì¶ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(ï¿½Ö¼Ò¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½)ï¿½ï¿½ ï¿½Ö¾ï¿½ï¿½.
 
 	while (1)
 	{
-		printf("¼±ÅÃ(0: +, 1: -, 2: *, 3: /, 9: exit) : ");
+		printf("ï¿½ï¿½ï¿½ï¿½(0: +, 1: -, 2: *, 3: /, 9: exit) : ");
 		fgets(input, 100, stdin);
-		sel = atoi(input); // 1\n\0  atoi ÇÔ¼ö Æ¯Â¡: \n or \0¸¦ ¸¸³ª¸é ÀÚµ¿À¸·Î ¸ØÃã, 1+1ÀÏ¶§ +¸¦ ¸¸³ª¸é ÀÚµ¿À¸·Î ¸ØÃã
+		sel = atoi(input); // 1\n\0  atoi ï¿½Ô¼ï¿½ Æ¯Â¡: \n or \0ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Úµï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½, 1+1ï¿½Ï¶ï¿½ +ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Úµï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		if (sel == 9) break;
 
-		printf("µÎ ¼ö¸¦ ÀÔ·Â(num1 num2) : ");
+		printf("ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½(num1 num2) : ");
 		fgets(input, 100, stdin); // 111 11
 		sp = space_check(input);
 
@@ -1079,7 +1079,7 @@ int main(void)
 
 		fp[sel](num1, num2);
 	}
-	free(input); // µ¿Àû ¸Þ¸ð¸® ÇÒ´ç ¹ÞÀº ¸Þ¸ð¸®¸¦ ¹Ý³³
+	free(input); // ï¿½ï¿½ï¿½ï¿½ ï¿½Þ¸ï¿½ ï¿½Ò´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Þ¸ð¸®¸ï¿½ ï¿½Ý³ï¿½
 
 	return 0;
 }
@@ -1096,25 +1096,25 @@ int space_check(char* pi)
 // call by value
 void add(int a, int b)
 {
-	printf("°á°ú : %d + %d = %d\n", a, b, a + b);
+	printf("ï¿½ï¿½ï¿½ : %d + %d = %d\n", a, b, a + b);
 }
 void sub(int a, int b)
 {
-	printf("°á°ú : %d - %d = %d\n", a, b, a - b);
+	printf("ï¿½ï¿½ï¿½ : %d - %d = %d\n", a, b, a - b);
 }
 
 void mul(int a, int b)
 {
-	printf("°á°ú : %d * %d = %d\n", a, b, a * b);
+	printf("ï¿½ï¿½ï¿½ : %d * %d = %d\n", a, b, a * b);
 }
 
 void div1(int a, int b)
 {
-	printf("°á°ú : %d / %d = %d\n", a, b, a / b);
+	printf("ï¿½ï¿½ï¿½ : %d / %d = %d\n", a, b, a / b);
 }
 #endif
 
-//abc shift Æ÷ÀÎÅÍ
+//abc shift ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 #if 0
 void shift_alpha();
 int main(void)
@@ -1142,53 +1142,53 @@ void shift_alpha(char* beta)
 }
 #endif
 
-//Æ÷ÀÎÅÍ
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 #if 0
 /*
-1. Æ÷ÀÎÅÍ°¡ ¹¹¿¡¿ä?
-	ÁÖ¼Ò¸¦ ÀúÀå ÇÏ´Â ¸Þ¸ð¸® °ø°£(º¯¼ö)ÀÌ´Ù.
-	ÀÏ¹Ý µ¥ÀÌÅÍ¸¦ ÀúÀåÇÏ´Â °ø°£Àº "º¯¼ö" ¶ó°íÇÑ´Ù.
+1. ï¿½ï¿½ï¿½ï¿½ï¿½Í°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?
+	ï¿½Ö¼Ò¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ï´ï¿½ ï¿½Þ¸ï¿½ ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½)ï¿½Ì´ï¿½.
+	ï¿½Ï¹ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ "ï¿½ï¿½ï¿½ï¿½" ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
 
-2. Æ÷ÀÎÅÍ¸¦ ¿Ö ¾²Áö¿ä?
-	(1) ¼­·Î´Ù¸¥ ÇÔ¼ö¿¡ Á¤ÀÇµÈ º¯¼ö¸¦ access(ÀÐ°í/¾²±â)ÇÏ±â À§ÇÔÀÌ´Ù.
-	ÀÌ·¸°Ô ÇÔÀ¸·Î½á Àü¿ªº¯¼öÀÇ »ç¿ëÀ» ÃÖ¼ÒÈ­ ÇÏ¿© ¸Þ¸ð¸®ÀÇ ³¶ºñ¸¦ Á¦°ÅÇÏ¿© ¸Þ¸ð¸®ÀÇ È¿À²¼ºÀ» ³ôÀÌ°íÀÚ ÇÔÀÌ´Ù.
-	# Àü¿ªº¯¼ö´Â ÇÁ·Î±×·¥ÀÌ ½ÇÇàÇÏ°í ÀÖ´Â µ¿¾È¿¡´Â Ç×»ó ¸Þ¸ð¸®¸¦ Á¡À¯ÇÏ°í ÀÖ´Ù.
-	# Àü¿ªº¯¼ö¸¦ ¸¹ÀÌ Àâ°í ÀÖÀ¸¸é ´Ù¸¥ ÇÁ·Î±×·¥ÀÌ µµ´Âµ¥ ¹æÇØ¸¦ ÁØ´Ù.
-	# °¡´ÉÇÑ Àü¿ªº¯¼ö »ç¿ëÀ» ÃÖ¼ÒÈ­ ÇÒ ¼ö ÀÖµµ·Ï ÇÁ·Î±×·¥À» ÀÛ¼ºÇÑ´Ù.
+2. ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?
+	(1) ï¿½ï¿½ï¿½Î´Ù¸ï¿½ ï¿½Ô¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Çµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ access(ï¿½Ð°ï¿½/ï¿½ï¿½ï¿½ï¿½)ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ì´ï¿½.
+	ï¿½Ì·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Î½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö¼ï¿½È­ ï¿½Ï¿ï¿½ ï¿½Þ¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ ï¿½Þ¸ï¿½ï¿½ï¿½ È¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ì°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ì´ï¿½.
+	# ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Î±×·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½È¿ï¿½ï¿½ï¿½ ï¿½×»ï¿½ ï¿½Þ¸ð¸®¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½Ö´ï¿½.
+	# ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù¸ï¿½ ï¿½ï¿½ï¿½Î±×·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Âµï¿½ ï¿½ï¿½ï¿½Ø¸ï¿½ ï¿½Ø´ï¿½.
+	# ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö¼ï¿½È­ ï¿½ï¿½ ï¿½ï¿½ ï¿½Öµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Î±×·ï¿½ï¿½ï¿½ ï¿½Û¼ï¿½ï¿½Ñ´ï¿½.
 */
-//---- ´ë¹®ÀÚ <--> ¼Ò¹®ÀÚ º¯È¯ ÇÁ·Î±×·¥
+//---- ï¿½ë¹®ï¿½ï¿½ <--> ï¿½Ò¹ï¿½ï¿½ï¿½ ï¿½ï¿½È¯ ï¿½ï¿½ï¿½Î±×·ï¿½
 void upper2lower();
 
 int main(void)
 {
-	char input[100];	// stack¿¡ ¸Þ¸ð¸®°¡ ÀâÈù´Ù.
-	// Áö¿ªº¯¼ö·Î ÇÁ·Î±×·¥ ¸ðµâÀÌ µ¹°íÀÖ´Â µ¿¾È¿¡¸¸ È°¼ºÈ­ µÈ´Ù.
-	// ÇÔ¼ö ½ÇÇàÀÌ ³¡³ª¸é ¸Þ¸ð¸®°¡ »èÁ¦ µÈ´Ù.
+	char input[100];	// stackï¿½ï¿½ ï¿½Þ¸ð¸®°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Î±×·ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½È¿ï¿½ï¿½ï¿½ È°ï¿½ï¿½È­ ï¿½È´ï¿½.
+	// ï¿½Ô¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Þ¸ð¸®°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½È´ï¿½.
 	while (1)
 	{
-		printf("ÀÓÀÇÀÇ ¹®ÀÚ¿­À» ÀÔ·Â(exit): ");
+		printf("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ú¿ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½(exit): ");
 		fgets(input, 100, stdin);
 		if (strncmp(input, "exit", strlen(input) - 1) == NULL)
 			break;
 		printf("org: %s\n", input);
-		printf("inputÀÇ ÁÖ¼Ò: %p\n", input);
-		upper2lower(input);	// input º¯¼öÀÇ ½ÃÀÛ ¹øÁö¸¦ ³Ñ°ÜÁØ´Ù. upper2lower(&input[0]);µµ °¡´É.
+		printf("inputï¿½ï¿½ ï¿½Ö¼ï¿½: %p\n", input);
+		upper2lower(input);	// input ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ°ï¿½ï¿½Ø´ï¿½. upper2lower(&input[0]);ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
 		printf("conv: %s\n", input);
 	}
 	return 0;
 }
-// º¯¼ö ÀÌ¸§ ¾Õ¿¡ "*"°¡ µé¾î°¡¸é ÁÖ¼Ò¸¦ ÀúÀåÇÏ´Â º¯¼öÀÌ´Ù.
-// char *p: p¶ó´Â º¯¼ö´Â char typeÀÇ ÁÖ¼Ò¸¦ ÀúÀåÇÏ´Â º¯¼ö
-//			ÁÖ¼Ò¸¦ ³Ñ°Ü ÁØ´Ù°í ÇØ¼­ call by reference¶ó°í ÇÑ´Ù.
+// ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¸ï¿½ ï¿½Õ¿ï¿½ "*"ï¿½ï¿½ ï¿½ï¿½î°¡ï¿½ï¿½ ï¿½Ö¼Ò¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ì´ï¿½.
+// char *p: pï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ char typeï¿½ï¿½ ï¿½Ö¼Ò¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½
+//			ï¿½Ö¼Ò¸ï¿½ ï¿½Ñ°ï¿½ ï¿½Ø´Ù°ï¿½ ï¿½Ø¼ï¿½ call by referenceï¿½ï¿½ï¿½ ï¿½Ñ´ï¿½.
 void upper2lower(char* p)
 {
-	printf("pÀÇ ÁÖ¼Ò : %p\n", p);
+	printf("pï¿½ï¿½ ï¿½Ö¼ï¿½ : %p\n", p);
 
 	for (int i = 0; i < 100; i++)
 	{
-		if (*(p + i) >= 'A' && *(p + i) <= 'Z') // p+i : ½ÃÀÛ¹øÁö + i
-			*(p + i) += 0x20;	// ¼±¾ð½ÃÀÇ ¸ð¾ç°ú ½ÇÇàÀÇ ¸ð¾çÀÌ °°Áö¸¸
-		// *p : pÀÇ ³»¿ëÀ» ¹øÁö·Î ÇØ¼­ Ã£¾Æ °¡´Â °ÍÀÌ´Ù.
+		if (*(p + i) >= 'A' && *(p + i) <= 'Z') // p+i : ï¿½ï¿½ï¿½Û¹ï¿½ï¿½ï¿½ + i
+			*(p + i) += 0x20;	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		// *p : pï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ø¼ï¿½ Ã£ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ì´ï¿½.
 	}
 }
 
@@ -1221,9 +1221,9 @@ int main(void)
 
 	cal(&a, &b, &total, &avg);
 
-	printf("°ª : %d, %d\n", a, b);
-	printf("ÇÕ : %d\n", total);
-	printf("Æò±Õ : %.1lf\n", avg);
+	printf("ï¿½ï¿½ : %d, %d\n", a, b);
+	printf("ï¿½ï¿½ : %d\n", total);
+	printf("ï¿½ï¿½ï¿½ : %.1lf\n", avg);
 
 	return 0;
 }
@@ -1257,54 +1257,54 @@ int main(void)
 #endif
 
 
-/*************		// ºí·°´ÜÀ§ ÁÖ¼® (ÇÁ·Î±×·¥ ÀÌ¸§, ¹öÀü, ÀÛ¼ºÀÚ, ÀÛ¼ºÀÏ, ±â´É µîµî ÀÛ¼º)
+/*************		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö¼ï¿½ (ï¿½ï¿½ï¿½Î±×·ï¿½ ï¿½Ì¸ï¿½, ï¿½ï¿½ï¿½ï¿½, ï¿½Û¼ï¿½ï¿½ï¿½, ï¿½Û¼ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Û¼ï¿½)
 *
 *
 *
 **************/
 
-#if 0 // 0ÀÌ¸é ½ÇÇà ¾È µÊ,  1ÀÌ¸é ½ÇÇà
-int main(void) { // void´Â °¡µ¶¼º¶§¹®. ¾ø¾îµµ µÊ.
-	// º¯¼ö (variable) : ÀÚ·á(data)¸¦ ÀúÀåÇÏ´Â ¸Þ¸ð¸® °ø°£
-	char c; // 1byte(8bit) ÀúÀå°ø°£, ¹®ÀÚ ¾Æ´Ô
-	// ÀúÀå ¹üÀ§ : -127 ~ 127
+#if 0 // 0ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½,  1ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ï¿½
+int main(void) { // voidï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½. ï¿½ï¿½ï¿½îµµ ï¿½ï¿½.
+	// ï¿½ï¿½ï¿½ï¿½ (variable) : ï¿½Ú·ï¿½(data)ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½Þ¸ï¿½ ï¿½ï¿½ï¿½ï¿½
+	char c; // 1byte(8bit) ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ ï¿½Æ´ï¿½
+	// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ : -127 ~ 127
 
 	unsigned char uc = 0xff; // 0x00 ~ 0xff, 0 ~ 255
 	// unsigned char uc = 0b11111111;
 	// unsigned char uc = 255;
 
-	short s; // s¶ó´Â ÀÌ¸§À¸·Î ÇØ¼­ 2byteÂ¥¸® ÀúÀå °ø°£À» È®º¸ ÇÏ¶ó.
+	short s; // sï¿½ï¿½ï¿½ ï¿½Ì¸ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ø¼ï¿½ 2byteÂ¥ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½ ï¿½Ï¶ï¿½.
 	unsigned short us; // 0 ~ 0xffff	ffff:65535
 
-	int i; // i¶ó´Â ÀÌ¸§À¸·Î ÇØ¼­ 4byteÂ¥¸® ÀúÀå °ø°£À» È®º¸ ÇÏ¶ó.
-	long l; // l¶ó´Â ÀÌ¸§À¸·Î ÇØ¼­ 4byteÂ¥¸® ÀúÀå °ø°£À» È®º¸ ÇÏ¶ó.
+	int i; // iï¿½ï¿½ï¿½ ï¿½Ì¸ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ø¼ï¿½ 4byteÂ¥ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½ ï¿½Ï¶ï¿½.
+	long l; // lï¿½ï¿½ï¿½ ï¿½Ì¸ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ø¼ï¿½ 4byteÂ¥ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½ ï¿½Ï¶ï¿½.
 
-	// ¾Æ·¡ 4°³ÀÇ statementÀÇ ½ÇÇà °á°ú°¡ µ¿ÀÏÇÏ´Ù.
+	// ï¿½Æ·ï¿½ 4ï¿½ï¿½ï¿½ï¿½ statementï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.
 	uc = 0xff;  // 0x, 0X : hex
 	uc = 0b11111111; // 0b, 0B : binary
 	uc = 255;
-	uc = 0377; // 0À» ºÙÀÎ´Ù. : octal
+	uc = 0377; // 0ï¿½ï¿½ ï¿½ï¿½ï¿½Î´ï¿½. : octal
 
-	printf("uc dec : %d\n", uc); // dec°ªÀ¸·Î ÂïÀ» ¶§ d¸¦ ºÙÀÓ
-	printf("uc hex : %0x\n", uc); // ff hex°ªÀ¸·Î ÂïÀ» ¶§ 0x¸¦ ºÙÀÓ
-	printf("uc oct : %o\n", uc); // oct°ªÀ¸·Î ÂïÀ» ¶§ o¸¦ ºÙÀÓ
-	//2Áø¼ö´Â ÇÁ·Î±×·¥À» µû·Î Âï¾î¾ßÇÔ,
+	printf("uc dec : %d\n", uc); // decï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ dï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+	printf("uc hex : %0x\n", uc); // ff hexï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ 0xï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+	printf("uc oct : %o\n", uc); // octï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ oï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+	//2ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Î±×·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½,
 
 	uc++; // uc = uc + 1;
-	// overflow ¹ß»ý
+	// overflow ï¿½ß»ï¿½
 
 	printf("uc dec : %d\n", uc); // 0
 	printf("uc hex : %0x\n", uc); // 0
 	printf("uc oct : %o\n", uc); // 0
 
-	// sizeof() ÇÔ¼ö : º¯¼öÀÇ Å©±â°¡ ¸î byteÀÎÁö¸¦ È®ÀÎÇÏ´Â ÇÔ¼öÀÌ´Ù.
-	// MCU¸¦ Ã³À½ Á¢ÇßÀ» ¶§ À¯¿ëÇÑ ÇÔ¼öÀÌ´Ù.
+	// sizeof() ï¿½Ô¼ï¿½ : ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Å©ï¿½â°¡ ï¿½ï¿½ byteï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½Ô¼ï¿½ï¿½Ì´ï¿½.
+	// MCUï¿½ï¿½ Ã³ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½ï¿½Ì´ï¿½.
 	char arry[10];
 	int iarry[2];
-	printf("charÀÇ size : % d\n", sizeof(char)); // º¯¼ö type
-	printf("c charÀÇ size : % d\n", sizeof(c)); // º¯¼ö ÀÌ¸§
-	printf("arryÀÇ size : % d\n", sizeof(arry)); // 10byte
-	printf("iarryÀÇ size : % d\n", sizeof(iarry)); // 8byte
+	printf("charï¿½ï¿½ size : % d\n", sizeof(char)); // ï¿½ï¿½ï¿½ï¿½ type
+	printf("c charï¿½ï¿½ size : % d\n", sizeof(c)); // ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¸ï¿½
+	printf("arryï¿½ï¿½ size : % d\n", sizeof(arry)); // 10byte
+	printf("iarryï¿½ï¿½ size : % d\n", sizeof(iarry)); // 8byte
 
 	printf("short : %d\n", sizeof(short));
 	printf("s short : %d\n", sizeof(s));
@@ -1322,22 +1322,22 @@ int main(void) { // void´Â °¡µ¶¼º¶§¹®. ¾ø¾îµµ µÊ.
 	// 0 (0) : 0x30
 	// A (A) : 0x41
 	// a (a) : 0x61
-	// ²À ¿Ü¿ì±â
+	// ï¿½ï¿½ ï¿½Ü¿ï¿½ï¿½
 
-	printf("A : %c, size : %d\n", 'A', sizeof((char)'A')); // 1byte·Î ÀâÀ¸·¯¸é (char)Ãß°¡
-	printf("A : %s, size : %d\n", "A", sizeof("A")); // A\0 ³¡¿¡ null(\0)ÀÌ µé¾î°£´Ù.
-	// compiler°¡ ³¡¿¡ nullÀ» ³Ö¾îÁØ´Ù.
+	printf("A : %c, size : %d\n", 'A', sizeof((char)'A')); // 1byteï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ (char)ï¿½ß°ï¿½
+	printf("A : %s, size : %d\n", "A", sizeof("A")); // A\0 ï¿½ï¿½ï¿½ï¿½ null(\0)ï¿½ï¿½ ï¿½ï¿½î°£ï¿½ï¿½.
+	// compilerï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ nullï¿½ï¿½ ï¿½Ö¾ï¿½ï¿½Ø´ï¿½.
 
-	char a[10] = "abcdefg"; // ½ÇÁ¦·Ðabcdefg\0
-	printf("a : %s\n", a); // %s´Â nullÀ» ¸¸³¯ ¶§±îÁö Ãâ·Â ÇÏ´Â °Í
-	printf("a sizeof : %d\n", sizeof(a)); // ÃÑ memory size
-	printf("a : %d\n", strlen(a)); // ¸Þ¸ð¸®¿¡ µé¾îÀÖ´Â º¯¼ö ±æÀÌ
+	char a[10] = "abcdefg"; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½abcdefg\0
+	printf("a : %s\n", a); // %sï¿½ï¿½ nullï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Ï´ï¿½ ï¿½ï¿½
+	printf("a sizeof : %d\n", sizeof(a)); // ï¿½ï¿½ memory size
+	printf("a : %d\n", strlen(a)); // ï¿½Þ¸ð¸®¿ï¿½ ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
-	// a ¹è¿­¿¡ ÀÖ´Â 0 2 4¹æÀÇ ³»¿ëÀ» Ãâ·Â ÇÏ½Ã¿À.
-	printf("0¹ø : %c, 2¹ø : %c, 4¹ø : %c\n", a[0], a[2], a[4]);
-	// aÀÇ 2¹ø¹æ¿¡ ÀÖ´Â ³»¿ëºÎÅÍ ³¡±îÁö Ãâ·Â ÇÏ½Ã¿À.
-	printf("aÀÇ 2¹æºÎÅÍ ³¡±îÁö Ãâ·Â : %s\n", a + 2); // aÀÇ ÁÖ¼Ò¿¡ ÀÖ´Â °ªÀ»¸¦ 2¹ø ºÎÅÍ Ãâ·Â
-	// a ¹è¿­¿¡ ÀÖ´Â ³»¿ëÀ» ¿µ¹® ÀÚ±â ÀÌ¸§À¸·Î ¹Ù²Û ÈÄ ±× ³»¿ëÀ» Ãâ·ÂÇÏ½Ã¿À
+	// a ï¿½è¿­ï¿½ï¿½ ï¿½Ö´ï¿½ 0 2 4ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Ï½Ã¿ï¿½.
+	printf("0ï¿½ï¿½ : %c, 2ï¿½ï¿½ : %c, 4ï¿½ï¿½ : %c\n", a[0], a[2], a[4]);
+	// aï¿½ï¿½ 2ï¿½ï¿½ï¿½æ¿¡ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Ï½Ã¿ï¿½.
+	printf("aï¿½ï¿½ 2ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ : %s\n", a + 2); // aï¿½ï¿½ ï¿½Ö¼Ò¿ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 2ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+	// a ï¿½è¿­ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ú±ï¿½ ï¿½Ì¸ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù²ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï½Ã¿ï¿½
 	strcpy(a, "SEONGJIN");
 	printf("a : %s\n", a);
 
@@ -1345,27 +1345,27 @@ int main(void) { // void´Â °¡µ¶¼º¶§¹®. ¾ø¾îµµ µÊ.
 	char ch2 = 0x41;
 	char ch3 = 0b01000001;
 
-	printf("¹®ÀÚ %cÀÇ ¾Æ½ºÅ° ÄÚµå °ª : %d\n", ch1, ch3);
-	printf("¾Æ½ºÅ° ÄÚµå °ªÀÌ %dÀÎ ¹®ÀÚ : %c\n", ch3, ch3);
+	printf("ï¿½ï¿½ï¿½ï¿½ %cï¿½ï¿½ ï¿½Æ½ï¿½Å° ï¿½Úµï¿½ ï¿½ï¿½ : %d\n", ch1, ch3);
+	printf("ï¿½Æ½ï¿½Å° ï¿½Úµï¿½ ï¿½ï¿½ï¿½ï¿½ %dï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ : %c\n", ch3, ch3);
 
-	return 0; // 0 : error¾øÀÌ ½ÇÇàÀ» Á¾·áÇß´Ù. -1 : ½É°¢ÇÑ error. ±× ¿Ü »ç¿ëÀÚÀÇ ÆíÀÇ´ë·Î error code Á¤ÀÇ.
+	return 0; // 0 : errorï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ß´ï¿½. -1 : ï¿½É°ï¿½ï¿½ï¿½ error. ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ç´ï¿½ï¿½ error code ï¿½ï¿½ï¿½ï¿½.
 }
 #endif
 
 #if 0
 int main(void) {
-	// ¹®ÀÚ¸¦ Å°º¸µå·Î ºÎÅÍ ÀÔ·ÂÀ» ¹Þ¾Æ Ãâ·ÂÇÑ´Ù.
-	// ´Ü q°¡ ÀÔ·ÂµÇ¸é ½ÇÇàÀ» Á¾·áÇÑ´Ù.
-	// q°¡ ¾Æ´Ñ ¹®ÀÚ¸¦ ¹ÞÀ¸¸é ½ÇÇàÀ» °è¼ÓÇÑ´Ù.
+	// ï¿½ï¿½ï¿½Ú¸ï¿½ Å°ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½ï¿½ï¿½ ï¿½Þ¾ï¿½ ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
+	// ï¿½ï¿½ qï¿½ï¿½ ï¿½Ô·ÂµÇ¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
+	// qï¿½ï¿½ ï¿½Æ´ï¿½ ï¿½ï¿½ï¿½Ú¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
 	char buff[10];
 	while (1)
 	{
-		printf("1°³ÀÇ ¹®ÀÚ¸¦ ÀÔ·ÂÇÏ¼¼¿ä : ");
-		fgets(buff, 10, stdin); // fgets : stdin(keyboard µî)ºÎÅÍ ¹®ÀÚ¸¦ ÀÔ·Â ¹Þ¾Æ buff¿¡ ÀúÀåÇÑ´Ù.
+		printf("1ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ú¸ï¿½ ï¿½Ô·ï¿½ï¿½Ï¼ï¿½ï¿½ï¿½ : ");
+		fgets(buff, 10, stdin); // fgets : stdin(keyboard ï¿½ï¿½)ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ú¸ï¿½ ï¿½Ô·ï¿½ ï¿½Þ¾ï¿½ buffï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
 		if (buff[0] == 'q') {
 			break;
 		}
-		printf("¹®ÀÚ %cÀÇ ¾Æ½ºÅ° ÄÚµå °ª : %d\n", buff[0], buff[0]);
+		printf("ï¿½ï¿½ï¿½ï¿½ %cï¿½ï¿½ ï¿½Æ½ï¿½Å° ï¿½Úµï¿½ ï¿½ï¿½ : %d\n", buff[0], buff[0]);
 	}
 	return 0;
 }
@@ -1374,25 +1374,25 @@ int main(void) {
 #if 0
 int main(void) {
 
-	char buff[10]; //Áö¿ª º¯¼ö
+	char buff[10]; //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	int num1, num2, result;
 
 	while (1) {
-		printf("»çÄ¢¿¬»ê(1+1=) (Á¾·á : q)");
+		printf("ï¿½ï¿½Ä¢ï¿½ï¿½ï¿½ï¿½(1+1=) (ï¿½ï¿½ï¿½ï¿½ : q)");
 		fgets(buff, 10, stdin);
-		//stdinºÎÅÍ ¹®ÀÚ¸¦ ÀÔ·Â ¹Þ¾Æ buff¿¡ ÀúÀåÇÑ´Ù.
-		//ÃÖ´ë 10 char ¶Ç´Â enter Å°¸¦ ¸¸³¯ ¶§ ±îÁö Å°º¸µå·Î ºÎÅÍ ¹Þ¾Æ µéÀÎ´Ù.
+		//stdinï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ú¸ï¿½ ï¿½Ô·ï¿½ ï¿½Þ¾ï¿½ buffï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
+		//ï¿½Ö´ï¿½ 10 char ï¿½Ç´ï¿½ enter Å°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Å°ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Þ¾ï¿½ ï¿½ï¿½ï¿½Î´ï¿½.
 		if (buff[0] == 'q')
 			break;
-		// ascii°ªÀ» Á¤¼ö·Î º¯È¯
+		// asciiï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯
 		num1 = buff[0] - '0'; // buff[0] - 0x30, atoi		num1 : 00000010
 		num2 = buff[2] - '0'; // buff[2] - 0x30, atoi		num2 : 00000001
-		//¿¬»êÀÚ
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		if (buff[1] == '+')
 			result = num1 + num2; // result : 00000011
 		printf("%c + %c = %c\n", num1 + '0', num2 + '0', result + '0');
 		// printf("%d + %d = %d\n", num1, num2, result);
-		// --> printf°¡ int¸¦ ascii·Î º¯È¯ÇØ¼­ Ãâ·ÂÇÏµµ·Ï ÁöÁ¤ÇÑ´Ù.
+		// --> printfï¿½ï¿½ intï¿½ï¿½ asciiï¿½ï¿½ ï¿½ï¿½È¯ï¿½Ø¼ï¿½ ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
 	}
 	return 0;
 }
@@ -1401,20 +1401,20 @@ int main(void) {
 #if 0
 int main(void) {
 
-	char buff[10]; //Áö¿ª º¯¼ö
+	char buff[10]; //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	int num1, num2, result;
 
 	while (1) {
-		printf("»çÄ¢¿¬»ê (Á¾·á : q) : ");
+		printf("ï¿½ï¿½Ä¢ï¿½ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½ : q) : ");
 		fgets(buff, 10, stdin);
-		//stdinºÎÅÍ ¹®ÀÚ¸¦ ÀÔ·Â ¹Þ¾Æ buff¿¡ ÀúÀåÇÑ´Ù.
-		//ÃÖ´ë 10 char ¶Ç´Â enter Å°¸¦ ¸¸³¯ ¶§ ±îÁö Å°º¸µå·Î ºÎÅÍ ¹Þ¾Æ µéÀÎ´Ù.
+		//stdinï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ú¸ï¿½ ï¿½Ô·ï¿½ ï¿½Þ¾ï¿½ buffï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
+		//ï¿½Ö´ï¿½ 10 char ï¿½Ç´ï¿½ enter Å°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Å°ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Þ¾ï¿½ ï¿½ï¿½ï¿½Î´ï¿½.
 		if (buff[0] == 'q')
 			break;
-		// ascii°ªÀ» Á¤¼ö·Î º¯È¯
+		// asciiï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯
 		num1 = buff[0] - '0'; // buff[0] - 0x30, atoi		num1 : 00000010
 		num2 = buff[2] - '0'; // buff[2] - 0x30, atoi		num2 : 00000001
-		//¿¬»êÀÚ
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		if (buff[1] == '+')
 			result = num1 + num2; // result : 00000011
 		if (buff[1] == '-')
@@ -1425,7 +1425,7 @@ int main(void) {
 			result = num1 / num2;
 		printf("%c %c %c = %c\n", num1 + '0', buff[1], num2 + '0', result + '0');
 		// printf("%d + %d = %d\n", num1, num2, result);
-		// --> printf°¡ int¸¦ ascii·Î º¯È¯ÇØ¼­ Ãâ·ÂÇÏµµ·Ï ÁöÁ¤ÇÑ´Ù.
+		// --> printfï¿½ï¿½ intï¿½ï¿½ asciiï¿½ï¿½ ï¿½ï¿½È¯ï¿½Ø¼ï¿½ ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
 	}
 	return 0;
 }
@@ -1434,20 +1434,20 @@ int main(void) {
 #if 0
 int main(void)
 {
-	// floating Ã³¸®
-	// ¼Ò¼öÁ¡ ÀÌÇÏ 6ÀÚ¸®±îÁö Ãâ·ÂÇÏ´Â ±â´É
+	// floating Ã³ï¿½ï¿½
+	// ï¿½Ò¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ 6ï¿½Ú¸ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½
 	printf("%lf\n", 3.4);
-	// ¼Ò¼öÁ¡ ÀÌÇÏ 1ÀÚ¸®±îÁö Ãâ·Â
+	// ï¿½Ò¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ 1ï¿½Ú¸ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
 	printf("%.1lf\n", 3.344);
-	// ¼Ò¼öÁ¡ ÀÌÇÏ 10ÀÚ¸®±îÁö Ãâ·Â
+	// ï¿½Ò¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ 10ï¿½Ú¸ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
 	printf("%.10lf\n", 3.1234);
 
 	char ch[10]; // abc
 
 	ch[0] = 'a';
 	ch[1] = 'b';
-	ch[2] = 'c'; // printf("%s\n", ch); --> ch¿¡ ÀÖ´Â ³»¿ëÀ» Ãâ·ÂÇÏ´Âµ¥ nullÀ» ¸¸³¯¶§ ±îÁö 
-	ch[3] = '\0'; // Ç×»ó nullÀÌ ÀÖ¾î¾ßÇÔ.
+	ch[2] = 'c'; // printf("%s\n", ch); --> chï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï´Âµï¿½ nullï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ 
+	ch[3] = '\0'; // ï¿½×»ï¿½ nullï¿½ï¿½ ï¿½Ö¾ï¿½ï¿½ï¿½ï¿½.
 
 	printf("ch --> %s\n", ch);
 	strcpy(ch, "ABC");
@@ -1459,10 +1459,10 @@ int main(void)
 
 #if 0
 /*
-	ÀÓÀÇÀÇ ¹®ÀÚ¿­À» ÀÔ·Â (Á¾·á:quit) : abcDEFG
-	º¯È¯ °á°ú : ABCdefg
-	ÀÓÀÇÀÇ ¹®ÀÚ¿­À» ÀÔ·Â (Á¾·á:quit) : DFGa
-	º¯È¯ °á°ú : dfgA
+	ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ú¿ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½ (ï¿½ï¿½ï¿½ï¿½:quit) : abcDEFG
+	ï¿½ï¿½È¯ ï¿½ï¿½ï¿½ : ABCdefg
+	ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ú¿ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½ (ï¿½ï¿½ï¿½ï¿½:quit) : DFGa
+	ï¿½ï¿½È¯ ï¿½ï¿½ï¿½ : dfgA
 */
 
 int main(void)
@@ -1471,7 +1471,7 @@ int main(void)
 
 	while (1)
 	{
-		printf("ÀÓÀÇÀÇ ¹®ÀÚ¿­À» ÀÔ·Â (Á¾·á:quit) : ");
+		printf("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ú¿ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½ (ï¿½ï¿½ï¿½ï¿½:quit) : ");
 		fgets(alpha, 100, stdin);
 		if (strncmp(alpha, "quit", 4) == NULL) // strcmp(buff, "quit") == 0
 		{
@@ -1482,7 +1482,7 @@ int main(void)
 		for (int i = 0; i < len - 1; i++)
 		{
 			// if (alpha[i] >= 'A' && alpha[i] <='Z')
-			if (alpha[i] < 0x5B) // ¹üÀ§ : A~Z
+			if (alpha[i] < 0x5B) // ï¿½ï¿½ï¿½ï¿½ : A~Z
 			{
 				alpha[i] = alpha[i] + 0x20;
 			}
@@ -1508,12 +1508,12 @@ int main(void)
 */
 int main(void)
 {
-	printf("%30s\n", "ASCII CODE TABLE"); // 30Ä­À» ¿À¸¥ÂÊºÎÅÍ Ãâ·ÂÇÏ°í ³ª¸ÓÁö´Â °ø¹é
-	// %-30s 30Ä­À» ¿ÞÂÊºÎÅÍ Ãâ·ÂÇÏ°í ³ª¸ÓÁö´Â °ø¹é
+	printf("%30s\n", "ASCII CODE TABLE"); // 30Ä­ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Êºï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+	// %-30s 30Ä­ï¿½ï¿½ ï¿½ï¿½ï¿½Êºï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	printf("%30s\n\n", "================");
 	printf("%10s%10s%10s%10s\n", "DEC", "HEX", "OCT", "CHAR");
 	printf("%10s%10s%10s%10s\n\n", "===", "===", "===", "====");
-	for (int i = 0; i < 128; i++) // i <= 127 º¸´Ù´Â i < 128 ÀÌ ¼Óµµ°¡ ´õ ºü¸£´Ù
+	for (int i = 0; i < 128; i++) // i <= 127 ï¿½ï¿½ï¿½Ù´ï¿½ i < 128 ï¿½ï¿½ ï¿½Óµï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	{
 		printf("%10d%10.2x%10o%10c\n", i, i, i, i);
 	}
@@ -1529,7 +1529,7 @@ int main(void)
 
 	while (1)
 	{
-		printf("³ªÀÌ¿Í Å°¸¦ ÀÔ·ÂÇÏ¼¼¿ä : ");
+		printf("ï¿½ï¿½ï¿½Ì¿ï¿½ Å°ï¿½ï¿½ ï¿½Ô·ï¿½ï¿½Ï¼ï¿½ï¿½ï¿½ : ");
 		scanf("%d %lf", &a, &b);
 
 		if (a == 0 && b == 0)
@@ -1537,7 +1537,7 @@ int main(void)
 			break;
 		}
 
-		printf("³ªÀÌ´Â %d»ì, Å°´Â %.1lfcmÀÔ´Ï´Ù.", a, b);
+		printf("ï¿½ï¿½ï¿½Ì´ï¿½ %dï¿½ï¿½, Å°ï¿½ï¿½ %.1lfcmï¿½Ô´Ï´ï¿½.", a, b);
 	}
 	return 0;
 }
@@ -1553,14 +1553,14 @@ int main(void)
 */
 int main(void)
 {
-	printf("%30s\n", "ASCII CODE TABLE"); // 30Ä­À» ¿À¸¥ÂÊºÎÅÍ Ãâ·ÂÇÏ°í ³ª¸ÓÁö´Â °ø¹é
-	// %-30s 30Ä­À» ¿ÞÂÊºÎÅÍ Ãâ·ÂÇÏ°í ³ª¸ÓÁö´Â °ø¹é
+	printf("%30s\n", "ASCII CODE TABLE"); // 30Ä­ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Êºï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+	// %-30s 30Ä­ï¿½ï¿½ ï¿½ï¿½ï¿½Êºï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	printf("%30s\n\n", "================");
 	for (int i = 0; i < 4; i++) {
 		printf("%10s%10s%10s%10s%10s\n", "DEC", "HEX", "OCT", "BIN", "CHAR");
 		printf("%10s%10s%10s%10s%10s\n\n", "===", "===", "===", "===", "====");
 	}
-	for (int i = 0; i < 128; i++) // i <= 127 º¸´Ù´Â i < 128 ÀÌ ¼Óµµ°¡ ´õ ºü¸£´Ù
+	for (int i = 0; i < 128; i++) // i <= 127 ï¿½ï¿½ï¿½Ù´ï¿½ i < 128 ï¿½ï¿½ ï¿½Óµï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	{
 
 		printf("%10d%10.2x%10o  ", i, i, i);
@@ -1583,8 +1583,8 @@ int main(void)
 {
 	char text[32][10] = { "NUL", "SOH", "STX", "ETX", "EOT", "ENQ", "ACK", "BEL", "BS", "HT", "LF", "VT", "FF", "CR", "SO", "SI", "DLE", "DC1", "DC2", "DC3", "DC4", "NAK", "SYN", "ETB", "CAN", "EM", "SUB", "ESC", "FS", "GS", "RS", "US" };
 
-	printf("%115s\n", "ASCII CODE TABLE"); // 30Ä­À» ¿À¸¥ÂÊºÎÅÍ Ãâ·ÂÇÏ°í ³ª¸ÓÁö´Â °ø¹é
-	// %-30s 30Ä­À» ¿ÞÂÊºÎÅÍ Ãâ·ÂÇÏ°í ³ª¸ÓÁö´Â °ø¹é
+	printf("%115s\n", "ASCII CODE TABLE"); // 30Ä­ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Êºï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+	// %-30s 30Ä­ï¿½ï¿½ ï¿½ï¿½ï¿½Êºï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	printf("%115s\n\n", "================");
 	for (int i = 0; i < 4; i++) {
 		printf("%10s%10s%10s%10s%10s", "DEC", "HEX", "OCT", "BIN", "CHAR");
@@ -1594,7 +1594,7 @@ int main(void)
 		printf("%10s%10s%10s%10s%10s", "===", "===", "===", "===", "====");
 	}
 	printf("\n");
-	for (int i = 0; i < 32; i++) // i <= 127 º¸´Ù´Â i < 128 ÀÌ ¼Óµµ°¡ ´õ ºü¸£´Ù
+	for (int i = 0; i < 32; i++) // i <= 127 ï¿½ï¿½ï¿½Ù´ï¿½ i < 128 ï¿½ï¿½ ï¿½Óµï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	{
 		printf("%10d%10.2x%10o  ", i, i, i);
 		bin_print(i);
@@ -1643,7 +1643,7 @@ int main(void)
 		printf("%10s%10s%10s%10s%10s", "===", "===", "===", "===", "====");
 	}
 	printf("\n");
-	for (int i = 0; i < 32; i++) // i <= 127 º¸´Ù´Â i < 128 ÀÌ ¼Óµµ°¡ ´õ ºü¸£´Ù
+	for (int i = 0; i < 32; i++) // i <= 127 ï¿½ï¿½ï¿½Ù´ï¿½ i < 128 ï¿½ï¿½ ï¿½Óµï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	{
 		printf("%10d%10.2x%10o  ", i, i, i);
 		//bin_print(i);
@@ -1670,7 +1670,7 @@ int main(void)
 
 	return 0;
 }
-//shift ¿¬»êÀÚ
+//shift ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 #if 0
 int bin_print(unsigned char x)
 {
@@ -1680,11 +1680,11 @@ int bin_print(unsigned char x)
 	}
 }
 #endif
-//div ¿¬»êÀÚ
+//div ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 #if 1
 void bin_div(unsigned char x)
 {
-	int b; //¸ò, ³ª¸ÓÁö
+	int b; //ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	char buff[10];
 	for (int i = 0; i < 8; i++) {
 		b = x % 2;
@@ -1701,13 +1701,13 @@ void bin_div(unsigned char x)
 #endif
 #endif
 
-//16Áø¼ö¸¦ 2Áø¼ö·Î Ãâ·Â
+//16ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 2ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
 #if 0
 int main(void) {
 	unsigned char uc = 0x73; // 0111 0011
 	unsigned short us = 0x7337; //0111 0011 0011 0111
 
-	for (int i = 7; i >= 0; i--) //ÀÚ·áÇüÀÇ Å©±â¿¡ ¸Â°Ô i Á¶Àý
+	for (int i = 7; i >= 0; i--) //ï¿½Ú·ï¿½ï¿½ï¿½ï¿½ï¿½ Å©ï¿½â¿¡ ï¿½Â°ï¿½ i ï¿½ï¿½ï¿½ï¿½
 	{
 		printf("%d", uc >> i & 1);
 	}

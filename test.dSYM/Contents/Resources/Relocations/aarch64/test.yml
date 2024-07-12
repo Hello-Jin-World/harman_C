@@ -1,0 +1,13 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     '/Users/parkseongjin/harman_c/harman_C/test'
+relocations:
+  - { offsetInCU: 0x26, offset: 0x26, size: 0x8, addend: 0x0, symName: _main, symObjAddr: 0x0, symBinAddr: 0x1000034F0, symSize: 0x1A8 }
+  - { offsetInCU: 0x4D, offset: 0x4D, size: 0x8, addend: 0x0, symName: _filep, symBinAddr: 0x100008000, symSize: 0x0 }
+  - { offsetInCU: 0x252, offset: 0x252, size: 0x8, addend: 0x0, symName: _main, symObjAddr: 0x0, symBinAddr: 0x1000034F0, symSize: 0x1A8 }
+  - { offsetInCU: 0x2A4, offset: 0x2A4, size: 0x8, addend: 0x0, symName: _make_account, symObjAddr: 0x1A8, symBinAddr: 0x100003698, symSize: 0x200 }
+  - { offsetInCU: 0x32A, offset: 0x32A, size: 0x8, addend: 0x0, symName: _deposit_money, symObjAddr: 0x3A8, symBinAddr: 0x100003898, symSize: 0x180 }
+  - { offsetInCU: 0x3A2, offset: 0x3A2, size: 0x8, addend: 0x0, symName: _with_draw_money, symObjAddr: 0x528, symBinAddr: 0x100003A18, symSize: 0x1AC }
+  - { offsetInCU: 0x422, offset: 0x422, size: 0x8, addend: 0x0, symName: _show_all_acc_info, symObjAddr: 0x6D4, symBinAddr: 0x100003BC4, symSize: 0xF8 }
+  - { offsetInCU: 0x475, offset: 0x475, size: 0x8, addend: 0x0, symName: _show_menu, symObjAddr: 0x7CC, symBinAddr: 0x100003CBC, symSize: 0xB0 }
+...
