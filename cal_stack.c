@@ -155,6 +155,7 @@ int main(void)
 {
     char input[100]; // 사용자 입력할 문자열 배열
     char postfix[100]; // 공백제거 문자열과 후위계산법 배열
+    double d_post[100];
 
     printf("식을 입력하시오 : ");
     fgets(input, sizeof(input), stdin);
@@ -165,7 +166,7 @@ int main(void)
     printf("공백제거한 문자열 출력 : %s\n", postfix); 
 
     in_to_post(input, postfix);
-    printf("후위표기법 배열 : %s\n", postfix);
+    printf("후위표기법 배열 : %.0f\n", postfix);
 
     return 0;
 }
