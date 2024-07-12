@@ -128,6 +128,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="cal_stack.c" />
+    <ClCompile Include="double_linked.c" />
     <ClCompile Include="menu.c" />
     <ClCompile Include="myTest.c" />
     <ClCompile Include="test.c" />

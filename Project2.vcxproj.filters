@@ -27,5 +27,8 @@
     <ClCompile Include="cal_stack.c">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="double_linked.c">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
