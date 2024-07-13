@@ -1,0 +1,13 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     '/Users/parkseongjin/harman_c/harman_C/double_linked'
+relocations:
+  - { offsetInCU: 0x26, offset: 0x26, size: 0x8, addend: 0x0, symName: _makenode, symObjAddr: 0x0, symBinAddr: 0x100003D48, symSize: 0x48 }
+  - { offsetInCU: 0x4D, offset: 0x4D, size: 0x8, addend: 0x0, symName: _head, symBinAddr: 0x100008000, symSize: 0x0 }
+  - { offsetInCU: 0x9B, offset: 0x9B, size: 0x8, addend: 0x0, symName: _tail, symBinAddr: 0x100008008, symSize: 0x0 }
+  - { offsetInCU: 0xA4, offset: 0xA4, size: 0x8, addend: 0x0, symName: _makenode, symObjAddr: 0x0, symBinAddr: 0x100003D48, symSize: 0x48 }
+  - { offsetInCU: 0xDA, offset: 0xDA, size: 0x8, addend: 0x0, symName: _print, symObjAddr: 0x48, symBinAddr: 0x100003D90, symSize: 0xA0 }
+  - { offsetInCU: 0xFE, offset: 0xFE, size: 0x8, addend: 0x0, symName: _init, symObjAddr: 0xE8, symBinAddr: 0x100003E30, symSize: 0x9C }
+  - { offsetInCU: 0x113, offset: 0x113, size: 0x8, addend: 0x0, symName: _push_back, symObjAddr: 0x184, symBinAddr: 0x100003ECC, symSize: 0x70 }
+  - { offsetInCU: 0x153, offset: 0x153, size: 0x8, addend: 0x0, symName: _main, symObjAddr: 0x1F4, symBinAddr: 0x100003F3C, symSize: 0x48 }
+...
