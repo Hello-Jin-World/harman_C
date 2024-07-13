@@ -87,7 +87,7 @@ typedef struct
 	int acc_id;      // ���¹�ȣ
 	int balance;    // ��    ��
 	char cus_name[NAME_LEN];   // �����̸�
-} t_account;
+}account_node;
 /*
 struct
 {
@@ -111,7 +111,7 @@ int main()  // int main(argc, char *argv[])
 {
 	int choice;
 #if 0
-	t_account* acc_arr;   // acc_arr��� ������ t_account Ÿ���� ����ü Ÿ���� 
+	t_account* acc_arr;   // acc_arr��� ������account_node Ÿ���� ����ü Ÿ���� 
 	// ������(�ּҸ� �����ϴ� ����(����) �̴�. 
 	void (*fp[]) (t_account*, int*) =
 	{
@@ -449,12 +449,12 @@ void print_one(t_address* lp, char* nm)
 #define EXIT     9
 
 
-typedef struct // t_account �� redefine �Ѵ�			28byte
+typedef struct //account_node �� redefine �Ѵ�			28byte
 {
 	int acc_id;      // ���¹�ȣ
 	int balance;    // ��    ��
 	char cus_name[NAME_LEN];   // �����̸�
-} t_account;
+}account_node;
 
 void show_menu(void);
 void make_account(t_account* pt, int* pn); // ���� ����
@@ -467,7 +467,7 @@ int main()  // int main(argc, char *argv[])
 	int choice;
 	int acc_num = 0;        // ����� Account ��
 #if 1
-	t_account* acc_arr;	// acc_arr�̶�� ������ t_account Ÿ���� ����ü Ÿ����
+	t_account* acc_arr;	// acc_arr�̶�� ������account_node Ÿ���� ����ü Ÿ����
 	//������(�ּҸ� �����ϴ� ����(����))�̴�.
 	void (*fp[]) (t_account*, int*) =
 	{
@@ -657,12 +657,12 @@ void show_all_acc_info(t_account* pt, int* pn)
 #define EXIT     9
 
 
-typedef struct // t_account �� redefine �Ѵ�
+typedef struct //account_node �� redefine �Ѵ�
 {
 	int acc_id;      // ���¹�ȣ
 	int balance;    // ��    ��
 	char cus_name[NAME_LEN];   // �����̸�
-} t_account;
+}account_node;
 
 void show_menu(void);
 void make_account(t_account* pt, int* acc_num); // ���� ����
