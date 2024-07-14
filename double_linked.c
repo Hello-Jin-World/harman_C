@@ -1109,7 +1109,6 @@ void delete_account(t_account** head, int* pn)
             (*pn)--;
             printf("계좌가 삭제되었습니다.\n\n");
             
-            // 파일 업데이트 (이 부분은 복잡할 수 있으므로 전체 파일을 다시 쓰는 방식으로 구현)
             rewind(filep);
             current = *head;
             while (current != NULL) {
