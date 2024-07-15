@@ -1036,7 +1036,8 @@ void deposit_money(t_account** head, int* pn)
             printf("입금완료\n\n");
             
             // 파일 업데이트
-            fseek(filep, -sizeof(t_account), SEEK_CUR);
+            long pos = ftell(filep);  // 현재 위치 저장
+            fseek(filep, pos - (long)sizeof(t_account), SEEK_SET);
             fwrite(current, sizeof(t_account), 1, filep);
             return;
         }
@@ -1067,7 +1068,8 @@ void with_draw_money(t_account** head, int* pn)
             printf("출금완료\n\n");
             
             // 파일 업데이트
-            fseek(filep, -sizeof(t_account), SEEK_CUR);
+            long pos = ftell(filep);  // 현재 위치 저장
+            fseek(filep, pos - (long)sizeof(t_account), SEEK_SET);
             fwrite(current, sizeof(t_account), 1, filep);
             return;
         }
@@ -1079,7 +1081,8 @@ void with_draw_money(t_account** head, int* pn)
 void show_all_acc_info(t_account** head, int* pn)
 {
     t_account* current = *head;
-    while (current != NULL) {
+    while (current != NULL)
+    {
         printf("계좌ID: %d\n", current->acc_id);
         printf("이  름: %s\n", current->cus_name);
         printf("잔  액: %d\n\n", current->balance);
@@ -1372,5 +1375,240 @@ void show_all_acc_info(t_account* pt, int* pn)
 		printf("잔  액: %d\n\n", p->balance);
 	}
 	printf("\n");
+}
+#endif
+
+#if 0 // 원래 코드
+#define _CRT_SECURE_NO_WARNINGS 
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>    // atoi itoa malloc등이 들어 있다. 
+#define NAME_LEN   20
+
+enum { MAKE = 1, DEPOSIT, WITHDRAW, INQUIRE, EXIT = 9 };
+
+// #define : 매크로 (MACRO)
+#define MAKE     1
+#define DEPOSIT  2
+#define WITHDRAW 3
+#define INQUIRE  4
+#define EXIT     9
+
+
+typedef struct t_account
+{
+    struct t_account* prev; // 이전 노드
+    struct t_account* next; // 다음 노드
+    int acc_id;      // 계좌번호
+    int balance;    // 잔    액
+    char cus_name[NAME_LEN];   // 고객이름
+} t_account;
+
+struct t_account* head;
+struct t_account* tail;
+
+void show_menu(void);       // 메뉴출력
+void make_account(t_account* pt, int* pn);   // 계좌개설
+void deposit_money(t_account* pt, int* pn);  // 입금
+void with_draw_money(t_account* pt, int* pn);  // 출금 
+void show_all_acc_info(t_account* pt, int* pn); // 잔액조회
+
+FILE* filep;   // 이름은 money_file
+
+int main()  // int main(argc, char *argv[])
+{
+    int choice;
+
+    void (*fp[]) (t_account*, int*) =
+    {
+        NULL, // 0
+        make_account,
+        deposit_money,
+        with_draw_money,
+        show_all_acc_info
+    };
+    t_account acc_arr[10];   // Account 저장을 위한 배열
+
+    int acc_num = 0;        // 저장된 Account 수
+
+    if ((filep = fopen("money_file", "rb+")) == NULL) // 파일 주소 반환
+    {
+        if ((filep = fopen("money_file", "wb+")) == NULL)
+        {
+            fprintf(stderr, "can't open money_file !!!\n");
+            exit(1); // 실행종료 error code 1
+        }
+    }
+    while (1)
+    {
+        show_menu();
+        printf("선택: ");
+        scanf("%d", &choice);  // '1' --> 1 --> choice
+        printf("\n");
+        if (choice == 9)
+        {
+            // free(acc_arr);
+            fclose(filep);   // 파일의 연결을 끊는다.
+            break;
+        }
+        if (choice >= 1 && choice <= 4)
+            fp[choice](acc_arr, &acc_num);
+    }
+    return 0;
+}
+
+void show_menu(void)
+{
+    char* menu[] =   //  
+    {
+     "-----Menu------\n",
+     "1. 계좌개설\n",
+     "2. 입    금\n",
+     "3. 출    금\n",
+     "4. 계좌정보 전체 출력\n",
+     "9. 종    료\n"
+    };
+
+    int i;
+
+    for (i = 0; i < 6; i++)
+        printf("%s", *(menu + i));   // printf("%s", menu[i]);
+}
+
+void make_account(t_account* pt, int* pn)
+{
+    int id;
+    char name[NAME_LEN];
+    int balance;
+    t_account* p = pt + *pn;
+
+    printf("[계좌개설]\n");
+    printf("계좌ID: ");
+    scanf("%d", &id);
+    printf("이  름: ");
+    scanf("%s", name);
+    printf("입금액: ");
+    scanf("%d", &balance);
+    printf("\n");
+
+    rewind(filep); // 파일의 헤더를 처음으로 위치시킨다.
+    for (int i = 0; ; i++)
+    {
+        if (fread((char*)&p->acc_id, 1, sizeof(t_account), filep) == NULL)
+        {
+            break;   // 더이상 읽을 데이터가 없을 때
+        }
+        //읽는 것을 성공 했을 때
+        else if (p->acc_id == id)
+        {
+            printf("Already exist ID %d\n", id);
+            return;
+        }
+    }
+
+    fseek(filep, 0, SEEK_END); // 헤더를 파일의 맨 끝으로 보냄
+
+    p->acc_id = id;   // (*p).acc_id = id;
+    p->balance = balance;
+    strcpy(p->cus_name, name);
+    fwrite((char*)&p->acc_id, 1, sizeof(t_account), filep);
+    *pn += 1;  // pn +=1   주소가 증가 되는것이다. 
+}
+
+void deposit_money(t_account* pt, int* pn)
+{
+    int money;
+    int id, i, size;
+    t_account* p = pt;
+
+    printf("[입    금]\n");
+    printf("계좌ID: ");
+    scanf("%d", &id);
+    printf("입금액: ");
+    scanf("%d", &money);
+
+    rewind(filep);
+
+    //for (i = 0; i < *pn; i++, p++)
+    for (i = 0; ; i++, p++)
+    {
+        if (fread((char*)&p->acc_id, 1, sizeof(t_account), filep) == NULL)
+        {
+            break;   // 더이상 읽을 데이터가 없을 때
+        }
+        //읽는 것을 성공 했을 때
+        else if (p->acc_id == id)
+        {
+            p->balance += money;
+            size = sizeof(t_account);
+            fseek(filep, -size, SEEK_CUR); // 현재 헤더에서 -28byte만큼 옮긴다..
+            fwrite((char*)&p->acc_id, 1, sizeof(t_account), filep);
+            printf("입금완료\n\n");
+            return;
+        }
+    }
+    printf("유효하지 않은 ID 입니다.\n\n");
+}
+
+void with_draw_money(t_account* pt, int* pn)
+{
+    int money;
+    int id, i, size;
+    t_account* p = pt;
+
+    printf("[출    금]\n");
+    printf("계좌ID: ");
+    scanf("%d", &id);
+    printf("출금액: ");
+    scanf("%d", &money);
+
+    rewind(filep);
+
+    //for (i = 0; i < *pn; i++, p++)
+    for (i = 0; ; i++, p++)
+    {
+        if (fread((char*)&p->acc_id, 1, sizeof(t_account), filep) == NULL)
+        {
+            break;   // 더이상 읽을 데이터가 없을 때
+        }
+        else if (p->acc_id == id)
+        {
+
+            if (p->balance < money)
+            {
+                printf("잔액부족\n\n");
+                return;
+            }
+
+            p->balance -= money;  // acc_arr[i].balance = acc_arr[i].balance - money;
+            size = sizeof(t_account);
+            fseek(filep, -size, SEEK_CUR); // 현재 헤더에서 -28byte만큼 옮긴다..
+            fwrite((char*)&p->acc_id, 1, sizeof(t_account), filep);
+            printf("출금완료\n\n");
+            return;
+        }
+    }
+    printf("유효하지 않은 ID 입니다.\n\n");
+}
+
+void show_all_acc_info(t_account* pt, int* pn)
+{
+    int i;
+    t_account* p = pt;
+
+    rewind(filep); //헤더를 맨 위로 옮김
+
+    //for (i = 0; i < *pn; i++, p++)
+    for (i = 0; ; i++, p++)
+    {
+        if (fread((char*)&p->acc_id, 1, sizeof(t_account), filep) == NULL)
+        {
+            break;   // 더이상 읽을 데이터가 없을 때
+        }
+        printf("계좌ID: %d\n", p->acc_id);
+        printf("이  름: %s\n", p->cus_name);
+        printf("잔  액: %d\n\n", p->balance);
+    }
+    printf("\n");
 }
 #endif
