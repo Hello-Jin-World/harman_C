@@ -59,7 +59,7 @@ int main(void)
 //구조체를 파일 처리(파일 포인터. fseek, rewind)로 구조 변경
 // --> 프로그램을 종료 하더라도 이전 정보가 그대로 남아 있도록 하기 위함
 // --> 마치 DB와 비슷함.
-#if 0
+#if 1
 #define _CRT_SECURE_NO_WARNINGS 
 #include <stdio.h>
 #include <string.h>
@@ -67,10 +67,6 @@ int main(void)
 #define NAME_LEN   20
 
 void show_menu(void);       // 메뉴출력
-void make_account(void);       // 계좌개설을 위한 함수
-void deposit_money(void);       // 입    금
-void with_draw_money(void);      // 출    금
-void show_all_acc_info(void);     // 잔액조회
 
 enum { MAKE = 1, DEPOSIT, WITHDRAW, INQUIRE, EXIT = 9 };
 

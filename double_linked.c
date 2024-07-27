@@ -875,7 +875,7 @@ void save_to_file(void)
 }
 #endif
 
-#if 1
+#if 0
 #define _CRT_SECURE_NO_WARNINGS 
 #include <stdio.h>
 #include <string.h>
@@ -884,12 +884,12 @@ void save_to_file(void)
 
 enum { MAKE = 1, DEPOSIT, WITHDRAW, INQUIRE, DELETE, EXIT = 9 };
 
-typedef struct t_account {
+typedef struct account {
     int acc_id;      // 계좌번호
     int balance;    // 잔    액
     char cus_name[NAME_LEN];   // 고객이름
-    struct t_account* prev;  // 이전 노드
-    struct t_account* next;  // 다음 노드
+    struct account* prev;  // 이전 노드
+    struct account* next;  // 다음 노드
 } t_account;
 
 void show_menu(void);
