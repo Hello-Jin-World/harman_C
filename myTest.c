@@ -21,8 +21,8 @@ int main(void)
 	int a = 32;
 	int b = 64;
 	int c = 96;
-	printf("%95s\n", "ASCII CODE TABLE"); // 30Ä­À» ¿À¸¥ÂÊºÎÅÍ Ãâ·ÂÇÏ°í ³ª¸ÓÁö´Â °ø¹é
-	// %-30s 30Ä­À» ¿ŞÂÊºÎÅÍ Ãâ·ÂÇÏ°í ³ª¸ÓÁö´Â °ø¹é
+	printf("%95s\n", "ASCII CODE TABLE"); // 30ì¹¸ì„ ì˜¤ë¥¸ìª½ë¶€í„° ì¶œë ¥í•˜ê³  ë‚˜ë¨¸ì§€ëŠ” ê³µë°±
+	// %-30s 30ì¹¸ì„ ì™¼ìª½ë¶€í„° ì¶œë ¥í•˜ê³  ë‚˜ë¨¸ì§€ëŠ” ê³µë°±
 	printf("%95s\n\n", "================");
 	for (int i = 0; i < 4; i++) {
 		printf("%10s%10s%10s%10s", "DEC", "HEX", "OCT", "CHAR");
@@ -32,7 +32,7 @@ int main(void)
 		printf("%10s%10s%10s%10s", "===", "===", "===", "====");
 	}
 	printf("\n");
-	for (int i = 0; i < 32; i++) // i <= 127 º¸´Ù´Â i < 128 ÀÌ ¼Óµµ°¡ ´õ ºü¸£´Ù
+	for (int i = 0; i < 32; i++) // i <= 127 ë³´ë‹¤ëŠ” i < 128 ì´ ì†ë„ê°€ ë” ë¹ ë¥´ë‹¤
 	{
 		printf("%10d%10.2x%10o%10s", i, i, i, text[i]);
 		printf("%10d%10.2x%10o%10c", a, a, a, a);
@@ -46,7 +46,7 @@ int main(void)
 }
 #endif
 
-// °è»ê±â
+// ê³„ì‚°ê¸°
 #if 0
 
 void cal(char* p);
@@ -112,7 +112,7 @@ void cal(char* p)
 }
 #endif
 
-//sort ÇÁ·Î±×·¥
+//sort í”„ë¡œê·¸ë¨
 #if 0
 #define MAXSIZE 100
 
@@ -128,7 +128,7 @@ int main(void)
 	while (1)
 	{
 		n = 0; i = 0; num = 0;
-		printf("data¸¦ ÀÔ·Â, ÃÖ´ë 20(10 1 5) Á¾·á(exit) : ");
+		printf("dataë¥¼ ì…ë ¥, ìµœëŒ€ 20(10 1 5) ì¢…ë£Œ(exit) : ");
 		fgets(arry, MAXSIZE, stdin);
 
 		if (strncmp(arry, "exit", 4) == 0)
@@ -165,7 +165,7 @@ int main(void)
 void bubble_sort(int* ary, int* n)
 {
 	int mod = 0;
-	printf("sort Á¾·ù( 1: ascending, 2: descending) : ");
+	printf("sort ì¢…ë¥˜( 1: ascending, 2: descending) : ");
 	scanf("%d", &mod);
 	getchar();
 
@@ -242,7 +242,7 @@ void cal(char* p)
 {
 	char oper;
 	int num1, num2;
-	//¿¬»ê±âÈ£¿Í ¹øÈ£ ÃßÃâ
+	//ì—°ì‚°ê¸°í˜¸ì™€ ë²ˆí˜¸ ì¶”ì¶œ
 	sscanf(p, "%d %c %d", &num1, &oper, &num2);
 
 	switch (oper)
@@ -265,7 +265,7 @@ void cal(char* p)
 }
 #endif
 
-//6-1Àå 1¹ø
+//6-1ì¥ 1ë²ˆ
 #if 0
 int main(void) {
 	int a;
@@ -276,7 +276,7 @@ int main(void) {
 	return 0;
 }
 #endif
-//6-1Àå 2¹ø
+//6-1ì¥ 2ë²ˆ
 #if 0
 int main(void) {
 	for (int i = 0; i < 5; i++)
@@ -286,7 +286,7 @@ int main(void) {
 	return 0;
 }
 #endif
-//6-1Àå 3¹ø
+//6-1ì¥ 3ë²ˆ
 #if 0
 int main(void) {
 	int i;
@@ -297,7 +297,7 @@ int main(void) {
 	return 0;
 }
 #endif
-//6-2Àå 3¹ø
+//6-2ì¥ 3ë²ˆ
 #if 0
 int main(void) {
 	for (int j = 0; j < 5; j++)
@@ -319,13 +319,13 @@ int main(void) {
 	return 0;
 }
 #endif
-//6-2Àå ½ÇÀü
+//6-2ì¥ ì‹¤ì „
 #if 0
 int main(void) {
 	int in_num, num, i;
 	int line = 0;
 
-	printf("2 ÀÌ»óÀÇ Á¤¼ö¸¦ ÀÔ·ÂÇÏ¼¼¿ä : ");
+	printf("2 ì´ìƒì˜ ì •ìˆ˜ë¥¼ ì…ë ¥í•˜ì„¸ìš” : ");
 	scanf("%d", &in_num);
 
 	for (num = 2; num <= in_num; num++)
@@ -350,7 +350,7 @@ int main(void) {
 	return 0;
 }
 #endif
-//7-1Àå 1¹ø
+//7-1ì¥ 1ë²ˆ
 #if 0
 double average();
 int main(void)
@@ -367,13 +367,13 @@ double average(double a, double b)
 }
 
 #endif
-//7-1Àå 2¹ø
+//7-1ì¥ 2ë²ˆ
 /*
-ÇÔ¼ö ¼±¾ğ - ÇÔ¼ö ¿øÇüÀ» ÄÄÆÄÀÏ·¯¿¡ ¾Ë¸°´Ù.
-ÇÔ¼ö Á¤ÀÇ - ÇÔ¼ö ¿øÇüÀ» ¼³°èÇÏ°í ³»¿ëÀ» ±¸ÇöÇÑ´Ù.
-ÇÔ¼ö È£Ãâ - ÇÔ¼ö¿¡ ÇÊ¿äÇÑ °ªÀ» ÁÖ°í ÇÔ¼ö¸¦ »ç¿ëÇÑ´Ù.
+í•¨ìˆ˜ ì„ ì–¸ - í•¨ìˆ˜ ì›í˜•ì„ ì»´íŒŒì¼ëŸ¬ì— ì•Œë¦°ë‹¤.
+í•¨ìˆ˜ ì •ì˜ - í•¨ìˆ˜ ì›í˜•ì„ ì„¤ê³„í•˜ê³  ë‚´ìš©ì„ êµ¬í˜„í•œë‹¤.
+í•¨ìˆ˜ í˜¸ì¶œ - í•¨ìˆ˜ì— í•„ìš”í•œ ê°’ì„ ì£¼ê³  í•¨ìˆ˜ë¥¼ ì‚¬ìš©í•œë‹¤.
 */
-//7-1Àå 3¹ø
+//7-1ì¥ 3ë²ˆ
 #if 0
 double centi_to_meter();
 
@@ -396,9 +396,9 @@ double centi_to_meter(int centi)
 	return (meter);
 }
 #endif
-//7-2Àå 1¹ø
-//	4¹ø
-//7-2Àå 2¹ø
+//7-2ì¥ 1ë²ˆ
+//	4ë²ˆ
+//7-2ì¥ 2ë²ˆ
 #if 0
 int sum();
 
@@ -416,10 +416,10 @@ int sum(int num)
 	{
 		result += count;
 	}
-	printf("1ºÎÅÍ %d±îÁöÀÇ ÇÕÀº %dÀÔ´Ï´Ù.\n", num, result);
+	printf("1ë¶€í„° %dê¹Œì§€ì˜ í•©ì€ %dì…ë‹ˆë‹¤.\n", num, result);
 }
 #endif
-//7-2Àå 3¹ø
+//7-2ì¥ 3ë²ˆ
 //	9
 #if 0
 int func(int n);
@@ -442,7 +442,7 @@ int poly(int n)
 	return ((2 * n * n) + (3 * n));
 }
 #endif
-//7-2Àå ½ÇÀü
+//7-2ì¥ ì‹¤ì „
 #if 0
 int rec_func();
 
@@ -464,16 +464,16 @@ int rec_func(int n)
 	return sum;
 }
 #endif
-//8-1Àå 1¹ø
+//8-1ì¥ 1ë²ˆ
 /*
 int arry[5];
 float arry[10];
 int arry[3];
 char arry[5];
 */
-//8-1Àå 2¹ø
+//8-1ì¥ 2ë²ˆ
 /*int arry[6] = {1, 2, 3, 0, 0, 0};*/
-//8-1Àå 3¹ø
+//8-1ì¥ 3ë²ˆ
 #if 0
 int main(void)
 {
@@ -491,38 +491,38 @@ int main(void)
 
 }
 #endif
-//8-2Àå 1¹ø
+//8-2ì¥ 1ë²ˆ
 /*
 	O
 	O
 	X
 	X
 */
-//8-2Àå 2¹ø
-//	4¹ø
-//8-2Àå 3¹ø
+//8-2ì¥ 2ë²ˆ
+//	4ë²ˆ
+//8-2ì¥ 3ë²ˆ
 #if 0
 int main(void)
 {
 	char str1[80], str2[80];
 	char temp[80];
 
-	printf("µÎ ¹øÀÚ¿­ ÀÔ·Â : ")
+	printf("ë‘ ë²ˆìì—´ ì…ë ¥ : ")
 		scanf("%s %s", str1, str2);
-	printf("¹Ù²Ù±â Àü : %s %s\n", str1, str2);
+	printf("ë°”ê¾¸ê¸° ì „ : %s %s\n", str1, str2);
 	strcpy(temp, str1);
 	strcpy(str1, str2);
 	strcpy(str2, temp);
-	printf("¹Ù²Û ÈÄ : %s %s\n", str1, str2);
+	printf("ë°”ê¾¼ í›„ : %s %s\n", str1, str2);
 }
 #endif
-//8-2Àå ½ÇÀü
+//8-2ì¥ ì‹¤ì „
 #if 0
 int main(void)
 {
 	char str[80];
 	int count = 0;
-	printf("¹®Àå ÀÔ·Â : ");
+	printf("ë¬¸ì¥ ì…ë ¥ : ");
 	gets(str);
 	for (int i = 0; i < strlen(str); i++)
 	{
@@ -532,17 +532,17 @@ int main(void)
 			count++;
 		}
 	}
-	printf("¹Ù²ï ¹®Àå : %s\n", str);
-	printf("¹Ù²ï ¹®ÀÚ ¼ö : %d\n", count);
+	printf("ë°”ë€ ë¬¸ì¥ : %s\n", str);
+	printf("ë°”ë€ ë¬¸ì ìˆ˜ : %d\n", count);
 }
 #endif
-//9-1Àå 1¹ø
+//9-1ì¥ 1ë²ˆ
 /*
 	char *p = &ch;
 	int *p = &in;
 	double *p = &db;
 */
-//9-1Àå 2¹ø
+//9-1ì¥ 2ë²ˆ
 #if 0
 int main(void)
 {
@@ -566,7 +566,7 @@ int main(void)
 100, 101, 105, A, 10, 3.4
 */
 #endif
-//9-1Àå 3¹ø
+//9-1ì¥ 3ë²ˆ
 #if 0
 int main(void)
 {
@@ -577,15 +577,15 @@ int main(void)
 }
 //	20
 #endif
-//9-2Àå 1¹ø
+//9-2ì¥ 1ë²ˆ
 /*
-	1. º¯¼ö 2. »ó¼ö 3. º¯¼ö 4. º¯¼ö 5. »ó¼ö
+	1. ë³€ìˆ˜ 2. ìƒìˆ˜ 3. ë³€ìˆ˜ 4. ë³€ìˆ˜ 5. ìƒìˆ˜
 */
-//9-2Àå 2¹ø
-//	4¹ø
-//9-2Àå 3¹ø
+//9-2ì¥ 2ë²ˆ
+//	4ë²ˆ
+//9-2ì¥ 3ë²ˆ
 //	20 10
-//9-2Àå ½ÇÀü
+//9-2ì¥ ì‹¤ì „
 #if 0
 void swap(double* pa, double* pb);
 void line_up(double* maxp, double* midp, double* minp);
@@ -594,10 +594,10 @@ int main(void)
 {
 	double max, mid, min;
 
-	printf("½Ç¼ö°ª 3°³ ÀÔ·Â : ");
+	printf("ì‹¤ìˆ˜ê°’ 3ê°œ ì…ë ¥ : ");
 	scanf("%lf %lf %lf", &max, &mid, &min);
 	line_up(&max, &mid, &min);
-	printf("Á¤·ÄµÈ °ª Ãâ·Â : %.1lf, %.1lf, %.1lf\n", max, mid, min);
+	printf("ì •ë ¬ëœ ê°’ ì¶œë ¥ : %.1lf, %.1lf, %.1lf\n", max, mid, min);
 
 	return 0;
 }
@@ -621,7 +621,7 @@ void line_up(double* maxp, double* midp, double* minp)
 		swap(midp, minp);
 }
 #endif
-//10-1Àå 1, 2, 3¹ø
+//10-1ì¥ 1, 2, 3ë²ˆ
 #if 0
 int main(void)
 {
@@ -630,18 +630,18 @@ int main(void)
 	double* pb = ary + 2;
 	printf("%.1ld", ary);
 }
-//	1¹ø		100, 3.5, 116, 0.5, 7.4, 2
-//	2¹ø		x, x, o, o, x, o
-//	3¹ø		pb++;
+//	1ë²ˆ		100, 3.5, 116, 0.5, 7.4, 2
+//	2ë²ˆ		x, x, o, o, x, o
+//	3ë²ˆ		pb++;
 #endif
-//10-2Àå 1¹ø
-//	3¹ø
-//10-2Àå 2¹ø 
+//10-2ì¥ 1ë²ˆ
+//	3ë²ˆ
+//10-2ì¥ 2ë²ˆ 
 /*
 (I = 0; i < 12; i++)
 if((i+1) % 5) == 0) printf("\n");
 */
-//10-2Àå ½ÇÀü
+//10-2ì¥ ì‹¤ì „
 #if 0
 void input_nums(int* lotto_nums);
 void print_nums(int* lotto_nums);
@@ -663,13 +663,13 @@ void input_nums(int* lotto_nums)
 		while (1)
 		{
 			int a = 1;
-			printf("¹øÈ£ÀÔ·Â : ");
+			printf("ë²ˆí˜¸ì…ë ¥ : ");
 			scanf("%d", &num);
 			for (int j = 0; j < i; j++)
 			{
 				if (lotto_nums[j] == num)
 				{
-					printf("°°Àº ¹øÈ£°¡ ÀÖ½À´Ï´Ù!\n");
+					printf("ê°™ì€ ë²ˆí˜¸ê°€ ìˆìŠµë‹ˆë‹¤!\n");
 					a = 0;
 					break;
 				}
@@ -686,25 +686,25 @@ void input_nums(int* lotto_nums)
 
 void print_nums(int* lotto_nums)
 {
-	printf("·Î¶Ç ¹øÈ£ : ");
+	printf("ë¡œë˜ ë²ˆí˜¸ : ");
 	for (int i = 0; i < 6; i++)
 	{
 		printf("%4d", lotto_nums[i]);
 	}
 }
 #endif
-//11-1 2¹ø
+//11-1 2ë²ˆ
 #if 0
 int main(void)
 {
 	char ch;
 
-	printf("¹®ÀÚ ÀÔ·Â : ");
+	printf("ë¬¸ì ì…ë ¥ : ");
 	scanf("%c", &ch);
-	printf("%c¹®ÀÚÀÇ ¾Æ½ºÅ° ÄÚµå °ª : %d", ch, ch);
+	printf("%cë¬¸ìì˜ ì•„ìŠ¤í‚¤ ì½”ë“œ ê°’ : %d", ch, ch);
 }
 #endif
-//11-2 ½ÇÀü
+//11-2 ì‹¤ì „
 #if 0
 int main(void)
 {
@@ -725,18 +725,18 @@ int main(void)
 		else
 			cnt++;
 	}
-	printf("°¡Àå ±ä ´Ü¾îÀÇ ±æÀÌ : %d", max);
+	printf("ê°€ì¥ ê¸´ ë‹¨ì–´ì˜ ê¸¸ì´ : %d", max);
 	return 0;
 }
 #endif
-//12-2 3¹ø
+//12-2 3ë²ˆ
 #if 0
 int main(void)
 {
 	int i;
 	char str[15];
 	char chn[15];
-	printf("´Ü¾î ÀÔ·Â : ");
+	printf("ë‹¨ì–´ ì…ë ¥ : ");
 	scanf("%s", str);
 	if (strlen(str) <= 5)
 	{
@@ -748,12 +748,12 @@ int main(void)
 		chn[5] = '\0';
 		strncat(chn, "**********", strlen(str) - 5);
 	}
-	printf("ÀÔ·ÂÇÑ ´Ü¾î : %s, »ı·«ÇÑ ´Ü¾î : %s", str, chn);
+	printf("ì…ë ¥í•œ ë‹¨ì–´ : %s, ìƒëµí•œ ë‹¨ì–´ : %s", str, chn);
 	return 0;
 }
 #endif
 
-//12-2 ½ÇÀü
+//12-2 ì‹¤ì „
 #if 0
 int main(void)
 {
@@ -762,7 +762,7 @@ int main(void)
 	char thr[80];
 	char temp[80] = "";
 
-	printf("¼¼ ´Ü¾î ÀÔ·Â : ");
+	printf("ì„¸ ë‹¨ì–´ ì…ë ¥ : ");
 	scanf("%s %s %s", one, two, thr);
 
 	if (strcmp(one, two) > 0)
@@ -787,7 +787,7 @@ int main(void)
 	return 0;
 }
 #endif
-//13-2 ½ÇÀü
+//13-2 ì‹¤ì „
 #if 0
 void input_data(int* pa, int* pb);
 void swap_data(void);
@@ -806,7 +806,7 @@ int main(void)
 
 void input_data(int* pa, int* pb)
 {
-	printf("µÎ Á¤¼ö ÀÔ·Â : ");
+	printf("ë‘ ì •ìˆ˜ ì…ë ¥ : ");
 	scanf("%d %d", pa, pb);
 }
 
@@ -820,11 +820,11 @@ void swap_data()
 
 void print_data(a, b)
 {
-	printf("µÎ Á¤¼ö Ãâ·Â : %d, %d", a, b);
+	printf("ë‘ ì •ìˆ˜ ì¶œë ¥ : %d, %d", a, b);
 }
 
 #endif
-//14-2 ½ÇÀü
+//14-2 ì‹¤ì „
 #if 0
 int main(void)
 {
@@ -867,7 +867,7 @@ int main(void)
 	return 0;
 }
 #endif
-//15-2 ½ÇÀü
+//15-2 ì‹¤ì „
 #if 0
 void swap();
 
@@ -876,16 +876,16 @@ int main(void)
 	int age1 = 0, age2 = 0;
 	double height1 = 0, height2 = 0;
 	void* vp;
-	printf("Ã¹ ¹øÂ° »ç¶÷ÀÇ ³ªÀÌ¿Í Å° ÀÔ·Â : ");
+	printf("ì²« ë²ˆì§¸ ì‚¬ëŒì˜ ë‚˜ì´ì™€ í‚¤ ì…ë ¥ : ");
 	scanf("%d %lf", &age1, &height1);
-	printf("µÎ ¹øÂ° »ç¶÷ÀÇ ³ªÀÌ¿Í Å° ÀÔ·Â : ");
+	printf("ë‘ ë²ˆì§¸ ì‚¬ëŒì˜ ë‚˜ì´ì™€ í‚¤ ì…ë ¥ : ");
 	scanf("%d %lf", &age2, &height2);
 
 	swap("int", &age1, &age2);
 	swap("double", &height1, &height2);
 
-	printf("Ã¹ ¹øÂ° »ç¶÷ÀÇ ³ªÀÌ¿Í Å° : %d, %.1f\n", age1, height1);
-	printf("µÎ ¹øÂ° »ç¶÷ÀÇ ³ªÀÌ¿Í Å° : %d, %.1f", age2, height2);
+	printf("ì²« ë²ˆì§¸ ì‚¬ëŒì˜ ë‚˜ì´ì™€ í‚¤ : %d, %.1f\n", age1, height1);
+	printf("ë‘ ë²ˆì§¸ ì‚¬ëŒì˜ ë‚˜ì´ì™€ í‚¤ : %d, %.1f", age2, height2);
 }
 
 void swap(char* type, void* a, void* b)
@@ -905,7 +905,7 @@ void swap(char* type, void* a, void* b)
 }
 
 #endif
-//17-1 2¹ø
+//17-1 2ë²ˆ
 #if 0
 struct cracker
 {
@@ -916,14 +916,14 @@ struct cracker
 int main(void)
 {
 	struct cracker basasak;
-	printf("¹Ù»ç»èÀÇ °¡°İ°ú ¿­·®À» ÀÔ·ÂÇÏ¼¼¿ä : ");
+	printf("ë°”ì‚¬ì‚­ì˜ ê°€ê²©ê³¼ ì—´ëŸ‰ì„ ì…ë ¥í•˜ì„¸ìš” : ");
 	scanf("%d %d", &basasak.price, &basasak.calories);
-	printf("¹Ù»ç»èÀÇ °¡°İ : %d¿ø\n", basasak.price);
-	printf("¹Ù»ç»èÀÇ ¿­·® : %dkcal\n", basasak.calories);
+	printf("ë°”ì‚¬ì‚­ì˜ ê°€ê²© : %dì›\n", basasak.price);
+	printf("ë°”ì‚¬ì‚­ì˜ ì—´ëŸ‰ : %dkcal\n", basasak.calories);
 	return 0;
 }
 #endif
-//16-2 ½ÇÀü
+//16-2 ì‹¤ì „
 #if 0
 int main()
 {
@@ -931,13 +931,13 @@ int main()
 	int* p;
 	int i, j, cnt = 0;
 
-	printf("¾ç¼ö ÀÔ·Â : ");
+	printf("ì–‘ìˆ˜ ì…ë ¥ : ");
 	scanf("%d", &num);
 
 	p = (int*)malloc(sizeof(int) * (num - 1));
 	if (p == NULL)
 	{
-		printf("¸Ş¸ğ¸® ÇÒ´ç ½ÇÆĞ");
+		printf("ë©”ëª¨ë¦¬ í• ë‹¹ ì‹¤íŒ¨");
 		exit(1);
 	}
 
@@ -984,7 +984,7 @@ int main()
 }
 #endif 
 
-//17-2½ÇÀü
+//17-2ì‹¤ì „
 #if 0
 typedef struct
 {
@@ -994,7 +994,7 @@ typedef struct
 	int total;
 	double avg;
 	char grade;
-} Student; // Student°¡ ±¸Á¶Ã¼ÀÇ ÀÌ¸§
+} Student; // Studentê°€ êµ¬ì¡°ì²´ì˜ ì´ë¦„
 
 void input(Student* pary);
 void cal(Student* pary);
@@ -1003,15 +1003,15 @@ void print(Student* pary);
 
 int main(void)
 {
-	Student ary[5]; //5¸í
+	Student ary[5]; //5ëª…
 
 	input(ary);
 	cal(ary);
 
-	printf("# Á¤·Ä Àü µ¥ÀÌÅÍ...\n");
+	printf("# ì •ë ¬ ì „ ë°ì´í„°...\n");
 	print(ary);
 	sort(ary);
-	printf("# Á¤·Ä ÈÄ µ¥ÀÌÅÍ...\n");
+	printf("# ì •ë ¬ í›„ ë°ì´í„°...\n");
 	print(ary);
 
 	return 0;
@@ -1021,11 +1021,11 @@ void input(Student* pary)
 {
 	for (int i = 0; i < 5; i++)
 	{
-		printf("ÇĞ¹ø : ");
+		printf("í•™ë²ˆ : ");
 		scanf("%d", &pary->stnum);
-		printf("ÀÌ¸§ : ");
+		printf("ì´ë¦„ : ");
 		scanf("%s", pary->name);
-		printf("±¹¾î, ¿µ¾î, ¼öÇĞ Á¡¼ö : ");
+		printf("êµ­ì–´, ì˜ì–´, ìˆ˜í•™ ì ìˆ˜ : ");
 		scanf("%d %d %d", &pary->kor, &pary->eng, &pary->math);
 		pary++;
 	}
@@ -1059,7 +1059,7 @@ void cal(Student* pary)
 
 void sort(Student* pary)
 {
-	Student temp; //ÀÓ½Ã º¯¼ö
+	Student temp; //ì„ì‹œ ë³€ìˆ˜
 	int i, j, max;
 
 	for (i = 0; i < 4; i++)
@@ -1090,7 +1090,7 @@ void print(Student* pary)
 }
 #endif
 
-//17-2 ½ÇÀü ¿¬½À
+//17-2 ì‹¤ì „ ì—°ìŠµ
 #if 0
 typedef struct
 {
@@ -1112,10 +1112,10 @@ int main(void)
 	person ary[5];
 	input(ary);
 	cal(ary);
-	printf("# Á¤·Ä Àü µ¥ÀÌÅÍ...\n");
+	printf("# ì •ë ¬ ì „ ë°ì´í„°...\n");
 	print(ary);
 	sort(ary);
-	printf("# Á¤·Ä ÈÄ µ¥ÀÌÅÍ...\n");
+	printf("# ì •ë ¬ í›„ ë°ì´í„°...\n");
 	print(ary);
 }
 
@@ -1123,11 +1123,11 @@ void input(person* pary)
 {
 	for (int i = 0; i < 5; i++)
 	{
-		printf("ÇĞ¹ø : ");
+		printf("í•™ë²ˆ : ");
 		scanf("%d", &pary->id);
-		printf("ÀÌ¸§ : ");
+		printf("ì´ë¦„ : ");
 		scanf("%s", pary->name);
-		printf("±¹¾î, ¿µ¾î, ¼öÇĞ Á¡¼ö : ");
+		printf("êµ­ì–´, ì˜ì–´, ìˆ˜í•™ ì ìˆ˜ : ");
 		scanf("%d %d %d", &pary->kor, &pary->eng, &pary->math);
 		pary++;
 	}
@@ -1192,7 +1192,7 @@ void print(person* pary)
 	}
 }
 #endif
-//18-2 ½ÇÀü
+//18-2 ì‹¤ì „
 #if 0
 int main(void)
 {
@@ -1204,7 +1204,7 @@ int main(void)
 int main(void) {
 	int num1, num2, result;
 	char cal;
-	printf("»çÄ¢¿¬»ê ÀÔ·Â(Á¤¼ö) : ");
+	printf("ì‚¬ì¹™ì—°ì‚° ì…ë ¥(ì •ìˆ˜) : ");
 	scanf("%d%c%d", &num1, &cal, &num2);
 	if (cal == '+') {
 		result = num1 + num2;
