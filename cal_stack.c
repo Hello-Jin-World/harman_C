@@ -10,48 +10,48 @@ typedef int element;
 
 typedef struct {
     element stack[STACK_SIZE];
-    int top; // top´Â ½ºÅÃ¿¡¼­ À§Ä¡¸¦ °¡¸£Å´
+    int top; // topëŠ” ìŠ¤íƒì—ì„œ ìœ„ì¹˜ë¥¼ ê°€ë¥´í‚´
 } StackType;
 
 void init(StackType* s) {
-    s->top = -1; // ÃÊ±âÈ­. -1 À§Ä¡¸¦ °¡¸£Å´
+    s->top = -1; // ì´ˆê¸°í™”. -1 ìœ„ì¹˜ë¥¼ ê°€ë¥´í‚´
 }
 
 int is_empty(StackType* s) {
-    return (s->top == -1); // ½ºÅÃÀÌ ºñ¾î¼­ topÀÌ -1ÀÌ¸é 1À» return
+    return (s->top == -1); // ìŠ¤íƒì´ ë¹„ì–´ì„œ topì´ -1ì´ë©´ 1ì„ return
 }
 
 int is_full(StackType* s) {
-    return (s->top == (STACK_SIZE - 1)); // ´Ù Â÷¸é 1À» return
+    return (s->top == (STACK_SIZE - 1)); // ë‹¤ ì°¨ë©´ 1ì„ return
 }
 
 void push(StackType* s, element item) {
     if (is_full(s)) {
-        fprintf(stderr, "½ºÅÃ Æ÷È­ ¿¡·¯\n");
+        fprintf(stderr, "ìŠ¤íƒ í¬í™” ì—ëŸ¬\n");
         return;
     }
     else {
-        s->stack[++(s->top)] = item; // ½ºÅÃÀÇ topÀ» ÇÏ³ª Áõ°¡½ÃÅ°°í ±× À§Ä¡¿¡ °ª ÀúÀå
+        s->stack[++(s->top)] = item; // ìŠ¤íƒì˜ topì„ í•˜ë‚˜ ì¦ê°€ì‹œí‚¤ê³  ê·¸ ìœ„ì¹˜ì— ê°’ ì €ìž¥
     }
 }
 
 element peek(StackType* s) {
     if (is_empty(s)) {
-        fprintf(stderr, "½ºÅÃ °ø¹é ¿¡·¯\n");
+        fprintf(stderr, "ìŠ¤íƒ ê³µë°± ì—ëŸ¬\n");
         exit(1);
     }
     else {
-        return s->stack[s->top]; // ½ºÅÃÀÇ ÃÖ»ó´Ü¿¡ ÀÖ´Â °ª ¹ÝÈ¯
+        return s->stack[s->top]; // ìŠ¤íƒì˜ ìµœìƒë‹¨ì— ìžˆëŠ” ê°’ ë°˜í™˜
     }
 }
 
 element pop(StackType* s) {
     if (is_empty(s)) {
-        fprintf(stderr, "½ºÅÃ °ø¹é ¿¡·¯\n");
+        fprintf(stderr, "ìŠ¤íƒ ê³µë°± ì—ëŸ¬\n");
         exit(1);
     }
     else {
-        return s->stack[(s->top)--]; // ÇöÀç ½ºÅÃ À§Ä¡¿¡ ÀÖ´Â °ªÀ» returnÇÏ°í À§Ä¡¸¦ ÇÑÄ­ ¾Æ·¡·Î ³»¸²
+        return s->stack[(s->top)--]; // í˜„ìž¬ ìŠ¤íƒ ìœ„ì¹˜ì— ìžˆëŠ” ê°’ì„ returní•˜ê³  ìœ„ì¹˜ë¥¼ í•œì¹¸ ì•„ëž˜ë¡œ ë‚´ë¦¼
     }
 }
 
@@ -62,52 +62,52 @@ int prec(char op) {
     case '*': case '/': return 2;
     }
     return -1;
-} // ¿ì¼±¼øÀ§ Á¤ÀÇ
+} // ìš°ì„ ìˆœìœ„ ì •ì˜
 
 void in_to_post(char* infix, char* postfix) {
     StackType s;
-    init(&s); // ½ºÅÃ ¼±¾ð ¹× ÃÊ±âÈ­
+    init(&s); // ìŠ¤íƒ ì„ ì–¸ ë° ì´ˆê¸°í™”
 
     while (*infix != '\0')
-    { // ÀÔ·ÂÇÑ ¹®ÀÚ¿­¿¡¼­ (¹®ÀÚ¿­ ³¡ÀÎ)NULL°ª ¸¸³¯ ¶§±îÁö ¹Ýº¹
+    { // ìž…ë ¥í•œ ë¬¸ìžì—´ì—ì„œ (ë¬¸ìžì—´ ëì¸)NULLê°’ ë§Œë‚  ë•Œê¹Œì§€ ë°˜ë³µ
         if (*infix == ' ')
         {
-            infix++; // ' ' ½ºÆäÀÌ½º´Â ¹«½Ã
+            infix++; // ' ' ìŠ¤íŽ˜ì´ìŠ¤ëŠ” ë¬´ì‹œ
         }
         else if (*infix == '(')
         {
-            push(&s, *infix); // '(' ´Â ½ºÅÃ¿¡ ÀúÀå
+            push(&s, *infix); // '(' ëŠ” ìŠ¤íƒì— ì €ìž¥
             infix++;
         }
         else if (*infix == ')')
         {
             while (peek(&s) != '(')
             {
-                *postfix++ = pop(&s); // ')'°¡ ÀÔ·ÂµÇ·Á°í ÇÏ¸é '('ÀÌ ³ª¿Ã¶§ ±îÁö ¿¬»êÀÚ¸¦ popÇÏ°í ¹è¿­¿¡ ÀúÀå
+                *postfix++ = pop(&s); // ')'ê°€ ìž…ë ¥ë˜ë ¤ê³  í•˜ë©´ '('ì´ ë‚˜ì˜¬ë•Œ ê¹Œì§€ ì—°ì‚°ìžë¥¼ popí•˜ê³  ë°°ì—´ì— ì €ìž¥
                 *postfix++ = ' ';
             }
-            pop(&s); // '(' Á¦°Å
+            pop(&s); // '(' ì œê±°
             infix++;
         }
         else if (*infix == '+' || *infix == '-' || *infix == '*' || *infix == '/')
         {
-            while (!is_empty(&s) && (prec(*infix) <= prec(peek(&s)))) // ¿¬»êÀÚ°¡ ³ª¿À¸é ¿ì¼±¼øÀ§¸¦ ºñ±³ÇÑ´Ù.
-                                                                      // (, ) Àº 0     +, - ´Â 1     *, / ´Â 2 ¹ÝÈ¯
+            while (!is_empty(&s) && (prec(*infix) <= prec(peek(&s)))) // ì—°ì‚°ìžê°€ ë‚˜ì˜¤ë©´ ìš°ì„ ìˆœìœ„ë¥¼ ë¹„êµí•œë‹¤.
+                                                                      // (, ) ì€ 0     +, - ëŠ” 1     *, / ëŠ” 2 ë°˜í™˜
             {
-                *postfix++ = pop(&s); // ½ºÅÃ¿¡¼­ ÃÖ»ó´Ü ¿¬»êÀÚ¸¦ ²¨³»¼­ postfix¿¡ Ãß°¡
-                *postfix++ = ' '; // postfix¿¡ space Ãß°¡
+                *postfix++ = pop(&s); // ìŠ¤íƒì—ì„œ ìµœìƒë‹¨ ì—°ì‚°ìžë¥¼ êº¼ë‚´ì„œ postfixì— ì¶”ê°€
+                *postfix++ = ' '; // postfixì— space ì¶”ê°€
             }
-            push(&s, *infix); // ¿ì¼±¼øÀ§°¡ ÇöÀç²¨°¡ ´õ ³ôÀ¸¸é ±×³É ¹Ù·Î ³Ö´Â´Ù.
+            push(&s, *infix); // ìš°ì„ ìˆœìœ„ê°€ í˜„ìž¬êº¼ê°€ ë” ë†’ìœ¼ë©´ ê·¸ëƒ¥ ë°”ë¡œ ë„£ëŠ”ë‹¤.
             infix++;
         }
         else if (*infix >= '0' && *infix <= '9')
         {
             do {
                 *postfix++ = *infix++;
-            } while (*infix >= '0' && *infix <= '9');  // µÎÀÚ¸® ¼ö ÀÌ»óÀ» ÀÔ·ÂÇÏ±â À§ÇØ
-                                                       // ¼ýÀÚ µÚ¿¡ ¹Ù·Î ¼ýÀÚ³ª¿À¸é ±×´ë·Î
-                                                       // °è¼Ó ½×À½
-            *postfix++ = ' '; // ¼ýÀÚ¸¸ ´Ù ½×À¸¸é space ÀÔ·ÂÇØ¼­ ¼ýÀÚ ±¸ºÐ
+            } while (*infix >= '0' && *infix <= '9');  // ë‘ìžë¦¬ ìˆ˜ ì´ìƒì„ ìž…ë ¥í•˜ê¸° ìœ„í•´
+                                                       // ìˆ«ìž ë’¤ì— ë°”ë¡œ ìˆ«ìžë‚˜ì˜¤ë©´ ê·¸ëŒ€ë¡œ
+                                                       // ê³„ì† ìŒ“ìŒ
+            *postfix++ = ' '; // ìˆ«ìžë§Œ ë‹¤ ìŒ“ìœ¼ë©´ space ìž…ë ¥í•´ì„œ ìˆ«ìž êµ¬ë¶„
         }
         else {
             infix++;
@@ -115,24 +115,24 @@ void in_to_post(char* infix, char* postfix) {
     }
     while (!is_empty(&s))
     {
-        *postfix++ = pop(&s); // ¹è¿­ÀÌ ¸ðµÎ ³¡³ª¸é ½ºÅÃ¿¡ ³²¾ÆÀÖ´Â ¿¬»êÀÚ popÇØ¼­ ¹è¿­¿¡ ÀúÀå
+        *postfix++ = pop(&s); // ë°°ì—´ì´ ëª¨ë‘ ëë‚˜ë©´ ìŠ¤íƒì— ë‚¨ì•„ìžˆëŠ” ì—°ì‚°ìž popí•´ì„œ ë°°ì—´ì— ì €ìž¥
         *postfix++ = ' ';
     }
     postfix--;
-    *postfix = '\0'; // ¸Ç ³¡¿¡ '\0' ÀúÀå
+    *postfix = '\0'; // ë§¨ ëì— '\0' ì €ìž¥
 }
 
 void rm_space(char *infix, char* postfix)
 {
     StackType s;
-    init(&s); // ½ºÅÃ ¼±¾ð ¹× ÃÊ±âÈ­
+    init(&s); // ìŠ¤íƒ ì„ ì–¸ ë° ì´ˆê¸°í™”
     int i;
 
     while(*infix != '\0')
     {
         if (*infix != ' ')
         {
-            push(&s, *infix); // ' ' space»©°í ¸ðµç ¹®ÀÚ ÀúÀå
+            push(&s, *infix); // ' ' spaceë¹¼ê³  ëª¨ë“  ë¬¸ìž ì €ìž¥
         }
         infix++;
     }
@@ -140,11 +140,11 @@ void rm_space(char *infix, char* postfix)
     int idx = 0;
     while (!is_empty(&s))
     {
-        postfix[idx++] = pop(&s); // ¸ðµç¹®ÀÚ popÇØ¼­ ¹è¿­¿¡ ÀúÀå
+        postfix[idx++] = pop(&s); // ëª¨ë“ ë¬¸ìž popí•´ì„œ ë°°ì—´ì— ì €ìž¥
     }
     postfix[idx] = '\0';
 
-    for (i = 0; i < idx / 2; i++) // ¸¶Áö¸·À¸·Î µé¾î°£ ¹®ÀÚ°¡ Ã³À½À¸·Î ³ª¿À´Ï±î ¹è¿­ µÚÁý±â
+    for (i = 0; i < idx / 2; i++) // ë§ˆì§€ë§‰ìœ¼ë¡œ ë“¤ì–´ê°„ ë¬¸ìžê°€ ì²˜ìŒìœ¼ë¡œ ë‚˜ì˜¤ë‹ˆê¹Œ ë°°ì—´ ë’¤ì§‘ê¸°
     {
         char temp = postfix[i];
         postfix[i] = postfix[idx - 1 - i];
@@ -154,20 +154,20 @@ void rm_space(char *infix, char* postfix)
 
 int main(void)
 {
-    char input[100]; // »ç¿ëÀÚ ÀÔ·ÂÇÒ ¹®ÀÚ¿­ ¹è¿­
-    char postfix[100]; // °ø¹éÁ¦°Å ¹®ÀÚ¿­°ú ÈÄÀ§°è»ê¹ý ¹è¿­
+    char input[100]; // ì‚¬ìš©ìž ìž…ë ¥í•  ë¬¸ìžì—´ ë°°ì—´
+    char postfix[100]; // ê³µë°±ì œê±° ë¬¸ìžì—´ê³¼ í›„ìœ„ê³„ì‚°ë²• ë°°ì—´
     double d_post[100];
 
-    printf("½ÄÀ» ÀÔ·ÂÇÏ½Ã¿À : ");
+    printf("ì‹ì„ ìž…ë ¥í•˜ì‹œì˜¤ : ");
     fgets(input, sizeof(input), stdin);
 
     input[strcspn(input, "\n")] = '\0';
 
     rm_space(input, postfix);
-    printf("°ø¹éÁ¦°ÅÇÑ ¹®ÀÚ¿­ Ãâ·Â : %s\n", postfix); 
+    printf("ê³µë°±ì œê±°í•œ ë¬¸ìžì—´ ì¶œë ¥ : %s\n", postfix); 
 
     in_to_post(input, postfix);
-    printf("ÈÄÀ§Ç¥±â¹ý ¹è¿­ : %.0f\n", postfix);
+    printf("í›„ìœ„í‘œê¸°ë²• ë°°ì—´ : %.0f\n", postfix);
 
     return 0;
 }
