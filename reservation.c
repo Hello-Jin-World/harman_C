@@ -1,7 +1,6 @@
-​#define _CRT_SECURE_NO_WARNINGS 
 #include <stdio.h>
 #include <string.h>
-#include <stdlib.h> 
+#include <stdlib.h>
 
 enum { RESERVATION = 1, CHECKOUT, MODIFICATION, ONE_INQUIRE, ALL_INQUIRE, EXIT = 9 };
 
@@ -23,7 +22,7 @@ void checkout(t_NODE** head, int* pn); // 퇴실
 void modification(t_NODE** head, int* pn); // 수정
 void one_inquire(t_NODE** head, int* pn); // 개별조회
 void all_inquire(t_NODE** head, int* pn); // 예약자 전체 조회
-void load_reservatiom(t_NODE** head, int* pn);
+void load_reservation(t_NODE** head, int* pn);
 
  FILE *fp;
 
@@ -56,7 +55,7 @@ int main()
     }
     else // 파일 있으면 정보 로딩
     {
-        load_accounts(&head, &rev_num); 
+        load_reservation(&head, &rev_num); 
     }
 
     while (1)
@@ -163,7 +162,7 @@ void reservation(t_NODE** head, int* pn)
     *head = new_reservation;
 
     (*pn)++;
-    printf("계좌가 개설되었습니다.\n\n");
+    printf("예약이 완료되었습니다.\n\n");
 
     // 파일에 저장
     fseek(fp, 0, SEEK_END);
@@ -226,39 +225,42 @@ void modification(t_NODE** head, int* pn)
 
     t_NODE* current = *head;
     while (current != NULL) {
-        if (current->name == now_name && current->phone == now_phone) {
+        if (strcmp(current->name, now_name) == 0 && strcmp(current->phone, now_phone) == 0) {
             printf("^^^^^^ 예약 변경 ^^^^^^\n");
             printf("1. 예약자 성함 수정\n");
             printf("2. 예약자 전화번호 수정\n");
             printf("3. 예약자 주소 수정\n");
-            printf("4. 객실 변경\n");
+            //printf("4. 객실 변경\n");
             printf("9. 수정 내용 저장 후 나가기\n");
             printf("^^^^^^^^^^^^^^^^^^^^\n");
 
             while (exit_toggle)
             {
                 printf("예약 변경을 위해 해당되는 번호를 입력하세요. ");
-                scanf("%d", want_mod_num);
+                scanf("%d", &want_mod_num);
                     switch (want_mod_num)
                     {
                         case 1:
                         printf("새로운 성함 입력 : ");
                         scanf("%s", new_name);
-                        *current->name = new_name;
+                        strcpy(current->name, new_name);
+                        break;
 
                         case 2:
                         printf("새로운 전화번호 입력 : ");
                         scanf("%s", new_phone);
-                        *current->phone = new_phone;
+                        strcpy(current->phone, new_phone);
+                        break;
 
                         case 3:
                         printf("새로운 주소 입력 : ");
                         scanf("%s", new_address);
-                        *current->address = new_address;
-
+                        strcpy(current->address, new_address);
+                        break;
+/*
                         case 4:
                         printf("새로운 객실 번호 입력 : ");
-                        scanf("%d", new_roomno);
+                        scanf("%d", &new_roomno);
                         current->roomno = new_roomno;
                         if (new_roomno >= 1001 && new_roomno <= 1910)
                         {
@@ -279,6 +281,8 @@ void modification(t_NODE** head, int* pn)
                             strcpy(current->exit_date, "오후 1시");
                         }
                         current->price = new_price;
+                        break;
+*/
                         
                         case 9:
                         exit_toggle = 0;
@@ -310,10 +314,10 @@ void one_inquire(t_NODE** head, int* pn)
 
     t_NODE* current = *head;
     while (current != NULL) {
-        if (current->name == inq_name && current->phone == inq_phone) {
+        if (strcmp(current->name, inq_name) == 0 && strcmp(current->phone, inq_phone) == 0) {
             printf("객실 번호 : %d\n", current->roomno);
             printf("이름 : %s\n", current->name);
-            printf("전화번호 : %d\n", current->phone);
+            printf("전화번호 : %s\n", current->phone);
             printf("요금 : %d원\n", current->price);
             printf("주소 : %s\n", current->address);
             printf("입실 시각 : %s\n", current->enter_date);
@@ -321,7 +325,7 @@ void one_inquire(t_NODE** head, int* pn)
         }
         current = current->next;
     }
-    printf("유효하지 않은 예약입니다.\n\n");
+    //printf("유효하지 않은 예약입니다.\n\n");
 }
 
 void all_inquire(t_NODE** head, int* pn)
@@ -331,7 +335,7 @@ void all_inquire(t_NODE** head, int* pn)
     {
         printf("객실 번호 : %d\n", current->roomno);
         printf("이름 : %s\n", current->name);
-        printf("전화번호 : %d\n", current->phone);
+        printf("전화번호 : %s\n", current->phone);
         printf("요금 : %d원\n", current->price);
         printf("주소 : %s\n", current->address);
         printf("입실 시각 : %s\n", current->enter_date);
@@ -340,7 +344,7 @@ void all_inquire(t_NODE** head, int* pn)
     }
 }
 
-void load_reservatiom(t_NODE** head, int* pn)
+void load_reservation(t_NODE** head, int* pn)
 {
     t_NODE* temp = NULL; // 저장할 임시 노드
     while (1) {

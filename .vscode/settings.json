@@ -2,6 +2,9 @@
     "code-runner.runInTerminal": true,
     "files.associations": {
         "__locale": "c",
-        "locale": "c"
-    }
+        "locale": "c",
+        "string.h": "c",
+        "typeinfo": "c"
+    },
+    "C_Cpp.errorSquiggles": "disabled"
 }
