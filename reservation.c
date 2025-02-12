@@ -257,33 +257,6 @@ void modification(t_NODE** head, int* pn)
                         scanf("%s", new_address);
                         strcpy(current->address, new_address);
                         break;
-/*
-                        case 4:
-                        printf("새로운 객실 번호 입력 : ");
-                        scanf("%d", &new_roomno);
-                        current->roomno = new_roomno;
-                        if (new_roomno >= 1001 && new_roomno <= 1910)
-                        {
-                            new_price = 300000;
-                            strcpy(current->enter_date, "오후 4시");
-                            strcpy(current->exit_date, "오전 11시");
-                        }
-                        else if (new_roomno >= 2001 && new_roomno < 2910)
-                        {
-                            new_price = 500000;
-                            strcpy(current->enter_date, "오후 3시");
-                            strcpy(current->exit_date, "오전 11시");
-                        }
-                        else if (new_roomno >= 3001 && new_roomno < 3010)
-                        {
-                            new_price = 1000000;
-                            strcpy(current->enter_date, "오후 3시");
-                            strcpy(current->exit_date, "오후 1시");
-                        }
-                        current->price = new_price;
-                        break;
-*/
-                        
                         case 9:
                         exit_toggle = 0;
                         break;
